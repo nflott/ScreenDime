@@ -12,14 +12,16 @@ struct User {
     let email: String
     private(set) var invites: [Group]
     private(set) var groups: [Group]
+    private(set) var bets: [Bet]
     
-    init(name: String, age: Int, phoneNumber: String, email: String, invites: [Group], groups: [Group]) {
+    init(name: String, age: Int, phoneNumber: String, email: String, invites: [Group], groups: [Group], bets: [Bet]) {
         self.name = name
         self.age = age
         self.phoneNumber = phoneNumber
         self.email = email
         self.invites = []
         self.groups = []
+        self.bets = []
     }
     
     mutating func addInvite(group: Group) {
@@ -35,6 +37,10 @@ struct User {
         }
     }
     
-    
+    mutating func addBet(bet: Bet, action: Bool) {
+        if action && !bets.contains(where: { $0.name == bet.name } ) {
+            bets.append(bet)
+        }
+    }
     
 }

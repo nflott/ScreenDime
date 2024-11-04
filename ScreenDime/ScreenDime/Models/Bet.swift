@@ -8,6 +8,7 @@ import Foundation
 
 struct Bet {
     let name: String
+    let group: Group
     let metric: String
     let appTracking: String
     private(set) var participants: [User]
@@ -15,8 +16,9 @@ struct Bet {
     let startDate: Date
     let endDate: Date
     
-    init(name: String, metric: String, appTracking: String, participants: [User], stakes: String, startDate: Date, endDate: Date) {
+    init(name: String, group: Group, metric: String, appTracking: String, participants: [User], stakes: String, startDate: Date, endDate: Date) {
         self.name = name
+        self.group = group
         self.metric = metric
         self.appTracking = appTracking
         self.participants = participants
