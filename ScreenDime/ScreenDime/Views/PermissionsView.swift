@@ -59,7 +59,7 @@ struct PermissionsView: View {
     }
 }
 
-struct PermissionsView_Previews: PreviewProvider {
+struct Permissions_Previews: PreviewProvider {
     static var previews: some View {
         PermissionsView()
     }

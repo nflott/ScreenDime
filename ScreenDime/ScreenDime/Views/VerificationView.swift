@@ -60,7 +60,7 @@ struct VerificationView: View {
     }
 }
 
-struct VerificationView_Previews: PreviewProvider {
+struct Verification_Previews: PreviewProvider {
     static var previews: some View {
         VerificationView()
     }
