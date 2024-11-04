@@ -46,7 +46,7 @@ struct OnboardingView: View {
 
 
 
-struct OnboardingView_Previews: PreviewProvider {
+struct Onboarding_Previews: PreviewProvider {
     static var previews: some View {
         OnboardingView()
     }

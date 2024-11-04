@@ -36,16 +36,14 @@ struct SplashScreen: View {
                         }
                     }
             }
-            
-            // Navigation logic
+            // Conditionally show the next screen based on the user's onboarding status
             if navigateToNextScreen {
-                // Conditionally show the next screen based on the user's onboarding status
                 if !hasOnboarded {
                     OnboardingView()  // User hasn't completed onboarding
                 } else if !hasScreenTimePermission {
                     PermissionsView()  // User hasn't granted screen time permission
                 } //else {
-                    //DashboardView()  // User is fully onboarded and has permissions
+                    //Dashboard()  // User is fully onboarded and has permissions
                 //}
             }
         }
