@@ -15,7 +15,7 @@ struct VerificationView: View {
     
     var body: some View {
         VStack {
-            Text("Phone Verification")
+            Text("Verify your phone number")
                 .font(.title)
                 .padding()
             
