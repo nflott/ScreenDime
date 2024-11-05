@@ -11,35 +11,37 @@ struct DashboardView: View {
     @State private var showingSettings = false
 
     var body: some View {
-        NavigationView {
-            VStack {
-                HStack {
-                    Button(action: {
-                        showingSettings.toggle() // Toggle the modal display
-                    }) {
-                        Image(systemName: "gear") // Using the SF Symbols gear icon
-                            .resizable()
-                            .scaledToFit()
-                            .frame(width: 60, height: 40) // Adjust the size as needed
-                            .foregroundColor(.gray) // Change color as needed
-                    }
-                    .padding() // Add some padding around the button
-                    
-                    Spacer() // Pushes the button to the left
+        VStack {
+            HStack {
+                Button(action: {
+                    showingSettings.toggle() // Toggle the modal display
+                }) {
+                    Image(systemName: "gear")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 60, height: 40)
+                        .foregroundColor(.gray)
                 }
-                .padding(.top) // Padding at the top of the HStack
+                .padding()
                 
-                // The rest of your dashboard content goes here
-                Text("Hello, World!")
-                    .font(.largeTitle)
-                    .padding()
-                
-                Spacer() // Pushes the content to the center
+                Spacer() // Pushes the button to the left
             }
-            .sheet(isPresented: $showingSettings) {
-                SettingsView()
-            }
+            .padding(.top) // Padding at the top of the HStack
+            
+            // The rest of your dashboard content goes here
+            Text("Your Dashboard")
+                .font(.largeTitle)
+                .fontWeight(.bold)
+                .foregroundColor(.white)
+                .padding()
+            
+            Spacer() // Pushes the content to the center
         }
+        .applyBackground()
+        .sheet(isPresented: $showingSettings) {
+            SettingsView().applyBackground()
+        }
+        
     }
 }
 
