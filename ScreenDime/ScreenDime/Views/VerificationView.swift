@@ -11,7 +11,7 @@ struct VerificationView: View {
     @State private var needsToShareData = true
     @State private var showNextView = false
     @State private var phoneNumber = ""
-    @State private var givenCode = 1234
+    @State private var givenCode = 123
     @State private var inputCode = ""
     @State private var codeSent = false
     @State private var areaCode = "+1"
