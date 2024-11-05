@@ -19,6 +19,7 @@ struct Global {
         get { UserDefaults.standard.bool(forKey: "hasScreenTimePermission")}
         set { UserDefaults.standard.set(newValue, forKey: "hasScreenTimePermission") }
     }*/
+    
     static var hasOnboarded = false
     static var hasScreenTimePermission = false
     
