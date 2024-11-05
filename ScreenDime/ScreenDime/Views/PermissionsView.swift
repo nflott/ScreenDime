@@ -8,7 +8,8 @@
 import SwiftUI
 
 struct PermissionsView: View {
-    @Environment(\.dismiss) var dismiss  // Environment property to dismiss the modal
+    @Environment(\.dismiss) var dismiss
+    @State private var showPermissionDenialScreen = false
     @State private var showNextScreen = false
     
     var body: some View {
@@ -34,14 +35,24 @@ struct PermissionsView: View {
             }
             .padding()
             
+            Button(action: {
+                showPermissionDenialScreen = true
+            }) {
+                Text("Don't grant access")
+                    .foregroundColor(.gray)
+            }
+            
         }
         .padding()
         .applyBackground()
+        .sheet(isPresented: $showPermissionDenialScreen) {
+            PermissionDenialView()
+        }
     }
     
     func requestScreenTimePermission() {
         // Handle actual screen time permission logic here
-        //Global.hasScreenTimePermission = true
+        // Global.hasScreenTimePermission = true
     }
 }
 

@@ -8,9 +8,11 @@
 import SwiftUI
 
 struct VerificationView: View {
-    @State private var showDashboardView = false
+    @State private var needsToShareData = true
+    @State private var showNextView = false
     @State private var phoneNumber = ""
-    @State private var verificationCode = ""
+    @State private var givenCode = "1234"
+    @State private var inputCode = ""
     @State private var codeSent = false
     @State private var areaCode = "+1"
     
@@ -63,27 +65,33 @@ struct VerificationView: View {
                     .font(.title)
                     .padding()
                 
-                TextField("Enter verification code", text: $verificationCode)
+                TextField("Enter verification code", text: $inputCode)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
                 
                 Button(action: {
-                    showDashboardView = true
+                    showNextView = true
                 }) {
                     Text("Verify")
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color.blue)
+                        .background(givenCode != inputCode ? Color.gray : Color.blue)
                         .foregroundColor(.white)
                         .cornerRadius(8)
                 }
                 .padding()
+                .disabled(givenCode != inputCode)
             }
         }
         .padding()
         .applyBackground()
-        .fullScreenCover(isPresented: $showDashboardView) {
-            DashboardView()
+        .sheet(isPresented: $needsToShareData) {
+            if !Global.hasScreenTimePermission {
+                PermissionsView()
+            }
+        }
+        .fullScreenCover(isPresented: $showNextView) {
+            OnboardingView()
         }
     }
 }
