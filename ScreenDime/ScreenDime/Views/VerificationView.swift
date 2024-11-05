@@ -8,48 +8,72 @@
 import SwiftUI
 
 struct VerificationView: View {
-    @Environment(\.presentationMode) var presentationMode
+    @State private var showDashboardView = false
     @State private var phoneNumber = ""
     @State private var verificationCode = ""
     @State private var codeSent = false
+    @State private var areaCode = "+1"
     
+    let areaCodes = ["+1", "+44", "+61", "+91", "+38"]
+
+    private var isPhoneNumberValid: Bool {
+        let phoneNumberPattern = "^[0-9]{10}$"
+        let predicate = NSPredicate(format: "SELF MATCHES %@", phoneNumberPattern)
+        return predicate.evaluate(with: phoneNumber)
+    }
+
     var body: some View {
         VStack {
-            Text("Verify your phone number")
-                .font(.title)
-                .padding()
-            
-            TextField("Enter your phone number", text: $phoneNumber)
-                .textFieldStyle(RoundedBorderTextFieldStyle())
-                .padding()
-                .keyboardType(.phonePad)
-            
-            Button(action: {
-                // Trigger code sending logic
-                codeSent = true
-            }) {
-                Text("Send Code")
-                    .frame(maxWidth: .infinity)
+            if !codeSent {
+                Text("Verify your phone number")
+                        .font(.title)
+                        .padding()
+
+                HStack(spacing:0) {
+                        Picker("Select Area Code", selection: $areaCode) {
+                            ForEach(areaCodes, id: \.self) { code in
+                                Text(code).tag(code)
+                            }
+                        }
+                        .pickerStyle(MenuPickerStyle())
+                        
+                        TextField("Enter your phone number", text: $phoneNumber)
+                            .textFieldStyle(RoundedBorderTextFieldStyle())
+                            .keyboardType(.phonePad)
+                    }
                     .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
+
+                    // Send code button
+                    Button(action: {
+                        codeSent = true
+                    }) {
+                        Text("Send Code")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(isPhoneNumberValid ? Color.blue : Color.gray)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                    .padding()
+                    .disabled(!isPhoneNumberValid)
             }
-            .padding()
-            
+
             if codeSent {
+                Text("Verify your phone number")
+                    .font(.title)
+                    .padding()
+                
                 TextField("Enter verification code", text: $verificationCode)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
                 
                 Button(action: {
-                    // Validate the code here
-                    presentationMode.wrappedValue.dismiss()
+                    showDashboardView = true
                 }) {
                     Text("Verify")
                         .frame(maxWidth: .infinity)
                         .padding()
-                        .background(Color.green)
+                        .background(Color.blue)
                         .foregroundColor(.white)
                         .cornerRadius(8)
                 }
@@ -57,6 +81,10 @@ struct VerificationView: View {
             }
         }
         .padding()
+        .applyBackground()
+        .fullScreenCover(isPresented: $showDashboardView) {
+            DashboardView()
+        }
     }
 }
 

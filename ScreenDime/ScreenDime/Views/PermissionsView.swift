@@ -8,8 +8,8 @@
 import SwiftUI
 
 struct PermissionsView: View {
-    @Environment(\.presentationMode) var presentationMode
-    @State private var permissionGranted = false
+    @Environment(\.dismiss) var dismiss  // Environment property to dismiss the modal
+    @State private var showNextScreen = false
     
     var body: some View {
         VStack {
@@ -22,40 +22,26 @@ struct PermissionsView: View {
                 .padding()
             
             Button(action: {
-                // Here you'd call a method in your service to request permission
                 requestScreenTimePermission()
-                permissionGranted = true
+                dismiss()
             }) {
                 Text("Allow Access")
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(permissionGranted ? Color.green : Color.blue)
+                    .background(Color.blue)
                     .foregroundColor(.white)
                     .cornerRadius(8)
             }
             .padding()
             
-            if permissionGranted {
-                Button(action: {
-                    // Dismiss the view after permission is granted
-                    presentationMode.wrappedValue.dismiss()
-                }) {
-                    Text("Continue")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                }
-                .padding()
-            }
         }
         .padding()
+        .applyBackground()
     }
     
     func requestScreenTimePermission() {
-        // This function will eventually handle the actual screen time permissions
-        print("Screen time permission requested")
+        // Handle actual screen time permission logic here
+        //Global.hasScreenTimePermission = true
     }
 }
 
