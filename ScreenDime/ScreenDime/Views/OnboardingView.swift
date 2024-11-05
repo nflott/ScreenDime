@@ -22,6 +22,9 @@ struct OnboardingView: View {
                     Text("Welcome to ScreenDime!")
                         .font(.largeTitle)
                         .padding()
+                        .fontWeight(.bold)
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
                     
                     if isUsernameTaken {
                         Text("Username is already taken")

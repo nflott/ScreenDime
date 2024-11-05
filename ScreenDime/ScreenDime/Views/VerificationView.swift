@@ -11,10 +11,11 @@ struct VerificationView: View {
     @State private var needsToShareData = true
     @State private var showNextView = false
     @State private var phoneNumber = ""
-    @State private var givenCode = "1234"
+    @State private var givenCode = 123
     @State private var inputCode = ""
     @State private var codeSent = false
     @State private var areaCode = "+1"
+    @State private var showCodeDialog = false
     
     let areaCodes = ["+1", "+44", "+61", "+91", "+38"]
 
@@ -25,13 +26,16 @@ struct VerificationView: View {
     }
 
     var body: some View {
-        VStack {
-            if !codeSent {
-                Text("Verify your phone number")
+        ZStack {
+            VStack {
+                if !codeSent {
+                    Text("Verify your phone number")
                         .font(.title)
                         .padding()
-
-                HStack(spacing:0) {
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
+                    
+                    HStack(spacing:0) {
                         Picker("Select Area Code", selection: $areaCode) {
                             ForEach(areaCodes, id: \.self) { code in
                                 Text(code).tag(code)
@@ -44,10 +48,11 @@ struct VerificationView: View {
                             .keyboardType(.phonePad)
                     }
                     .padding()
-
-                    // Send code button
+                    
                     Button(action: {
                         codeSent = true
+                        givenCode = getRandomCode()
+                        showCodeDialog = true
                     }) {
                         Text("Send Code")
                             .frame(maxWidth: .infinity)
@@ -56,43 +61,82 @@ struct VerificationView: View {
                             .foregroundColor(.white)
                             .cornerRadius(8)
                     }
-                    .padding()
                     .disabled(!isPhoneNumberValid)
-            }
-
-            if codeSent {
-                Text("Verify your phone number")
-                    .font(.title)
-                    .padding()
-                
-                TextField("Enter verification code", text: $inputCode)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-                
-                Button(action: {
-                    showNextView = true
-                }) {
-                    Text("Verify")
-                        .frame(maxWidth: .infinity)
-                        .padding()
-                        .background(givenCode != inputCode ? Color.gray : Color.blue)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
                 }
+                
+                if codeSent {
+                    Text("Verify your phone number")
+                        .font(.title)
+                        .padding()
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
+                    
+                    TextField("Enter verification code", text: $inputCode)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
+                    
+                    Button(action: {
+                        showNextView = true
+                    }) {
+                        Text("Verify")
+                            .frame(maxWidth: .infinity)
+                            .padding()
+                            .background(String(givenCode) != inputCode ? Color.gray : Color.blue)
+                            .foregroundColor(.white)
+                            .cornerRadius(8)
+                    }
+                    .padding()
+                    .disabled(String(givenCode) != inputCode)
+                    
+                    Button(action: {
+                        givenCode = getRandomCode()
+                        showCodeDialog = true
+                    }) {
+                        Text("Send another code")
+                            .foregroundColor(.blue)
+                    }
+                }
+            }
+            .padding()
+            .applyBackground()
+            .sheet(isPresented: $needsToShareData) {
+                if !Global.hasScreenTimePermission {
+                    PermissionsView()
+                }
+            }
+            .fullScreenCover(isPresented: $showNextView) {
+                OnboardingView()
+            }
+            
+            if showCodeDialog {
+                VStack(spacing: 20) {
+                    Text("Your code is \(givenCode)!")
+                        .multilineTextAlignment(.center)
+                        .padding()
+                        
+                    Button("OK") {
+                        showCodeDialog = false
+                    }
+                    .padding()
+                    .background(Color.blue)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+                }
+                .frame(width: 200, height: 150)
+                .background(Color.white)
+                .cornerRadius(10)
+                .shadow(radius: 10)
                 .padding()
-                .disabled(givenCode != inputCode)
             }
         }
         .padding()
         .applyBackground()
-        .sheet(isPresented: $needsToShareData) {
-            if !Global.hasScreenTimePermission {
-                PermissionsView()
-            }
-        }
-        .fullScreenCover(isPresented: $showNextView) {
-            OnboardingView()
-        }
+    }
+    
+    func getRandomCode() -> Int {
+        let fourDigits = (0..<3).map { _ in Int.random(in: 0...9) }
+        let value = fourDigits.reduce(0) { $0 * 10 + $1 }
+        return value
     }
 }
 
