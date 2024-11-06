@@ -5,11 +5,13 @@
 //  Created by Noah Flott on 11/4/24.
 //
 
-struct User {
-    let name: String
-    let age: Int
-    let phoneNumber: String
-    let email: String
+import SwiftData
+
+@Model class User {
+    var name: String
+    var age: Int
+    var phoneNumber: String
+    var email: String
     private(set) var invites: [Group]
     private(set) var groups: [Group]
     private(set) var bets: [Bet]
@@ -24,20 +26,20 @@ struct User {
         self.bets = []
     }
     
-    mutating func addInvite(group: Group) {
+    func addInvite(group: Group) {
         if !invites.contains(where: { $0.name == group.name } ) {
             invites.append(group)
         }
     }
     
-    mutating func addGroup(group: Group, action: Bool) {
+    func addGroup(group: Group, action: Bool) {
         if action && invites.contains(where: { $0.name == group.name } ) {
             groups.append(group)
             invites.removeAll(where: { $0.name == group.name } )
         }
     }
     
-    mutating func addBet(bet: Bet, action: Bool) {
+    func addBet(bet: Bet, action: Bool) {
         if action && !bets.contains(where: { $0.name == bet.name } ) {
             bets.append(bet)
         }

@@ -4,8 +4,9 @@
 //
 //  Created by Luke Currier on 11/4/24.
 //
+import SwiftData
 
-struct Group {
+@Model class Group {
     var name: String
     private(set) var members: [User]
     var bets: [Bet]
@@ -16,13 +17,13 @@ struct Group {
         self.bets = bets
     }
     
-    mutating func addMember(user: User) {
+    func addMember(user: User) {
         if !members.contains(where: { $0.name == user.name }) {
             members.append(user)
         }
     }
     
-    mutating func addBet(bet: Bet) {
+    func addBet(bet: Bet) {
         if !bets.contains(where: { $0.name == bet.name }) {
             bets.append(bet)
         }
