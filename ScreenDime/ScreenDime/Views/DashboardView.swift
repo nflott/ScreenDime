@@ -1,28 +1,25 @@
-//
-//  DashboardView.swift
-//  ScreenDime
-//
-//  Created by Luke Currier on 11/4/24.
-//
-
 import SwiftUI
 
 struct DashboardView: View {
     @State private var showingSettings = false
-    @State var backgroundOffset: Int = 0
-    @State private var rectangleCount = 2 // Initial count of rectangles
+    @State var backgroundOffset = 0
+    @State private var rectangleCount = 2 // Initial count of rectangles for dashboard pages
     @State private var selectedPage = 0
-    private let totalPages = 4 // Total number of pages
-
-    let pageTitles = ["Dashboard 1", "Dashboard 2", "Dashboard 3", "Dashboard 4"] // Titles for each page
+    @State private var groupPages: [String] = ["Group 1", "Group 2", "Group 3", "Group 4"] // Dynamic group pages list
+    
+    let dashboardTitle = "Dashboard"
+    let circleColors: [Color] = [.black, .red, .blue, .yellow, .green, .purple, .orange] // Add more colors if needed
+    
+    var totalPages: Int {
+        return 2 + groupPages.count // Dashboard page + Add Group page + group pages
+    }
 
     var body: some View {
-        
         VStack {
             GeometryReader { g in
                 ZStack {
                     // Center the Text within the screen width
-                    Text(pageTitles[selectedPage])
+                    Text(getPageTitle(for: selectedPage))
                         .font(.largeTitle)
                         .fontWeight(.bold)
                         .foregroundColor(.white)
@@ -48,20 +45,35 @@ struct DashboardView: View {
                 .padding(.top) // Padding at the top of the entire ZStack
                 
                 TabView(selection: $selectedPage) {
-                    ForEach(0..<totalPages, id: \.self) { pageIndex in
+                    // Dashboard page
+                    ScrollView(.vertical, showsIndicators: true) {
+                        VStack(spacing: 0) {
+                            ForEach(0..<2, id: \.self) { _ in
+                                Rectangle()
+                                    .fill(Color.black.opacity(0.7))
+                                    .frame(width: g.size.width - 10, height: 200)
+                                    .cornerRadius(5)
+                                    .padding(5)
+                                    .frame(maxWidth: .infinity, maxHeight: 210)
+                            }
+                        }
+                    }
+                    .tag(0) // Set tag to identify as the first page
+                    
+                    // Group pages
+                    ForEach(0..<groupPages.count, id: \.self) { pageIndex in
                         ScrollView(.vertical, showsIndicators: true) {
                             VStack(spacing: 0) {
                                 ForEach(0..<rectangleCount, id: \.self) { _ in
                                     Rectangle()
                                         .fill(Color.black.opacity(0.7))
-                                        .frame(width: g.size.width-10, height: 200)
+                                        .frame(width: g.size.width - 10, height: 200)
                                         .cornerRadius(5)
                                         .padding(5)
                                         .frame(maxWidth: .infinity, maxHeight: 210)
                                 }
-                                // Plus icon button
                                 Button(action: {
-                                    rectangleCount += 1 // Increment the count when tapped
+                                    rectangleCount += 1
                                 }) {
                                     Image(systemName: "plus")
                                         .resizable()
@@ -69,46 +81,92 @@ struct DashboardView: View {
                                         .frame(width: 40, height: 40)
                                         .foregroundColor(.white)
                                         .padding()
-                                        .background(Color.blue) // Background color for the button
-                                        .cornerRadius(20) // Make it circular
+                                        .background(Color.blue)
+                                        .cornerRadius(20)
                                 }
-                                .padding(.bottom, 20) // Bottom padding for the button
+                                .padding(.bottom, 20)
                                 
                                 Spacer()
-                                    .frame(height: 100) // Additional scrollable space below the button
+                                    .frame(height: 100)
+                                
+                                // Delete Group button
+                                Button(action: {
+                                    deleteGroup(at: pageIndex)
+                                }) {
+                                    Text("Delete Group")
+                                        .font(.footnote)
+                                        .foregroundColor(.red)
+                                }
+                                .padding(.bottom, 20)
+                                
+                                           // Additional padding to allow scrolling past the delete button
+                                           Spacer()
+                                               .frame(height: 100) // Adjust height as needed for more or less padding
+                                      
                             }
                         }
-                        .tag(pageIndex) // Set tag to identify page in TabView
+                        .tag(pageIndex + 1) // Offset tag by 1 for group pages
                     }
+                    
+                    // Add Group Page
+                    VStack {
+                        Spacer()
+                        Button(action: {
+                            addNewGroupPage()
+                        }) {
+                            Image(systemName: "plus.circle.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 100, height: 100)
+                                .foregroundColor(.blue)
+                        }
+                        Spacer()
+                    }
+                    .tag(groupPages.count + 1) // Tag the Add Group page to be at the end
                 }
-                .frame(height: g.size.height * 0.8) // Adjust height if needed
-                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .always)) // Enable paging with dots indicator
+                .frame(height: g.size.height * 0.8)
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 .padding(.top, 90)
                 .onChange(of: selectedPage) { newValue in
                     backgroundOffset = newValue // Update the backgroundOffset whenever the page changes
                 }
-            
+                
+                // Custom progress circles
                 ZStack {
                     Rectangle()
                         .fill(Color.white.opacity(0.3))
                         .frame(width: 400, height: 70)
                         .cornerRadius(10)
                     
-                    HStack {
+                    HStack(spacing: 15) { // Adjust spacing for better alignment
                         ForEach(0..<totalPages, id: \.self) { index in
                             Circle()
-                                .fill(self.getColorForIndex(index))
+                                .fill(circleColors[index % circleColors.count])
                                 .frame(width: backgroundOffset == index ? 40 : 20, height: backgroundOffset == index ? 40 : 20)
                                 .overlay(
                                     Circle()
                                         .stroke(Color.white, lineWidth: 3)
                                 )
-                                .animation(.default, value: backgroundOffset)
                         }
                     }
+                    .animation(.default)
                 }
                 .position(x: g.size.width / 2, y: g.size.height / 1.1)
             }
+            .gesture(
+                DragGesture()
+                    .onEnded { value in
+                        if value.translation.width > 10 {
+                            if self.backgroundOffset > 0 {
+                                self.backgroundOffset -= 1
+                            }
+                        } else if value.translation.width < -10 {
+                            if self.backgroundOffset < totalPages - 1 {
+                                self.backgroundOffset += 1
+                            }
+                        }
+                    }
+            )
         }
         .applyBackground()
         .sheet(isPresented: $showingSettings) {
@@ -116,14 +174,31 @@ struct DashboardView: View {
         }
     }
     
-    // Helper function to determine color based on index
-    private func getColorForIndex(_ index: Int) -> Color {
-        switch index {
-        case 0: return Color.black
-        case 1: return Color.red
-        case 2: return Color.blue
-        case 3: return Color.yellow
-        default: return Color.gray
+    // Adds a new group page at the end of the groupPages array
+    private func addNewGroupPage() {
+        let newPageTitle = "Group \(groupPages.count + 1)"
+        groupPages.append(newPageTitle)
+        selectedPage = groupPages.count // Move to the newly created page
+    }
+    
+    // Deletes the specified group from groupPages
+    private func deleteGroup(at index: Int) {
+        groupPages.remove(at: index)
+        
+        // Adjust selected page if needed
+        if selectedPage > groupPages.count {
+            selectedPage = groupPages.count
+        }
+    }
+    
+    // Helper function to get page title based on selected page
+    private func getPageTitle(for pageIndex: Int) -> String {
+        if pageIndex == 0 {
+            return dashboardTitle
+        } else if pageIndex <= groupPages.count {
+            return groupPages[pageIndex - 1]
+        } else {
+            return "Add Group"
         }
     }
 }
