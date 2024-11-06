@@ -3,22 +3,21 @@ import SwiftUI
 struct DashboardView: View {
     @State private var showingSettings = false
     @State var backgroundOffset = 0
-    @State private var rectangleCount = 2 // Initial count of rectangles for dashboard pages
     @State private var selectedPage = 0
-    @State private var groupPages: [String] = ["Group 1", "Group 2", "Group 3", "Group 4"] // Dynamic group pages list
+    @State private var groupPages: [String] = ["Group 1", "Group 2", "Group 3", "Group 4"]
+    @State private var rectangleCounts: [Int] = Array(repeating: 2, count: 4)
     
     let dashboardTitle = "Dashboard"
-    let circleColors: [Color] = [.black, .red, .blue, .yellow, .green, .purple, .orange] // Add more colors if needed
+    let circleColors: [Color] = [.black, .red, .blue, .yellow, .green, .purple, .orange]
     
     var totalPages: Int {
-        return 2 + groupPages.count // Dashboard page + Add Group page + group pages
+        return 2 + groupPages.count
     }
 
     var body: some View {
         VStack {
             GeometryReader { g in
                 ZStack {
-                    // Center the Text within the screen width
                     Text(getPageTitle(for: selectedPage))
                         .font(.largeTitle)
                         .fontWeight(.bold)
@@ -26,10 +25,9 @@ struct DashboardView: View {
                         .padding()
                         .frame(width: g.size.width, height: 40, alignment: .center)
                     
-                    // Align the Button to the left
                     HStack {
                         Button(action: {
-                            showingSettings.toggle() // Toggle the modal display
+                            showingSettings.toggle()
                         }) {
                             Image(systemName: "gear")
                                 .resizable()
@@ -39,13 +37,12 @@ struct DashboardView: View {
                         }
                         .padding()
                         
-                        Spacer() // Push the button to the left
+                        Spacer()
                     }
                 }
-                .padding(.top) // Padding at the top of the entire ZStack
+                .padding(.top)
                 
                 TabView(selection: $selectedPage) {
-                    // Dashboard page
                     ScrollView(.vertical, showsIndicators: true) {
                         VStack(spacing: 0) {
                             ForEach(0..<2, id: \.self) { _ in
@@ -58,13 +55,12 @@ struct DashboardView: View {
                             }
                         }
                     }
-                    .tag(0) // Set tag to identify as the first page
+                    .tag(0)
                     
-                    // Group pages
                     ForEach(0..<groupPages.count, id: \.self) { pageIndex in
                         ScrollView(.vertical, showsIndicators: true) {
                             VStack(spacing: 0) {
-                                ForEach(0..<rectangleCount, id: \.self) { _ in
+                                ForEach(0..<rectangleCounts[pageIndex], id: \.self) { _ in
                                     Rectangle()
                                         .fill(Color.black.opacity(0.7))
                                         .frame(width: g.size.width - 10, height: 200)
@@ -73,7 +69,7 @@ struct DashboardView: View {
                                         .frame(maxWidth: .infinity, maxHeight: 210)
                                 }
                                 Button(action: {
-                                    rectangleCount += 1
+                                    rectangleCounts[pageIndex] += 1
                                 }) {
                                     Image(systemName: "plus")
                                         .resizable()
@@ -89,7 +85,6 @@ struct DashboardView: View {
                                 Spacer()
                                     .frame(height: 100)
                                 
-                                // Delete Group button
                                 Button(action: {
                                     deleteGroup(at: pageIndex)
                                 }) {
@@ -99,16 +94,13 @@ struct DashboardView: View {
                                 }
                                 .padding(.bottom, 20)
                                 
-                                           // Additional padding to allow scrolling past the delete button
-                                           Spacer()
-                                               .frame(height: 100) // Adjust height as needed for more or less padding
-                                      
+                                Spacer()
+                                    .frame(height: 100)
                             }
                         }
-                        .tag(pageIndex + 1) // Offset tag by 1 for group pages
+                        .tag(pageIndex + 1)
                     }
                     
-                    // Add Group Page
                     VStack {
                         Spacer()
                         Button(action: {
@@ -122,23 +114,22 @@ struct DashboardView: View {
                         }
                         Spacer()
                     }
-                    .tag(groupPages.count + 1) // Tag the Add Group page to be at the end
+                    .tag(groupPages.count + 1)
                 }
                 .frame(height: g.size.height * 0.8)
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
                 .padding(.top, 90)
                 .onChange(of: selectedPage) { newValue in
-                    backgroundOffset = newValue // Update the backgroundOffset whenever the page changes
+                    backgroundOffset = newValue
                 }
                 
-                // Custom progress circles
                 ZStack {
                     Rectangle()
                         .fill(Color.white.opacity(0.3))
                         .frame(width: 400, height: 70)
                         .cornerRadius(10)
                     
-                    HStack(spacing: 15) { // Adjust spacing for better alignment
+                    HStack(spacing: 15) {
                         ForEach(0..<totalPages, id: \.self) { index in
                             Circle()
                                 .fill(circleColors[index % circleColors.count])
@@ -147,6 +138,9 @@ struct DashboardView: View {
                                     Circle()
                                         .stroke(Color.white, lineWidth: 3)
                                 )
+                                .onTapGesture {
+                                    selectedPage = index
+                                }
                         }
                     }
                     .animation(.default)
@@ -174,24 +168,21 @@ struct DashboardView: View {
         }
     }
     
-    // Adds a new group page at the end of the groupPages array
     private func addNewGroupPage() {
         let newPageTitle = "Group \(groupPages.count + 1)"
         groupPages.append(newPageTitle)
-        selectedPage = groupPages.count // Move to the newly created page
+        rectangleCounts.append(2)
+        selectedPage = groupPages.count
     }
     
-    // Deletes the specified group from groupPages
     private func deleteGroup(at index: Int) {
         groupPages.remove(at: index)
-        
-        // Adjust selected page if needed
+        rectangleCounts.remove(at: index)
         if selectedPage > groupPages.count {
             selectedPage = groupPages.count
         }
     }
     
-    // Helper function to get page title based on selected page
     private func getPageTitle(for pageIndex: Int) -> String {
         if pageIndex == 0 {
             return dashboardTitle
