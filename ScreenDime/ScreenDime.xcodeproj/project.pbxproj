@@ -6,6 +6,11 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		01796EFC2CDBFE580019D68F /* XCTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 01796EFB2CDBFE580019D68F /* XCTest.framework */; platformFilter = ios; };
+		01796EFD2CDBFE580019D68F /* XCTest.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 01796EFB2CDBFE580019D68F /* XCTest.framework */; platformFilter = ios; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		01796EF32CDBF93B0019D68F /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -30,8 +35,23 @@
 		};
 /* End PBXContainerItemProxy section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		01796EFE2CDBFE580019D68F /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				01796EFD2CDBFE580019D68F /* XCTest.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		01796EEF2CDBF93B0019D68F /* ScreenDimeTesting.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScreenDimeTesting.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		01796EFB2CDBFE580019D68F /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Platforms/iPhoneOS.platform/Developer/Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		416754572CA2F65B00EEA777 /* ScreenDime.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ScreenDime.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		416754672CA2F65E00EEA777 /* ScreenDimeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScreenDimeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		416754712CA2F65E00EEA777 /* ScreenDimeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScreenDimeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -55,6 +75,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				01796EFC2CDBFE580019D68F /* XCTest.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -82,11 +103,20 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		01796EFA2CDBFE580019D68F /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				01796EFB2CDBFE580019D68F /* XCTest.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		4167544E2CA2F65B00EEA777 = {
 			isa = PBXGroup;
 			children = (
 				416754592CA2F65B00EEA777 /* ScreenDime */,
 				01796EF02CDBF93B0019D68F /* ScreenDimeTesting */,
+				01796EFA2CDBFE580019D68F /* Frameworks */,
 				416754582CA2F65B00EEA777 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -112,6 +142,7 @@
 				01796EEB2CDBF93B0019D68F /* Sources */,
 				01796EEC2CDBF93B0019D68F /* Frameworks */,
 				01796EED2CDBF93B0019D68F /* Resources */,
+				01796EFE2CDBFE580019D68F /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
