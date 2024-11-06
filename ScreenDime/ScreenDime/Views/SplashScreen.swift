@@ -34,7 +34,7 @@ struct SplashScreen: View {
             }
             
             .fullScreenCover(isPresented: $showNextScreen) {
-                if !Global.hasOnboarded {
+                if !Global.shared.hasOnboarded {
                     VerificationView()
                 } else {
                     DashboardView()
