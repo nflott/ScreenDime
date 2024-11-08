@@ -4,6 +4,7 @@
 //
 //  Created by Luke Currier on 11/4/24.
 //
+
 import SwiftData
 
 struct Group {
@@ -29,3 +30,4 @@ struct Group {
         }
     }
 }
+
