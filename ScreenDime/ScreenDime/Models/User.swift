@@ -7,7 +7,7 @@
 
 import SwiftData
 
-@Model class User {
+struct User {
     var name: String
     var age: Int
     var phoneNumber: String
@@ -26,20 +26,20 @@ import SwiftData
         self.bets = []
     }
     
-    func addInvite(group: Group) {
+    mutating func addInvite(group: Group) {
         if !invites.contains(where: { $0.name == group.name } ) {
             invites.append(group)
         }
     }
     
-    func addGroup(group: Group, action: Bool) {
+    mutating func addGroup(group: Group, action: Bool) {
         if action && invites.contains(where: { $0.name == group.name } ) {
             groups.append(group)
             invites.removeAll(where: { $0.name == group.name } )
         }
     }
     
-    func addBet(bet: Bet, action: Bool) {
+    mutating func addBet(bet: Bet, action: Bool) {
         if action && !bets.contains(where: { $0.name == bet.name } ) {
             bets.append(bet)
         }

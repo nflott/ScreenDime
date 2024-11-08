@@ -6,10 +6,10 @@
 //
 import SwiftData
 
-@Model class Group {
+struct Group {
     var name: String
     private(set) var members: [User]
-    var bets: [Bet]
+    private(set) var bets: [Bet]
     
     init(name: String, members: [User], bets: [Bet]) {
         self.name = name
@@ -17,13 +17,13 @@ import SwiftData
         self.bets = bets
     }
     
-    func addMember(user: User) {
+    mutating func addMember(user: User) {
         if !members.contains(where: { $0.name == user.name }) {
             members.append(user)
         }
     }
     
-    func addBet(bet: Bet) {
+    mutating func addBet(bet: Bet) {
         if !bets.contains(where: { $0.name == bet.name }) {
             bets.append(bet)
         }

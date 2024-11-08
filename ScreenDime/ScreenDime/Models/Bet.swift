@@ -7,7 +7,7 @@
 import Foundation
 import SwiftData
 
-@Model class Bet {
+struct Bet {
     var name: String
     var group: Group
     var metric: String
@@ -33,7 +33,7 @@ import SwiftData
         return currentDate >= startDate && currentDate <= endDate
     }
     
-    func joinBet(user: User) -> String {
+    mutating func joinBet(user: User) -> String {
         guard !isActive() else {
             return "Bet is currently active. You cannot join."
         }
