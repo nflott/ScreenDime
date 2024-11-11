@@ -7,30 +7,25 @@
 
 import SwiftUI
 
-struct Global {
-    /*
-    static var hasOnboarded: Bool {
-        get { UserDefaults.standard.bool(forKey: "hasOnboarded") }
-        set { UserDefaults.standard.set(newValue, forKey: "hasOnboarded") }
-    }*/
+class Global: ObservableObject {
+    // Singleton instance
+    static let shared = Global()
     
-    /*
-    static var hasScreenTimePermission: Bool {
-        get { UserDefaults.standard.bool(forKey: "hasScreenTimePermission")}
-        set { UserDefaults.standard.set(newValue, forKey: "hasScreenTimePermission") }
-    }*/
+    // App-wide settings with @AppStorage
+    @AppStorage("selectedProfileIcon") var selectedProfileIcon: String = "person.crop.circle.fill"
+    @AppStorage("hasOnboarded") var hasOnboarded: Bool = false
+    @AppStorage("hasScreenTimePermission") var hasScreenTimePermission: Bool = false
     
-    static var hasOnboarded = false
-    static var hasScreenTimePermission = false
-    
+    // Static constant, accessible anywhere
     static let gradientColors: [Color] = [.green, .mint, .teal, .green.opacity(0.8)]
 }
 
+// Background view modifier for global gradient
 struct Background: ViewModifier {
     func body(content: Content) -> some View {
         ZStack {
             LinearGradient(
-                gradient: Gradient(colors:Global.gradientColors),
+                gradient: Gradient(colors: Global.gradientColors),
                 startPoint: .topLeading,
                 endPoint: .bottomTrailing
             )

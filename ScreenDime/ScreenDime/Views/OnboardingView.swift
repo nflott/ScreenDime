@@ -58,7 +58,7 @@ struct OnboardingView: View {
                 }
                 .padding()
                 .sheet(isPresented: $needsToShareData) {
-                    if !Global.hasScreenTimePermission {
+                    if !Global.shared.hasScreenTimePermission {
                         PermissionsView()
                     }
                 }

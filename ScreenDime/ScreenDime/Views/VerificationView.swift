@@ -100,7 +100,7 @@ struct VerificationView: View {
             .padding()
             .applyBackground()
             .sheet(isPresented: $needsToShareData) {
-                if !Global.hasScreenTimePermission {
+                if !Global.shared.hasScreenTimePermission {
                     PermissionsView()
                 }
             }
