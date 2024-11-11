@@ -2,10 +2,13 @@ import SwiftUI
 
 struct DashboardView: View {
     @State private var showingSettings = false
+    @State private var showingProfile = false
     @State var backgroundOffset = 0
     @State private var selectedPage = 0
     @State private var groupPages: [String] = ["Group 1", "Group 2", "Group 3", "Group 4"]
     @State private var rectangleCounts: [Int] = Array(repeating: 2, count: 4)
+    
+    @ObservedObject var global = Global.shared
     
     let dashboardTitle = "Dashboard"
     let circleColors: [Color] = [.black, .red, .blue, .yellow, .green, .purple, .orange]
@@ -38,6 +41,17 @@ struct DashboardView: View {
                         .padding()
                         
                         Spacer()
+                        
+                        Button(action: {
+                            showingProfile.toggle()
+                        }) {
+                            Image(systemName: Global.shared.selectedProfileIcon)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 40, height: 40)
+                                .foregroundColor(.white)
+                        }
+                        .padding()
                     }
                 }
                 .padding(.top)
@@ -164,7 +178,10 @@ struct DashboardView: View {
         }
         .applyBackground()
         .sheet(isPresented: $showingSettings) {
-            SettingsView().applyBackground()
+            SettingsView()
+        }
+        .sheet(isPresenting: $showingProfile) {
+            ProfileView()
         }
     }
     
