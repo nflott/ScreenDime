@@ -143,7 +143,7 @@ struct DashboardView: View {
                                 }
                         }
                     }
-                    .animation(.default)
+                    .withAnimation(.default)
                 }
                 .position(x: g.size.width / 2, y: g.size.height / 1.1)
             }
