@@ -11,6 +11,7 @@ struct BetCardView: View {
     var stakes: String
     var members: [BetMember] // List of bet members with name and screen time
     var isActive: Bool // Determines the card's active status for styling
+    var wager: Bet
     
     // Colors for active and inactive states
     let activeColor: Color = .green
@@ -84,7 +85,8 @@ struct BetCardView_Previews: PreviewProvider {
                 BetMember(name: "Bob", screenTime: "1h 45m"),
                 BetMember(name: "Charlie", screenTime: "3h 5m")
             ],
-            isActive: true // Preview the active state
+            isActive: true, // Preview the active state
+            wager: Bet(name: "Friendly Wager", metric: "", appTracking: "", participants: SDModel.groups[0].members, stakes: "", startDate: Date(), endDate: Date())
         )
         .frame(width: UIScreen.main.bounds.width, height: 200) // Full screen width for preview
     }

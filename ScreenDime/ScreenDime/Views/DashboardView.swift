@@ -2,9 +2,10 @@ import SwiftUI
 
 struct DashboardView: View {
     @State private var showingSettings = false
+    @State private var showingNewBet = false
     @State var backgroundOffset = 0
     @State private var selectedPage = 0
-    @State private var groupPages: [String] = ["Group 1", "Group 2", "Group 3", "Group 4"]
+    @State private var groupPages: [Group] = SDModel.groups
     @State private var rectangleCounts: [Int] = Array(repeating: 2, count: 4)
     
     let dashboardTitle = "Dashboard"
@@ -60,15 +61,21 @@ struct DashboardView: View {
                     ForEach(0..<groupPages.count, id: \.self) { pageIndex in
                         ScrollView(.vertical, showsIndicators: true) {
                             VStack(spacing: 0) {
-                                ForEach(0..<rectangleCounts[pageIndex], id: \.self) { _ in
-                                    Rectangle()
-                                        .fill(Color.black.opacity(0.7))
-                                        .frame(width: g.size.width - 10, height: 200)
-                                        .cornerRadius(5)
-                                        .padding(5)
-                                        .frame(maxWidth: .infinity, maxHeight: 210)
+                                ForEach(0..<groupPages[pageIndex].bets.count, id: \.self) { _ in
+                                    BetCardView(
+                                        title: "Friendly Wager",
+                                        stakes: "Loser buys coffee",
+                                        members: [
+                                            BetMember(name: "Alice", screenTime: "2h 15m"),
+                                            BetMember(name: "Bob", screenTime: "1h 45m"),
+                                            BetMember(name: "Charlie", screenTime: "3h 5m")
+                                        ],
+                                        isActive: true, // Preview the active state
+                                        wager: Bet(name: "Friendly Wager", metric: "", appTracking: "", participants: SDModel.groups[0].members, stakes: "", startDate: Date(), endDate: Date())
+                                    )
                                 }
                                 Button(action: {
+                                    showingNewBet = true
                                     rectangleCounts[pageIndex] += 1
                                 }) {
                                     Image(systemName: "plus")
@@ -81,7 +88,6 @@ struct DashboardView: View {
                                         .cornerRadius(20)
                                 }
                                 .padding(.bottom, 20)
-                                
                                 Spacer()
                                     .frame(height: 100)
                                 
@@ -123,6 +129,7 @@ struct DashboardView: View {
                     backgroundOffset = newValue
                 }
                 
+                //NAV BAR
                 ZStack {
                     Rectangle()
                         .fill(Color.white.opacity(0.3))
@@ -163,6 +170,9 @@ struct DashboardView: View {
             )
         }
         .applyBackground()
+        .fullScreenCover(isPresented: $showingNewBet) {
+            BetViewModel(group: groupPages[selectedPage - 1])
+        }
         .sheet(isPresented: $showingSettings) {
             SettingsView().applyBackground()
         }
@@ -170,7 +180,7 @@ struct DashboardView: View {
     
     private func addNewGroupPage() {
         let newPageTitle = "Group \(groupPages.count + 1)"
-        groupPages.append(newPageTitle)
+        groupPages.append(Group(name: newPageTitle, members: [], bets: []))
         rectangleCounts.append(2)
         selectedPage = groupPages.count
     }
@@ -187,7 +197,7 @@ struct DashboardView: View {
         if pageIndex == 0 {
             return dashboardTitle
         } else if pageIndex <= groupPages.count {
-            return groupPages[pageIndex - 1]
+            return groupPages[pageIndex - 1].name
         } else {
             return "Add Group"
         }

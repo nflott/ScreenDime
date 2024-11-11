@@ -26,12 +26,16 @@ struct BetViewModel: View {
     @State var moneyBet = false
     @State var otherBet = false
     @State var stakes = ""
+    @State var group: Group
     
     var body: some View {
         VStack {
             Text("Create a bet")
                 .font(.title)
-                .padding()
+                .foregroundColor(.white)
+                .fontWeight(.bold)
+            
+            Text("in \(group.name)")
                 .foregroundColor(.white)
                 .fontWeight(.bold)
             
@@ -96,8 +100,8 @@ struct BetViewModel: View {
             
             Button(
                 action: {
+                    SDModel.groups[0].addBet(bet: Bet(name: betName, metric: metric, appTracking: appTracked, participants: group.members, stakes: stakes, startDate: startDate, endDate: endDate))
                     showNextScreen = true
-                    //need to add bet init, somehow need to pass the group that the user pressed + for
                 }){
                     Text("Create this bet")
                         .fontWeight(.bold)
@@ -124,6 +128,6 @@ struct BetViewModel: View {
 
 struct BetViewModel_Preview: PreviewProvider {
     static var previews: some View {
-        BetViewModel()
+        BetViewModel(group: SDModel.groups[0])
     }
 }

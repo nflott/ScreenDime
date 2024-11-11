@@ -15,6 +15,8 @@ class Global: ObservableObject {
     @AppStorage("selectedProfileIcon") var selectedProfileIcon: String = "person.crop.circle.fill"
     @AppStorage("hasOnboarded") var hasOnboarded: Bool = false
     @AppStorage("hasScreenTimePermission") var hasScreenTimePermission: Bool = false
+
+    
     
     // Static constant, accessible anywhere
     static let gradientColors: [Color] = [.green, .mint, .teal, .green.opacity(0.8)]
