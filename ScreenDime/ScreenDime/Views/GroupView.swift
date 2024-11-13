@@ -8,7 +8,10 @@
 import SwiftUI
 
 struct GroupView: View {
+    @State private var showBetCreationView = false
+    
     var groupName: String
+    
     @State var groupPages: [Group] = [
         Group(name: "Group 1",
               members: [],
@@ -40,8 +43,8 @@ struct GroupView: View {
 
     var body: some View {
         VStack {
-            if let selectedGroup = groupPages.first(where: {$0.name == Global.shared.selectedGroup}) {
-                ScrollView {
+            ScrollView {
+                if let selectedGroup = groupPages.first(where: {$0.name == Global.shared.selectedGroup}) {
                     ForEach(selectedGroup.bets, id: \.name) { bet in
                         VStack(alignment: .leading) {
                             BetCardView(
@@ -53,11 +56,21 @@ struct GroupView: View {
                         }
                     }
                 }
+                else {
+                    Text("No bets yet in \(groupName)")
+                        .foregroundColor(.gray)
+                }
+                Button(action: {
+                    showBetCreationView.toggle()
+                }) {
+                    Text("Create New Bet")
+                        .padding()
+                        .frame(width:180)
+                }
             }
-            else {
-                Text("No bets yet in \(groupName)")
-                    .foregroundColor(.gray)
-            }
+        }
+        .sheet(isPresented: $showBetCreationView) {
+            CreateBetView()
         }
     }
 }

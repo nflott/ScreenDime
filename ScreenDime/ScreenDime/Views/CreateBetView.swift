@@ -1,12 +1,12 @@
 //
-//  BetViewModel.swift
+//  CreateBetView.swift
 //  ScreenDime
 //
 //  Created by Luke Currier on 11/4/24.
 //
 import SwiftUI
 
-struct BetViewModel: View {
+struct CreateBetView: View {
     @State private var showNextScreen = false
     @State var betName = ""
     @State var metric = "Select how to measure your usage"
@@ -124,6 +124,6 @@ struct BetViewModel: View {
 
 struct BetViewModel_Preview: PreviewProvider {
     static var previews: some View {
-        BetViewModel()
+        CreateBetView()
     }
 }
