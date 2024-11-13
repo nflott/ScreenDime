@@ -113,7 +113,7 @@ struct BetViewModel: View {
         .padding()
         .applyBackground()
         .fullScreenCover(isPresented: $showNextScreen) {
-            DashboardView()
+            HomeView()
         }
     }
     

@@ -37,7 +37,7 @@ struct SplashScreen: View {
                 if !Global.shared.hasOnboarded {
                     VerificationView()
                 } else {
-                    DashboardView()
+                    HomeView()
                 }
             }
         }
