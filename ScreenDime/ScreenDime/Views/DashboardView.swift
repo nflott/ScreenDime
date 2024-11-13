@@ -1,12 +1,18 @@
 import SwiftUI
 
 struct DashboardView: View {
-    @State private var showingSettings = false
-    @State private var showingNewBet = false
+    
+    @State var showingSettings = false
+    @State var showingNewBet = false
     @State var backgroundOffset = 0
-    @State private var selectedPage = 0
-    @State private var groupPages: [Group] = SDModel.groups
-    @State private var rectangleCounts: [Int] = Array(repeating: 2, count: 4)
+    @State var selectedPage = 0
+    @State var groupPages: [Group] = [Group(name: "Group 1", members: [], bets: [Bet(name: "Friendly Wager", metric: "", appTracking: "", participants: [], stakes: "", startDate: Date(), endDate: Date())]),
+                                      Group(name: "Group 2", members: [], bets: [])]
+    @State var rectangleCounts: [Int] = Array(repeating: 2, count: 4)
+    
+    @State var users = [User(name: "Noah Flott", age: 23, phoneNumber: "7346602729", email: "", invites: [], groups: [], bets: []),
+                        User(name: "Luke Currier", age: 22, phoneNumber: "1111111111", email: "", invites: [], groups: [], bets: []),
+                        User(name: "Maddie Lebiedzinski", age: 22, phoneNumber: "2222222222", email: "", invites: [], groups: [], bets: [])]
     
     let dashboardTitle = "Dashboard"
     let circleColors: [Color] = [.black, .red, .blue, .yellow, .green, .purple, .orange]
@@ -14,7 +20,7 @@ struct DashboardView: View {
     var totalPages: Int {
         return 2 + groupPages.count
     }
-
+    
     var body: some View {
         VStack {
             GeometryReader { g in
@@ -65,18 +71,14 @@ struct DashboardView: View {
                                     BetCardView(
                                         title: "Friendly Wager",
                                         stakes: "Loser buys coffee",
-                                        members: [
-                                            BetMember(name: "Alice", screenTime: "2h 15m"),
-                                            BetMember(name: "Bob", screenTime: "1h 45m"),
-                                            BetMember(name: "Charlie", screenTime: "3h 5m")
-                                        ],
+                                        members: [],
                                         isActive: true, // Preview the active state
-                                        wager: Bet(name: "Friendly Wager", metric: "", appTracking: "", participants: SDModel.groups[0].members, stakes: "", startDate: Date(), endDate: Date())
+                                        wager: Bet(name: "Friendly Wager", metric: "", appTracking: "", participants: groupPages[0].members, stakes: "", startDate: Date(), endDate: Date())
                                     )
                                 }
                                 Button(action: {
                                     showingNewBet = true
-                                    rectangleCounts[pageIndex] += 1
+                                    // rectangleCounts[pageIndex] += 1
                                 }) {
                                     Image(systemName: "plus")
                                         .resizable()
@@ -150,7 +152,7 @@ struct DashboardView: View {
                                 }
                         }
                     }
-                    .withAnimation(.default)
+                    .animation(.default)
                 }
                 .position(x: g.size.width / 2, y: g.size.height / 1.1)
             }
@@ -171,21 +173,21 @@ struct DashboardView: View {
         }
         .applyBackground()
         .fullScreenCover(isPresented: $showingNewBet) {
-            BetViewModel(group: groupPages[selectedPage - 1])
+            BetViewModel(group: selectedPage - 1, groupPages: groupPages)
         }
         .sheet(isPresented: $showingSettings) {
             SettingsView().applyBackground()
         }
     }
     
-    private func addNewGroupPage() {
+    func addNewGroupPage() {
         let newPageTitle = "Group \(groupPages.count + 1)"
         groupPages.append(Group(name: newPageTitle, members: [], bets: []))
         rectangleCounts.append(2)
         selectedPage = groupPages.count
     }
     
-    private func deleteGroup(at index: Int) {
+    func deleteGroup(at index: Int) {
         groupPages.remove(at: index)
         rectangleCounts.remove(at: index)
         if selectedPage > groupPages.count {
@@ -193,7 +195,7 @@ struct DashboardView: View {
         }
     }
     
-    private func getPageTitle(for pageIndex: Int) -> String {
+    func getPageTitle(for pageIndex: Int) -> String {
         if pageIndex == 0 {
             return dashboardTitle
         } else if pageIndex <= groupPages.count {
@@ -201,6 +203,10 @@ struct DashboardView: View {
         } else {
             return "Add Group"
         }
+    }
+    
+    func addBetToGroup(group: Int, bet: Bet) {
+        groupPages[group].addBet(bet: bet)
     }
 }
 

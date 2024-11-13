@@ -86,7 +86,7 @@ struct BetCardView_Previews: PreviewProvider {
                 BetMember(name: "Charlie", screenTime: "3h 5m")
             ],
             isActive: true, // Preview the active state
-            wager: Bet(name: "Friendly Wager", metric: "", appTracking: "", participants: SDModel.groups[0].members, stakes: "", startDate: Date(), endDate: Date())
+            wager: Bet(name: "Friendly Wager", metric: "", appTracking: "", participants: DashboardView().groupPages[0].members, stakes: "", startDate: Date(), endDate: Date())
         )
         .frame(width: UIScreen.main.bounds.width, height: 200) // Full screen width for preview
     }
