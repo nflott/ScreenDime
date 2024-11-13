@@ -11,7 +11,7 @@ struct HomeView: View {
     @State private var showingSettings = false
     @State private var selectedTab = 0
     @State private var tabs: [TabItem] = [
-        TabItem(title: "Home", icon: "house.fill", view: AnyView(DashView())),
+        TabItem(title: "Dashboard", icon: "house.fill", view: AnyView(DashView())),
         TabItem(title: "Create", icon: "plus.circle", view: AnyView(CreateGroupHomeView()))
     ]
     
