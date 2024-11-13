@@ -12,14 +12,16 @@ struct User {
     var age: Int
     var phoneNumber: String
     var email: String
+    var screenTime: String
     private(set) var invites: [Group]
     private(set) var groups: [Group]
     private(set) var bets: [Bet]
     
-    init(name: String, age: Int, phoneNumber: String, email: String, invites: [Group], groups: [Group], bets: [Bet]) {
+    init(name: String, age: Int, phoneNumber: String, screenTime: String, email: String, invites: [Group], groups: [Group], bets: [Bet]) {
         self.name = name
         self.age = age
         self.phoneNumber = phoneNumber
+        self.screenTime = screenTime
         self.email = email
         self.invites = []
         self.groups = []

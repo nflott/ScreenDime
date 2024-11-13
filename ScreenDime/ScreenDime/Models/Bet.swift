@@ -9,7 +9,6 @@ import SwiftData
 
 struct Bet {
     var name: String
-    var group: Group
     var metric: String
     var appTracking: String
     private(set) var participants: [User]
@@ -17,9 +16,8 @@ struct Bet {
     var startDate: Date
     var endDate: Date
     
-    init(name: String, group: Group, metric: String, appTracking: String, participants: [User], stakes: String, startDate: Date, endDate: Date) {
+    init(name: String, metric: String, appTracking: String, participants: [User], stakes: String, startDate: Date, endDate: Date) {
         self.name = name
-        self.group = group
         self.metric = metric
         self.appTracking = appTracking
         self.participants = participants
