@@ -8,16 +8,19 @@
 import SwiftUI
 
 struct HomeView: View {
+    @ObservedObject private var global = Global.shared
+
     @State private var showingSettings = false
     @State private var showingGroupSettings = false
     @State private var showingGroupCreation = false
     @State private var showingProfile = false
+    @State private var showingGroupSelector = false
     @State private var selectedTab = 0
     @State private var tabs: [TabItem] = [
         TabItem(title: "Dashboard", icon: "house.fill", view: AnyView(DashView())),
         TabItem(title: Global.shared.selectedGroup, icon: "plus.circle", view: AnyView(GroupView(groupName:Global.shared.selectedGroup)))
     ]
-    
+        
     var body: some View {
         ZStack {
             VStack {
@@ -112,17 +115,76 @@ struct HomeView: View {
                 ProfileView()
             }
             
-            VStack{
-                Text(tabs[selectedTab].title)
-                    .font(.largeTitle)
-                    .foregroundColor(.white)
-                    .fontWeight(.bold)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                    .padding([.top], 26)
-                
-                Spacer()
+            if selectedTab == 0 {
+                VStack {
+                    Text(tabs[selectedTab].title)
+                        .font(.largeTitle)
+                        .foregroundColor(.white)
+                        .fontWeight(.bold)
+                        .frame(maxWidth: .infinity, alignment: .top)
+                        .padding([.top], 26)
+                    
+                    Spacer()
+                }
+            }
+            else {
+                VStack {
+                    Button(action: {
+                        showingGroupSelector.toggle()
+                    }) {
+                        VStack {
+                            Text(global.selectedGroup)
+                                .font(.largeTitle)
+                                .foregroundColor(.white)
+                                .fontWeight(.bold)
+                                .frame(maxWidth: .infinity, alignment: .top)
+                                .padding([.top], 26)
+                            
+                            Text("Change v")
+                                .font(.caption2)
+                                .foregroundColor(.white)
+                                .fontWeight(.bold)
+                            
+                            if showingGroupSelector {
+                                dropdownMenu()
+                                    .transition(.move(edge: .top).combined(with: .opacity))
+                                    .animation(.easeInOut, value: showingGroupSelector)
+                            }
+                        }
+                    }
+                    .frame(width:200)
+                    
+                    Spacer()
+                }
             }
         }
+        .onChange(of: global.selectedGroup) {
+            tabs[1].title = global.selectedGroup
+        }
+    }
+    
+    @ViewBuilder
+    private func dropdownMenu() -> some View {
+       VStack {
+           ForEach(Global.shared.groupPages, id: \.name) { group in
+               Button(action: {
+                   Global.shared.selectedGroup = group.name
+                   showingGroupSelector = false
+               }) {
+                   Text(group.name)
+                       .foregroundColor(.white)
+                       .frame(maxWidth: .infinity)
+                       .padding()
+                       .background(Color.blue.opacity(0.7))
+                       .cornerRadius(8)
+               }
+           }
+       }
+       .padding()
+       .background(Color.white.opacity(0.9))
+       .cornerRadius(12)
+       .shadow(radius: 5)
+       .padding(.horizontal, 20)
     }
 }
 
