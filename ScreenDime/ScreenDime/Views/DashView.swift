@@ -10,11 +10,6 @@ import SwiftUI
 struct DashView: View {
     var body: some View {
         VStack {
-            Text("Dashboard")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .foregroundColor(.white)
-                .padding()
             Spacer()
         }
     }

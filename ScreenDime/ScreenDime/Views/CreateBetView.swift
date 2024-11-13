@@ -1,12 +1,12 @@
 //
-//  BetViewModel.swift
+//  CreateBetView.swift
 //  ScreenDime
 //
 //  Created by Luke Currier on 11/4/24.
 //
 import SwiftUI
 
-struct BetViewModel: View {
+struct CreateBetView: View {
     @State private var showNextScreen = false
     @State var betName = ""
     @State var metric = "Select how to measure your usage"
@@ -26,17 +26,12 @@ struct BetViewModel: View {
     @State var moneyBet = false
     @State var otherBet = false
     @State var stakes = ""
-    @State var group: Int
-    @Binding var groupPages: [Group]
     
     var body: some View {
         VStack {
             Text("Create a bet")
                 .font(.title)
-                .foregroundColor(.white)
-                .fontWeight(.bold)
-            
-            Text("in \(DashboardView().groupPages[group].name)")
+                .padding()
                 .foregroundColor(.white)
                 .fontWeight(.bold)
             
@@ -101,8 +96,8 @@ struct BetViewModel: View {
             
             Button(
                 action: {
-                    groupPages[group].addBet(bet: Bet(name: betName, metric: metric, appTracking: appTracked, participants: DashboardView().groupPages[group].members, stakes: stakes, startDate: startDate, endDate: endDate))
                     showNextScreen = true
+                    //need to add bet init, somehow need to pass the group that the user pressed + for
                 }){
                     Text("Create this bet")
                         .fontWeight(.bold)
@@ -129,6 +124,6 @@ struct BetViewModel: View {
 
 struct BetViewModel_Preview: PreviewProvider {
     static var previews: some View {
-        BetViewModel(group: 0, groupPages: DashboardView().$groupPages)
+        CreateBetView()
     }
 }
