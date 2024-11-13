@@ -48,6 +48,7 @@ struct GroupView: View {
                     ForEach(selectedGroup.bets, id: \.name) { bet in
                         VStack(alignment: .leading) {
                             BetCardView(
+                                bet: bet,
                                 title: bet.name,
                                 stakes: bet.stakes,
                                 members: bet.participants,
@@ -70,7 +71,7 @@ struct GroupView: View {
             }
         }
         .sheet(isPresented: $showBetCreationView) {
-            CreateBetView()
+            CreateBetView(groupPages: $groupPages)
         }
     }
 }

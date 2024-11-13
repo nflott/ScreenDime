@@ -1,16 +1,18 @@
 import SwiftUI
 
 struct BetCardView: View {
+    var bet: Bet
     var title: String
     var stakes: String
     var members: [User] // List of bet members with name and screen time
     var isActive: Bool // Determines the card's active status for styling
-    var wager: Bet
+    
+    @State var showingFullBet: Bool = false
     
     // Colors for active and inactive states
     let activeColor: Color = .green
     let inactiveColor: Color = .gray
-
+    
     var body: some View {
         ZStack(alignment: .topLeading) {
             Rectangle()
@@ -20,11 +22,25 @@ struct BetCardView: View {
                 .shadow(color: isActive ? .green.opacity(0.6) : .clear, radius: 10, x: 0, y: 0) // Glow effect for active cards
             
             VStack(alignment: .leading, spacing: 8) {
-                // Title
-                Text(title)
-                    .font(.headline)
-                    .foregroundColor(.white)
-                
+                HStack {
+                    // Title
+                    Text(title)
+                        .font(.headline)
+                        .foregroundColor(.white)
+                    
+                    Spacer()
+                    
+                    Button(
+                        action: {
+                            showingFullBet.toggle()
+                        }){
+                            Image(systemName: "ellipsis")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 30, height: 30)
+                                .foregroundColor(.blue)
+                        }
+                }
                 // Stakes text
                 Text("Stakes: \(stakes)")
                     .font(.subheadline)
@@ -66,12 +82,17 @@ struct BetCardView: View {
             .padding(15)
         }
         .padding(5)
+        
+        .sheet(isPresented: $showingFullBet) {
+            BetView(bet: bet)
+        }
     }
 }
 
 struct BetCardView_Previews: PreviewProvider {
     static var previews: some View {
         BetCardView(
+            bet: Bet(name: "Friendly Wager", metric: "Daily average", appTracking: "Snapchat", participants: [User(name: "Noah", age: 22, phoneNumber: "0000000000", screenTime: "2 hours", email: "email", invites: [], groups: [], bets: []), User(name: "Noah", age: 22, phoneNumber: "0000000000", screenTime: "2 hours", email: "email", invites: [], groups: [], bets: [])], stakes: "$30", startDate: Date(), endDate: Date()),
             title: "Friendly Wager",
             stakes: "Loser buys coffee",
             members: [
@@ -79,8 +100,7 @@ struct BetCardView_Previews: PreviewProvider {
                 User(name: "Bob", age:19, phoneNumber:"8972347283", screenTime: "1h 56m", email: "bob@gmail.com", invites:[], groups:[], bets:[]),
                 User(name: "Steve", age:20, phoneNumber:"2987473292", screenTime: "4h 10m", email: "steve@gmail.com", invites:[], groups:[], bets:[])
             ],
-            isActive: true, // Preview the active state
-            wager: Bet(name: "Friendly Wager", metric: "", appTracking: "", participants: DashboardView().groupPages[0].members, stakes: "", startDate: Date(), endDate: Date())
+            isActive: true // Preview the active state
         )
         .frame(width: UIScreen.main.bounds.width, height: 200) // Full screen width for preview
     }

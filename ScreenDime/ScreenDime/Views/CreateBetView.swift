@@ -26,6 +26,9 @@ struct CreateBetView: View {
     @State var moneyBet = false
     @State var otherBet = false
     @State var stakes = ""
+    @Binding var groupPages: [Group]
+    
+   
     
     var body: some View {
         VStack {
@@ -63,17 +66,17 @@ struct CreateBetView: View {
             .padding()
             
             DatePicker(
-                    "Start Date",
-                    selection: $startDate,
-                    displayedComponents: [.date]
-                )
+                "Start Date",
+                selection: $startDate,
+                displayedComponents: [.date]
+            )
             .foregroundColor(.blue)
             
             DatePicker(
-                    "End Date",
-                    selection: $endDate,
-                    displayedComponents: [.date]
-                )
+                "End Date",
+                selection: $endDate,
+                displayedComponents: [.date]
+            )
             .foregroundColor(.blue)
             
             HStack {
@@ -96,8 +99,8 @@ struct CreateBetView: View {
             
             Button(
                 action: {
-                    showNextScreen = true
-                    //need to add bet init, somehow need to pass the group that the user pressed + for
+                    addBetToGroup()
+//                    showNextScreen = true
                 }){
                     Text("Create this bet")
                         .fontWeight(.bold)
@@ -108,7 +111,7 @@ struct CreateBetView: View {
                         .cornerRadius(8)
                         .padding()
                 }
-            .disabled(fieldsCompleted() ? false : true)
+                .disabled(fieldsCompleted() ? false : true)
         }
         .padding()
         .applyBackground()
@@ -120,10 +123,51 @@ struct CreateBetView: View {
     func fieldsCompleted() -> Bool {
         return (stakes != "") && (metric != "Select how to measure your usage") && (appTracked != "Select what apps to track")
     }
+    
+    func addBetToGroup() {
+        if var selectedGroup = groupPages.first(where: {$0.name == Global.shared.selectedGroup}) {
+            selectedGroup.addBet(bet: Bet(name: betName,
+                                          metric: metric,
+                                          appTracking: appTracked,
+                                          participants: selectedGroup.members,
+                                          stakes: stakes,
+                                          startDate: startDate,
+                                          endDate: endDate))
+        }
+    }
+}
+
+//Container so that the preview works with the binding var groupPages
+struct CreateBetViewPreviewContainer : View {
+     @State
+    private var groupPages: [Group] = [Group(name: "Group 1",
+                                             members: [],
+                                             bets: [Bet(name: "Friendlier Wager",
+                                                        metric: "Weekly",
+                                                        appTracking: "Instagram",
+                                                        participants: [User(name: "Alice", age:18, phoneNumber:"1788766756", screenTime: "2h 15m",                 email: "alice@gmail.com", invites:[], groups:[], bets:[]),
+                                                                       User(name: "Bob", age:19, phoneNumber:"8972347283", screenTime: "1h 56m", email: "bob@gmail.com", invites:[], groups:[], bets:[]),
+                                                                       User(name: "Steve", age:20, phoneNumber:"2987473292", screenTime: "4h 10m", email: "steve@gmail.com", invites:[], groups:[], bets:[])],
+                                                        stakes: "Loser cleans the bathroom",
+                                                        startDate: Date().addingTimeInterval(-2),
+                                                        endDate: Date().addingTimeInterval(3)),
+                                                    Bet(name: "Friendly Wager",
+                                                        metric: "Weekly",
+                                                        appTracking: "All Apps",
+                                                        participants: [User(name: "Alice", age:18, phoneNumber:"1788766756", screenTime: "2h 15m",                 email: "alice@gmail.com", invites:[], groups:[], bets:[]),
+                                                                       User(name: "Bob", age:19, phoneNumber:"8972347283", screenTime: "1h 56m", email: "bob@gmail.com", invites:[], groups:[], bets:[]),
+                                                                       User(name: "Steve", age:20, phoneNumber:"2987473292", screenTime: "4h 10m", email: "steve@gmail.com", invites:[], groups:[], bets:[])],
+                                                        stakes: "Loser does the dishes",
+                                                        startDate: Date().addingTimeInterval(-5),
+                                                        endDate: Date().addingTimeInterval(-1))])]
+
+     var body: some View {
+         CreateBetView(groupPages: $groupPages)
+     }
 }
 
 struct BetViewModel_Preview: PreviewProvider {
     static var previews: some View {
-        CreateBetView()
+        CreateBetViewPreviewContainer()
     }
 }
