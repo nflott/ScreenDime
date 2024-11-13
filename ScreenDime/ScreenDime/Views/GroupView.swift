@@ -37,17 +37,7 @@ struct GroupView: View {
                             .padding()
                     }
                 }
-                Button(action: {
-                    showBetCreationView.toggle()
-                }) {
-                    Text("Create New Bet")
-                        .padding()
-                        .frame(width:180)
-                }
             }
-        }
-        .sheet(isPresented: $showBetCreationView) {
-            CreateBetView()
         }
     }
 }

@@ -11,7 +11,7 @@ class Global: ObservableObject {
     static let shared = Global()
     
     @Published var selectedProfileIcon: String = "person.crop.circle.fill"
-    @Published var selectedGroup: String = "Group 2"
+    @Published var selectedGroup: String = "Group 1"
     
     @AppStorage("hasOnboarded") var hasOnboarded: Bool = false
     @AppStorage("hasScreenTimePermission") var hasScreenTimePermission: Bool = false
