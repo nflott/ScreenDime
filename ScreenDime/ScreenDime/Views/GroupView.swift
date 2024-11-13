@@ -33,21 +33,12 @@ struct GroupView: View {
                         Text("No bets yet in \(selectedGroup.name).\nCreate one now!")
                             .foregroundColor(.white)
                             .font(.callout)
+                            .bold()
                             .multilineTextAlignment(.center)
                             .padding()
                     }
                 }
-                Button(action: {
-                    showBetCreationView.toggle()
-                }) {
-                    Text("Create New Bet")
-                        .padding()
-                        .frame(width:180)
-                }
             }
-        }
-        .sheet(isPresented: $showBetCreationView) {
-            CreateBetView(groupPages: $groupPages)
         }
     }
 }

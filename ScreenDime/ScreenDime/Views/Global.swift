@@ -11,7 +11,7 @@ class Global: ObservableObject {
     static let shared = Global()
     
     @Published var selectedProfileIcon: String = "person.crop.circle.fill"
-    @Published var selectedGroup: String = "Group 2"
+    @Published var selectedGroup: String = "Group 1"
     
     @AppStorage("hasOnboarded") var hasOnboarded: Bool = false
     @AppStorage("hasScreenTimePermission") var hasScreenTimePermission: Bool = false
@@ -22,9 +22,10 @@ class Global: ObservableObject {
               bets: [Bet(name: "Friendlier Wager",
                          metric: "Weekly",
                          appTracking: "Instagram",
-                         participants: [User(name: "Alice", age:18, phoneNumber:"1788766756", screenTime: "2h 15m",                 email: "alice@gmail.com", invites:[], groups:[], bets:[]),
+                         participants: [User(name: "Alice", age:18, phoneNumber:"1788766756", screenTime: "2h 15m", email: "alice@gmail.com", invites:[], groups:[], bets:[]),
                                         User(name: "Bob", age:19, phoneNumber:"8972347283", screenTime: "1h 56m", email: "bob@gmail.com", invites:[], groups:[], bets:[]),
-                                        User(name: "Steve", age:20, phoneNumber:"2987473292", screenTime: "4h 10m", email: "steve@gmail.com", invites:[], groups:[], bets:[])],
+                                        User(name: "Steve", age:20, phoneNumber:"2987473292", screenTime: "4h 10m", email: "steve@gmail.com", invites:[], groups:[], bets:[]),
+                                        User(name: "Daniel", age:20, phoneNumber:"2987473292", screenTime: "10h 10m", email: "steve@gmail.com", invites:[], groups:[], bets:[])],
                          stakes: "Loser cleans the bathroom",
                          startDate: Date().addingTimeInterval(-2),
                          endDate: Date().addingTimeInterval(3)),

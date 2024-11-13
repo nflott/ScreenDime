@@ -15,6 +15,7 @@ struct HomeView: View {
     @State private var showingGroupCreation = false
     @State private var showingProfile = false
     @State private var showingGroupSelector = false
+    @State private var showingBetCreation = false
     @State private var selectedTab = 0
     @State private var tabs: [TabItem] = [
         TabItem(title: "Dashboard", icon: "house.fill", view: AnyView(DashView())),
@@ -68,7 +69,7 @@ struct HomeView: View {
                         Spacer()
                         
                         Button(action: {
-                            showingGroupCreation.toggle()
+                            showingBetCreation.toggle()
                         }) {
                             Image(systemName: "plus.circle.fill")
                                 .resizable()
@@ -113,6 +114,9 @@ struct HomeView: View {
             }
             .sheet(isPresented: $showingProfile) {
                 ProfileView()
+            }
+            .sheet(isPresented: $showingBetCreation) {
+                CreateBetView()
             }
             
             if selectedTab == 0 {
@@ -178,6 +182,18 @@ struct HomeView: View {
                        .background(Color.blue.opacity(0.7))
                        .cornerRadius(8)
                }
+           }
+           
+           Button(action: {
+               showingGroupSelector = false
+               showingGroupCreation = true
+           }) {
+               Text("New")
+                   .foregroundColor(.white)
+                   .frame(maxWidth: .infinity)
+                   .padding()
+                   .background(Color.green.opacity(0.7))
+                   .cornerRadius(8)
            }
        }
        .padding()

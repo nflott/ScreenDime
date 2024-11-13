@@ -7,168 +7,133 @@
 import SwiftUI
 
 struct CreateBetView: View {
+    @ObservedObject var global = Global.shared
+    @Environment(\.dismiss) var dismiss
+    
     @State private var showNextScreen = false
+    @State private var validDates = true
     @State var betName = ""
     @State var metric = "Select how to measure your usage"
-    @State var dailyAvg = "Daily Average"
-    @State var weeklyAvg = "Weekly Average"
-    @State var overall = "Overall Usage"
     @State var appTracked = "Select what apps to track"
-    @State var allApps = "All apps"
-    @State var snap = "Snapchat"
-    @State var ig = "Instagram"
-    @State var fb = "Facebook"
-    @State var tikTok = "Tik Tok"
-    @State var reddit = "Reddit"
-    @State var msgs = "iMessage"
+    let metrics = ["Daily Average", "Weekly Average", "Overall Usage"]
+    let apps = ["All apps", "Snapchat", "Instagram", "Facebook", "TikTok", "Reddit", "iMessage"]
+       
     @State var startDate = Date()
     @State var endDate = Date()
-    @State var moneyBet = false
-    @State var otherBet = false
     @State var stakes = ""
-    @Binding var groupPages: [Group]
-    
-   
-    
+
     var body: some View {
         VStack {
             Text("Create a Bet")
-                .font(.title)
+                .font(.largeTitle)
                 .padding()
                 .foregroundColor(.white)
                 .fontWeight(.bold)
             
+            // Write in a name for the bet
             TextField("Name your bet", text: $betName)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
             
+            // Select the time format for measurement
             Menu {
-                Button(dailyAvg, action: {metric = dailyAvg})
-                Button(weeklyAvg, action: { metric = weeklyAvg})
-                Button(overall, action: { metric = overall })
-            }
-            label: {
+                ForEach(metrics, id: \.self) { option in
+                    Button(option, action: { metric = option })
+                }
+            } label: {
                 Label(metric, systemImage: "arrowtriangle.down.circle")
+                    .foregroundColor(.blue)
             }
             
+            // Select the app to track
             Menu {
-                Button(allApps, action: { appTracked = allApps })
-                Button(snap, action: { appTracked = snap })
-                Button(ig, action: { appTracked = ig })
-                Button(fb, action: { appTracked = fb })
-                Button(tikTok, action: { appTracked = tikTok })
-                Button(reddit, action: { appTracked = reddit })
-                Button(msgs, action: { appTracked = msgs })
+                ForEach(apps, id: \.self) {app in
+                    Button(app, action: {appTracked = app})
+                }
             }
             label: {
                 Label(appTracked, systemImage: "arrowtriangle.down.circle")
             }
             .padding()
             
+            // Select start date
             DatePicker(
                 "Start Date",
                 selection: $startDate,
                 displayedComponents: [.date]
             )
             .foregroundColor(.blue)
+            .onChange(of: startDate) {
+                checkDates()
+            }
             
+            // Select end date
             DatePicker(
                 "End Date",
                 selection: $endDate,
                 displayedComponents: [.date]
             )
             .foregroundColor(.blue)
+            .onChange(of: endDate) {
+                checkDates()
+            }
             
-//            HStack {
-//                Text("Choose your wager type:")
-//                    .foregroundColor(.blue)
-//                    .fontWeight(.bold)
-//                Button("Money", action: { moneyBet = true; otherBet = false })
-//                Button("Other ", action: { otherBet = true; moneyBet = false })
-//            }
-//            
-//            if moneyBet {
-//                TextField("Enter the amount you want to bet", text: $stakes)
-//                    .textFieldStyle(RoundedBorderTextFieldStyle())
-//            }
-//            
-//            if otherBet {
-                TextField("Enter the stakes for this bet", text: $stakes)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-                    .padding()
-//            }
+            // Make sure dates are legitimate
+            if !validDates {
+                Text("Invalid dates!")
+                    .foregroundColor(.red)
+            }
             
-            Button(
-                action: {
-                    addBetToGroup()
-//                    showNextScreen = true
-                }){
-                    Text("Create Bet")
-                        .fontWeight(.bold)
-                        .frame(maxWidth: .infinity, maxHeight: 50)
-                        .font(.headline)
-                        .background(fieldsCompleted() ? Color.blue : Color.gray)
-                        .foregroundColor(.white)
-                        .cornerRadius(8)
-                        .padding()
+            // Enter stakes
+            TextField("Enter the stakes for this bet", text: $stakes)
+                .textFieldStyle(RoundedBorderTextFieldStyle())
+                .padding()
+            
+            // Create bet and save it to the current group
+            Button(action: {
+                let newBet = Bet(
+                    name: betName,
+                    metric: metric,
+                    appTracking: appTracked,
+                    participants: [],
+                    stakes: stakes,
+                    startDate: startDate,
+                    endDate: endDate
+                )
+
+                if let index = Global.shared.groupPages.firstIndex(where: { $0.name == Global.shared.selectedGroup }) {
+                    var group = Global.shared.groupPages[index]
+                    group.addBet(bet: newBet)
+                    Global.shared.groupPages[index] = group
                 }
-                .disabled(fieldsCompleted() ? false : true)
+
+                dismiss()
+            }) {
+                Text("Create Bet")
+                    .fontWeight(.bold)
+                    .frame(maxWidth: .infinity, maxHeight: 50)
+                    .font(.headline)
+                    .background(fieldsCompleted() ? Color.blue : Color.gray)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+                    .padding()
+            }
+            .disabled(fieldsCompleted() ? false : true)
         }
         .padding()
         .applyBackground()
-        .fullScreenCover(isPresented: $showNextScreen) {
-            HomeView()
-        }
     }
     
     func fieldsCompleted() -> Bool {
-        return (stakes != "") && (metric != "Select how to measure your usage") && (appTracked != "Select what apps to track")
+        return (stakes != "") && (metric != "Select how to measure your usage") && (appTracked != "Select what apps to track") && validDates
     }
     
-    func addBetToGroup() {
-        if var selectedGroup = groupPages.first(where: {$0.name == Global.shared.selectedGroup}) {
-            selectedGroup.addBet(bet: Bet(name: betName,
-                                          metric: metric,
-                                          appTracking: appTracked,
-                                          participants: selectedGroup.members,
-                                          stakes: stakes,
-                                          startDate: startDate,
-                                          endDate: endDate))
-        }
-    }
-}
-
-//Container so that the preview works with the binding var groupPages
-struct CreateBetViewPreviewContainer : View {
-     @State
-    private var groupPages: [Group] = [Group(name: "Group 1",
-                                             members: [],
-                                             bets: [Bet(name: "Friendlier Wager",
-                                                        metric: "Weekly",
-                                                        appTracking: "Instagram",
-                                                        participants: [User(name: "Alice", age:18, phoneNumber:"1788766756", screenTime: "2h 15m",                 email: "alice@gmail.com", invites:[], groups:[], bets:[]),
-                                                                       User(name: "Bob", age:19, phoneNumber:"8972347283", screenTime: "1h 56m", email: "bob@gmail.com", invites:[], groups:[], bets:[]),
-                                                                       User(name: "Steve", age:20, phoneNumber:"2987473292", screenTime: "4h 10m", email: "steve@gmail.com", invites:[], groups:[], bets:[])],
-                                                        stakes: "Loser cleans the bathroom",
-                                                        startDate: Date().addingTimeInterval(-2),
-                                                        endDate: Date().addingTimeInterval(3)),
-                                                    Bet(name: "Friendly Wager",
-                                                        metric: "Weekly",
-                                                        appTracking: "All Apps",
-                                                        participants: [User(name: "Alice", age:18, phoneNumber:"1788766756", screenTime: "2h 15m",                 email: "alice@gmail.com", invites:[], groups:[], bets:[]),
-                                                                       User(name: "Bob", age:19, phoneNumber:"8972347283", screenTime: "1h 56m", email: "bob@gmail.com", invites:[], groups:[], bets:[]),
-                                                                       User(name: "Steve", age:20, phoneNumber:"2987473292", screenTime: "4h 10m", email: "steve@gmail.com", invites:[], groups:[], bets:[])],
-                                                        stakes: "Loser does the dishes",
-                                                        startDate: Date().addingTimeInterval(-5),
-                                                        endDate: Date().addingTimeInterval(-1))])]
-
-     var body: some View {
-         CreateBetView(groupPages: $groupPages)
-     }
-}
-
-struct BetViewModel_Preview: PreviewProvider {
-    static var previews: some View {
-        CreateBetViewPreviewContainer()
+    func checkDates() {
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: Date())
+        let normalizedStartDate = calendar.startOfDay(for: startDate)
+        let normalizedEndDate = calendar.startOfDay(for: endDate)
+        
+        validDates = normalizedStartDate <= normalizedEndDate && normalizedEndDate >= today && normalizedStartDate >= today
     }
 }
