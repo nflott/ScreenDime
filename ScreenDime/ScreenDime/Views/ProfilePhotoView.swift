@@ -71,7 +71,7 @@ struct ProfilePhotoView: View {
             .padding()
             .applyBackground()
             .fullScreenCover(isPresented: $showNextScreen) {
-                DashboardView()
+                HomeView()
             }
             .sheet(isPresented: $showIconPicker) {
                 IconPickerView()
