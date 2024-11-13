@@ -1,15 +1,9 @@
 import SwiftUI
 
-// Custom struct to represent each bet member with name and screen time
-struct BetMember {
-    var name: String
-    var screenTime: String
-}
-
 struct BetCardView: View {
     var title: String
     var stakes: String
-    var members: [BetMember] // List of bet members with name and screen time
+    var members: [User] // List of bet members with name and screen time
     var isActive: Bool // Determines the card's active status for styling
     
     // Colors for active and inactive states
@@ -80,9 +74,9 @@ struct BetCardView_Previews: PreviewProvider {
             title: "Friendly Wager",
             stakes: "Loser buys coffee",
             members: [
-                BetMember(name: "Alice", screenTime: "2h 15m"),
-                BetMember(name: "Bob", screenTime: "1h 45m"),
-                BetMember(name: "Charlie", screenTime: "3h 5m")
+                User(name: "Alice", age:18, phoneNumber:"1788766756", screenTime: "2h 15m", email: "alice@gmail.com", invites:[], groups:[], bets:[]),
+                User(name: "Bob", age:19, phoneNumber:"8972347283", screenTime: "1h 56m", email: "bob@gmail.com", invites:[], groups:[], bets:[]),
+                User(name: "Steve", age:20, phoneNumber:"2987473292", screenTime: "4h 10m", email: "steve@gmail.com", invites:[], groups:[], bets:[])
             ],
             isActive: true // Preview the active state
         )
