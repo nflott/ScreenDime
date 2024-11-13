@@ -9,26 +9,17 @@ import SwiftUI
 
 struct SettingsView: View {
     var body: some View {
-        ZStack {
-            LinearGradient(
-                gradient: Gradient(colors: [.green, .mint, .teal, .green.opacity(0.8)]),
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .edgesIgnoringSafeArea(.all)
-            
-            VStack {
-                Text("Settings")
-                    .font(.largeTitle)
-                    .padding()
-                // Add your settings options here
-            }
-            .navigationBarTitle("Settings", displayMode: .inline)
+        VStack {
+            Text("Settings")
+                .font(.largeTitle)
+                .padding()
         }
+        .navigationBarTitle("Settings", displayMode: .inline)
+        .applyBackground()
     }
 }
 
-struct SettingsView_Previews: PreviewProvider {
+struct Settings_Previews: PreviewProvider {
     static var previews: some View {
         SettingsView()
     }

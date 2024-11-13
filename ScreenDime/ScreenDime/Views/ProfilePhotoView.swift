@@ -12,6 +12,7 @@ struct ProfilePhotoView: View {
     @State private var showIconPicker = false
     @State private var showImagePicker = false
     @State private var selectedIcon = ""
+    @ObservedObject var global = Global.shared
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -56,13 +57,13 @@ struct ProfilePhotoView: View {
                 Button(action: {
                     showNextScreen = true
                 }) {
-                    Text("Done")
+                    Text("Set Photo")
                         .font(.title2)
                         .padding()
                         .foregroundColor(.white)
-                        .background(Color.blue)
+                        .background(selectedIcon == Global.shared.selectedProfileIcon ? Color.gray : Color.blue)
                         .cornerRadius(10)
-                        .frame(width:120)
+                        .frame(width:200)
                 }
                 .padding()
                 .disabled(selectedIcon == Global.shared.selectedProfileIcon)
@@ -70,7 +71,7 @@ struct ProfilePhotoView: View {
             .padding()
             .applyBackground()
             .fullScreenCover(isPresented: $showNextScreen) {
-                DashboardView()
+                HomeView()
             }
             .sheet(isPresented: $showIconPicker) {
                 IconPickerView()
@@ -93,6 +94,7 @@ struct ProfilePhotoView: View {
 
 struct IconPickerView: View {
     @Environment(\.dismiss) var dismiss
+    @ObservedObject var global = Global.shared
     let icons = ["person.crop.circle.fill", "person.circle", "star.fill", "heart.fill"]
     
     var body: some View {

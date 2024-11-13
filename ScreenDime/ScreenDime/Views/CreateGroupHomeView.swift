@@ -2,14 +2,13 @@
 //  CreateGroupHomeView.swift
 //  ScreenDime
 //
-//  Created by Noah Flott on 11/13/24.
+//  Created by Luke Currier on 11/11/24.
 //
 
 import SwiftUI
 
 struct CreateGroupHomeView: View {
     @State private var createGroup = false
-    
     var body: some View {
         VStack {
             Text("Create Group")
