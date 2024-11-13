@@ -32,13 +32,13 @@ struct CreateBetView: View {
     
     var body: some View {
         VStack {
-            Text("Create a bet")
+            Text("Create a Bet")
                 .font(.title)
                 .padding()
                 .foregroundColor(.white)
                 .fontWeight(.bold)
             
-            TextField("Name of your bet", text: $betName)
+            TextField("Name your bet", text: $betName)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
             
@@ -79,30 +79,31 @@ struct CreateBetView: View {
             )
             .foregroundColor(.blue)
             
-            HStack {
-                Text("Choose your wager type:")
-                    .foregroundColor(.blue)
-                    .fontWeight(.bold)
-                Button("Money", action: { moneyBet = true; otherBet = false })
-                Button("Other ", action: { otherBet = true; moneyBet = false })
-            }
-            
-            if moneyBet {
-                TextField("Enter the amount you want to bet", text: $stakes)
-                    .textFieldStyle(RoundedBorderTextFieldStyle())
-            }
-            
-            if otherBet {
+//            HStack {
+//                Text("Choose your wager type:")
+//                    .foregroundColor(.blue)
+//                    .fontWeight(.bold)
+//                Button("Money", action: { moneyBet = true; otherBet = false })
+//                Button("Other ", action: { otherBet = true; moneyBet = false })
+//            }
+//            
+//            if moneyBet {
+//                TextField("Enter the amount you want to bet", text: $stakes)
+//                    .textFieldStyle(RoundedBorderTextFieldStyle())
+//            }
+//            
+//            if otherBet {
                 TextField("Enter the stakes for this bet", text: $stakes)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
-            }
+                    .padding()
+//            }
             
             Button(
                 action: {
                     addBetToGroup()
 //                    showNextScreen = true
                 }){
-                    Text("Create this bet")
+                    Text("Create Bet")
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity, maxHeight: 50)
                         .font(.headline)
