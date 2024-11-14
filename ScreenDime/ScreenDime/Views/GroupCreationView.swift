@@ -99,12 +99,7 @@ struct GroupCreationView: View {
             
             // Create group and save it to the current group
             Button(action: {
-                let newGroup = Group(
-                    name: groupName,
-                    members: members,  // Save User instances to the group
-                    bets: []
-                )
-                Global.shared.groupPages.append(newGroup)
+                Global.shared.createGroup(name: groupName, members: members)
                 // Make the tab switch to the new group!!
                 dismiss()
             }) {

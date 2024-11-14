@@ -8,7 +8,7 @@
 import SwiftData
 import SwiftUI
 
-struct Group {
+struct Group: Identifiable {
     let id = UUID()
     var name: String
     private(set) var members: [UUID]
