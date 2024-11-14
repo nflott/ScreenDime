@@ -20,6 +20,7 @@ struct HomeView: View {
     @State private var tabs: [TabItem] = [
         TabItem(title: "Dashboard", icon: "house.fill", view: AnyView(DashView())),
         TabItem(title: Global.shared.selectedGroup, icon: "plus.circle", view: AnyView(GroupView(groupName:Global.shared.selectedGroup)))
+
     ]
         
     var body: some View {
