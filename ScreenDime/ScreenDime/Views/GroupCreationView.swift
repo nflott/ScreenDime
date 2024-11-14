@@ -6,10 +6,11 @@ struct GroupCreationView: View {
     
     @State private var showNextScreen = false
     @State var groupName = ""
+    @State private var members: [User] = []  // Store User instances instead of names
     @State private var searchText = ""
+    @State private var matchedUsers: [User] = [] // Track matched users for dropdown
     
-    // random temp user data -----
-    @State private var members: [User] = []
+    // Temporary data -----
     let storedUsers = [
         User(name: "Alice", age: 25, phoneNumber: "123-456-7890", screenTime: "2h", email: "alice@example.com", invites: [], groups: [], bets: []),
         User(name: "Bob", age: 30, phoneNumber: "987-654-3210", screenTime: "3h", email: "bob@example.com", invites: [], groups: [], bets: []),
@@ -30,7 +31,6 @@ struct GroupCreationView: View {
             Text("Group Name")
                 .foregroundColor(.white)
             
-            // Write in a name for the group
             TextField("Name your group", text: $groupName)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
@@ -38,21 +38,23 @@ struct GroupCreationView: View {
             Text("Group Members")
                 .foregroundColor(.white)
             
-            // Invite group members
-            TextField("Add Group Members", text: $searchText)
+            TextField("Search Group Members", text: $searchText)
                 .padding()
                 .textFieldStyle(RoundedBorderTextFieldStyle())
+                .onChange(of: searchText) { newValue in
+                    filterMatchedUsers() // Update matched users whenever search text changes
+                }
             
-            // Display search result with an add button if the user exists in storedUsers
-            if let matchedUser = storedUsers.first(where: { $0.name.localizedCaseInsensitiveContains(searchText) && !members.contains(where: { $0.name == $0.name }) }) {
+            // Display dropdown with matched users that are not already added to the group
+            ForEach(matchedUsers, id: \.email) { user in
                 HStack {
-                    Text(matchedUser.name)
+                    Text(user.name)
                         .foregroundColor(.primary)
                     Spacer()
                     Button(action: {
-                        // Add the matched user to the members list
-                        members.append(matchedUser)
-                        searchText = "" // Clear search text after adding
+                        members.append(user)  // Add the user to members list
+                        searchText = ""       // Clear the search text
+                        filterMatchedUsers()   // Refresh matched users
                     }) {
                         Image(systemName: "plus.circle.fill")
                             .foregroundColor(.blue)
@@ -70,7 +72,6 @@ struct GroupCreationView: View {
                         .foregroundColor(.white)
                         .padding(.leading)
                     
-                    // Display each added user in a circle with an x button
                     HStack(spacing: 10) {
                         ForEach(members, id: \.email) { user in
                             HStack {
@@ -86,6 +87,7 @@ struct GroupCreationView: View {
                                 Button(action: {
                                     // Remove the user from members list
                                     members.removeAll { $0.email == user.email }
+                                    filterMatchedUsers() // Refresh matched users after removal
                                 }) {
                                     Image(systemName: "xmark.circle.fill")
                                         .foregroundColor(.red)
@@ -125,12 +127,21 @@ struct GroupCreationView: View {
         .applyBackground()
     }
     
+    // Function to check for completed fields
     func fieldsCompleted() -> Bool {
         return (groupName != "") && !members.isEmpty
     }
+    
+    // Function to update matched users based on searchText
+    func filterMatchedUsers() {
+        matchedUsers = storedUsers.filter { user in
+            user.name.lowercased().hasPrefix(searchText.lowercased()) &&  // Name should start with searchText
+            !members.contains(where: { $0.email == user.email })          // Avoid already added members
+        }
+    }
 }
 
-
+// Preview for testing
 struct GroupCreationView_Previews: PreviewProvider {
     static var previews: some View {
         GroupCreationView()
