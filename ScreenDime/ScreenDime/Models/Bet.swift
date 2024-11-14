@@ -32,6 +32,10 @@ struct Bet: Identifiable {
         return currentDate >= startDate && currentDate <= endDate
     }
     
+    func hasStarted() -> Bool {
+        return Date() >= startDate
+    }
+    
     mutating func joinBet(user: UUID) -> String {
         guard !isActive() else {
             return "Bet is currently active. You cannot join."
@@ -40,12 +44,16 @@ struct Bet: Identifiable {
         if participants.contains(where: { $0 == user }) {
             return "\(user) is already a participant."
         } else {
-            participants.append(user)
             if let foundUser = Global.shared.appUsers.first(where: { $0.id == user }) {
-                    return "\(foundUser.name) has joined the bet."
-                } else {
-                    return "User not found."
-                }
+                participants.append(user)
+                return "\(foundUser.name) has joined the bet."
+            } else if user == Global.shared.mainUser.id {
+                participants.append(Global.shared.mainUser.id)
+                return("Main user has joined the bet.")
+            }
+            else {
+                return "User not found."
+            }
         }
     }
 }
