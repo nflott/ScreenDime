@@ -6,20 +6,10 @@ struct GroupCreationView: View {
     
     @State private var showNextScreen = false
     @State var groupName = ""
-    @State private var members: [User] = []  // Store User instances instead of names
+    @State private var members: [UUID] = []  // Store User instances instead of names
     @State private var searchText = ""
-    @State private var matchedUsers: [User] = [] // Track matched users for dropdown
+    @State private var matchedUsers: [UUID] = [] // Track matched users for dropdown
     
-    // Temporary data -----
-    let storedUsers = [
-        User(name: "Alice", age: 25, phoneNumber: "123-456-7890", screenTime: "2h", email: "alice@example.com", invites: [], groups: [], bets: []),
-        User(name: "Bob", age: 30, phoneNumber: "987-654-3210", screenTime: "3h", email: "bob@example.com", invites: [], groups: [], bets: []),
-        User(name: "Charlie", age: 22, phoneNumber: "555-666-7777", screenTime: "1h", email: "charlie@example.com", invites: [], groups: [], bets: []),
-        User(name: "David", age: 28, phoneNumber: "444-555-6666", screenTime: "2h", email: "david@example.com", invites: [], groups: [], bets: []),
-        User(name: "Eve", age: 29, phoneNumber: "333-444-5555", screenTime: "2h", email: "eve@example.com", invites: [], groups: [], bets: [])
-    ]
-    // ----
-
     var body: some View {
         VStack {
             Text("Create a New Group")
@@ -34,34 +24,36 @@ struct GroupCreationView: View {
             TextField("Name your group", text: $groupName)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
-        
+            
             Text("Group Members")
                 .foregroundColor(.white)
             
             TextField("Search Group Members", text: $searchText)
                 .padding()
                 .textFieldStyle(RoundedBorderTextFieldStyle())
-                .onChange(of: searchText) { newValue in
+                .onChange(of: searchText) {
                     filterMatchedUsers() // Update matched users whenever search text changes
                 }
             
             // Display dropdown with matched users that are not already added to the group
-            ForEach(matchedUsers, id: \.email) { user in
-                HStack {
-                    Text(user.name)
-                        .foregroundColor(.primary)
-                    Spacer()
-                    Button(action: {
-                        members.append(user)  // Add the user to members list
-                        searchText = ""       // Clear the search text
-                        filterMatchedUsers()   // Refresh matched users
-                    }) {
-                        Image(systemName: "plus.circle.fill")
-                            .foregroundColor(.blue)
-                            .font(.title2)
+            ForEach(matchedUsers, id: \.self) { userUUID in
+                if let user = global.appUsers.first(where: { $0.id == userUUID }) {
+                    HStack {
+                        Text(user.name)  // Display user's name
+                            .foregroundColor(.primary)
+                        Spacer()
+                        Button(action: {
+                            members.append(user.id)  // Add the user to members list by UUID
+                            searchText = ""           // Clear the search text
+                            filterMatchedUsers()      // Refresh matched users
+                        }) {
+                            Image(systemName: "plus.circle.fill")
+                                .foregroundColor(.blue)
+                                .font(.title2)
+                        }
                     }
+                    .padding(.horizontal)
                 }
-                .padding(.horizontal)
             }
             
             // List of added users below the search field
@@ -73,24 +65,27 @@ struct GroupCreationView: View {
                         .padding(.leading)
                     
                     HStack(spacing: 10) {
-                        ForEach(members, id: \.email) { user in
-                            HStack {
-                                Text(user.name.prefix(1)) // Show the first letter of the user's name
-                                    .foregroundColor(.white)
-                                    .font(.title2)
-                                    .padding()
-                                    .overlay(
-                                        Circle()
-                                            .stroke(Color.white, lineWidth: 2)
-                                    )
-                                
-                                Button(action: {
-                                    // Remove the user from members list
-                                    members.removeAll { $0.email == user.email }
-                                    filterMatchedUsers() // Refresh matched users after removal
-                                }) {
-                                    Image(systemName: "xmark.circle.fill")
-                                        .foregroundColor(.red)
+                        ForEach(members, id: \.self) { userUUID in
+                            // Fetch the user corresponding to the UUID
+                            if let user = global.appUsers.first(where: { $0.id == userUUID }) {
+                                HStack {
+                                    Text(user.name.prefix(1)) // Show the first letter of the user's name
+                                        .foregroundColor(.white)
+                                        .font(.title2)
+                                        .padding()
+                                        .overlay(
+                                            Circle()
+                                                .stroke(Color.white, lineWidth: 2)
+                                        )
+                                    
+                                    Button(action: {
+                                        // Remove the user from members list
+                                        members.removeAll { $0 == userUUID }
+                                        filterMatchedUsers() // Refresh matched users after removal
+                                    }) {
+                                        Image(systemName: "xmark.circle.fill")
+                                            .foregroundColor(.red)
+                                    }
                                 }
                             }
                         }
@@ -110,6 +105,7 @@ struct GroupCreationView: View {
                     bets: []
                 )
                 Global.shared.groupPages.append(newGroup)
+                // Make the tab switch to the new group!!
                 dismiss()
             }) {
                 Text("Create Group")
@@ -123,8 +119,8 @@ struct GroupCreationView: View {
             }
             .disabled(fieldsCompleted() ? false : true)
         }
-        .padding()
-        .applyBackground()
+            .padding()
+            .applyBackground()
     }
     
     // Function to check for completed fields
@@ -134,10 +130,10 @@ struct GroupCreationView: View {
     
     // Function to update matched users based on searchText
     func filterMatchedUsers() {
-        matchedUsers = storedUsers.filter { user in
+        matchedUsers = global.appUsers.filter { user in
             user.name.lowercased().hasPrefix(searchText.lowercased()) &&  // Name should start with searchText
-            !members.contains(where: { $0.email == user.email })          // Avoid already added members
-        }
+            !members.contains(user.id)      // Avoid already added members
+        }.map { $0.id }
     }
 }
 
