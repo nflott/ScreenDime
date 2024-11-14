@@ -9,14 +9,15 @@ import SwiftData
 import Foundation
 
 struct User {
+    let id = UUID()
     var name: String
     var age: Int
     var phoneNumber: String
     var email: String
     var screenTime: String
-    private(set) var invites: [Group]
-    private(set) var groups: [Group]
-    private(set) var bets: [Bet]
+    private(set) var invites: [UUID]
+    private(set) var groups: [UUID]
+    private(set) var bets: [UUID]
     
     init(name: String, age: Int, phoneNumber: String, screenTime: String, email: String, invites: [Group], groups: [Group], bets: [Bet]) {
         self.name = name
@@ -29,21 +30,23 @@ struct User {
         self.bets = []
     }
     
-    mutating func addInvite(group: Group) {
-        if !invites.contains(where: { $0.name == group.name } ) {
+    mutating func addInvite(group: UUID) {
+        if !invites.contains(where: { $0 == group } ) {
             invites.append(group)
         }
     }
     
-    mutating func addGroup(group: Group, action: Bool) {
-        if action && invites.contains(where: { $0.name == group.name } ) {
-            groups.append(group)
-            invites.removeAll(where: { $0.name == group.name } )
-        }
+    mutating func addGroup(group: UUID/*, action: Bool*/) {
+        /*if action && invites.contains(group.id) { */
+            if !groups.contains(group) {
+                groups.append(group)
+            }
+            invites.removeAll(where: { $0 == group } )
+       // }
     }
     
-    mutating func addBet(bet: Bet, action: Bool) {
-        if action && !bets.contains(where: { $0.name == bet.name } ) {
+    mutating func addBet(bet: UUID/*, action: Bool*/) {
+        if /*action &&*/ !bets.contains(where: { $0 == bet } ) {
             bets.append(bet)
         }
     }

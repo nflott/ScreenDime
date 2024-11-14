@@ -103,7 +103,7 @@ struct CreateBetView: View {
 
                 if let index = Global.shared.groupPages.firstIndex(where: { $0.name == Global.shared.selectedGroup }) {
                     var group = Global.shared.groupPages[index]
-                    group.addBet(bet: newBet)
+                    group.addBet(bet: newBet.id)
                     Global.shared.groupPages[index] = group
                 }
 
