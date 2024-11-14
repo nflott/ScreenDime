@@ -57,6 +57,23 @@
 		416754712CA2F65E00EEA777 /* ScreenDimeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = ScreenDimeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
+/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
+		41CCBCA32CE663DA0016E142 /* Exceptions for "ScreenDime" folder in "ScreenDime" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Test Plans/TestPlan.xctestplan",
+			);
+			target = 416754562CA2F65B00EEA777 /* ScreenDime */;
+		};
+		41CCBCA42CE663DA0016E142 /* Exceptions for "ScreenDime" folder in "ScreenDimeTesting" target */ = {
+			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
+			membershipExceptions = (
+				"Test Plans/TestPlan.xctestplan",
+			);
+			target = 01796EEE2CDBF93B0019D68F /* ScreenDimeTesting */;
+		};
+/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
+
 /* Begin PBXFileSystemSynchronizedRootGroup section */
 		01796EF02CDBF93B0019D68F /* ScreenDimeTesting */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
@@ -65,6 +82,10 @@
 		};
 		416754592CA2F65B00EEA777 /* ScreenDime */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
+			exceptions = (
+				41CCBCA32CE663DA0016E142 /* Exceptions for "ScreenDime" folder in "ScreenDime" target */,
+				41CCBCA42CE663DA0016E142 /* Exceptions for "ScreenDime" folder in "ScreenDimeTesting" target */,
+			);
 			path = ScreenDime;
 			sourceTree = "<group>";
 		};
