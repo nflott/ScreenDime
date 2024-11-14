@@ -26,7 +26,7 @@ struct Group {
     
     mutating func addBet(bet: Bet) {
         if !bets.contains(where: { $0.name == bet.name }) {
-            bets.append(bet)
+            bets.insert(bet, at: 0)
         }
     }
 }

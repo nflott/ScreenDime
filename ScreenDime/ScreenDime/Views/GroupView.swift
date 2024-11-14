@@ -8,26 +8,43 @@
 import SwiftUI
 
 struct GroupView: View {
-    var groupName: String
+    @ObservedObject private var global = Global.shared
     
+    @State private var showBetCreationView = false
+    
+    var groupName: String
+
     var body: some View {
         VStack {
-            Text("\(groupName)")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .foregroundColor(.white)
-                .padding()
-            
             ScrollView {
-                ForEach(0..<5, id: \.self) { _ in
-                    Rectangle()
-                        .fill(Color.black.opacity(0.7))
-                        .frame(height: 150)
-                        .cornerRadius(8)
-                        .padding(5)
+                if let selectedGroup = global.groupPages.first(where: {$0.name == Global.shared.selectedGroup}) {
+                    ForEach(selectedGroup.bets, id: \.name) { bet in
+                        VStack(alignment: .leading) {
+                            BetCardView(
+                                bet: bet,
+                                title: bet.name,
+                                stakes: bet.stakes,
+                                members: bet.participants,
+                                isActive: bet.isActive()
+                            )
+                        }
+                    }
+                    if selectedGroup.bets.count <= 0 {
+                        Text("No bets yet in \(selectedGroup.name).\nCreate one now!")
+                            .foregroundColor(.white)
+                            .font(.callout)
+                            .bold()
+                            .multilineTextAlignment(.center)
+                            .padding()
+                    }
                 }
             }
         }
-        .applyBackground()
+    }
+}
+
+struct Group_Previews: PreviewProvider {
+    static var previews: some View {
+        GroupView(groupName:Global.shared.selectedGroup)
     }
 }

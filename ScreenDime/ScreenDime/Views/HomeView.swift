@@ -8,63 +8,200 @@
 import SwiftUI
 
 struct HomeView: View {
+    @ObservedObject private var global = Global.shared
+
     @State private var showingSettings = false
+    @State private var showingGroupSettings = false
+    @State private var showingGroupCreation = false
+    @State private var showingProfile = false
+    @State private var showingGroupSelector = false
+    @State private var showingBetCreation = false
     @State private var selectedTab = 0
     @State private var tabs: [TabItem] = [
         TabItem(title: "Dashboard", icon: "house.fill", view: AnyView(DashView())),
-        TabItem(title: "Create", icon: "plus.circle", view: AnyView(CreateGroupHomeView()))
-    ]
-    
-    var body: some View {
-        VStack {
-            HStack {
-                Button(action: {
-                    showingSettings.toggle()
-                }) {
-                    Image(systemName: "gearshape.fill")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 30, height: 30)
-                        .foregroundColor(.white)
-                        .padding([.leading, .trailing], 10)
-                        .padding([.top, .bottom], 8)
-                }
-                
-                Spacer()
-                
-                Text(tabs[selectedTab].title)
-                    .font(.title)
-                    .foregroundColor(.white)
-                    .fontWeight(.bold)
-                    .frame(maxWidth: .infinity, alignment: .center)
-                
-                Spacer()
-            }
-            .padding([.top, .bottom], 10)
+        TabItem(title: Global.shared.selectedGroup, icon: "plus.circle", view: AnyView(GroupView(groupName:Global.shared.selectedGroup)))
 
-            TabView(selection: $selectedTab) {
-                ForEach(Array(tabs.enumerated()), id: \.element.id) { index, tab in
-                    tab.view
-                        .tag(index)
-                }
-            }
-            .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
-            
-            HStack {
-                ForEach(0..<tabs.count, id: \.self) { index in
-                    Circle()
-                        .fill(index == selectedTab ? Color.blue : Color.gray)
-                        .frame(width: 15, height: 15)
-                        .onTapGesture {
-                            selectedTab = index
+    ]
+        
+    var body: some View {
+        ZStack {
+            VStack {
+                HStack {
+                    if(selectedTab == 0) {
+                        Button(action: {
+                            showingSettings.toggle()
+                        }) {
+                            Image(systemName: "gearshape.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 40, height: 40)
+                                .foregroundColor(.white)
+                                .padding([.leading, .trailing], 10)
                         }
+                        .padding()
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            showingProfile.toggle()
+                        }) {
+                            Image(systemName: Global.shared.selectedProfileIcon)
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 40, height: 40)
+                                .foregroundColor(.white)
+                                .padding([.leading, .trailing], 10)
+                        }
+                        .padding()
+                    }
+                    else {
+                        Button(action: {
+                            showingGroupSettings.toggle()
+                        }) {
+                            Image(systemName: "gearshape.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 40, height: 40)
+                                .foregroundColor(.white)
+                                .padding([.leading, .trailing], 10)
+                        }
+                        .padding()
+                        
+                        Spacer()
+                        
+                        Button(action: {
+                            showingBetCreation.toggle()
+                        }) {
+                            Image(systemName: "plus.circle.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 40, height: 40)
+                                .foregroundColor(.white)
+                                .padding([.leading, .trailing], 10)
+                        }
+                        .padding()
+                    }
+                }
+                .padding([.top, .bottom], 10)
+                
+                TabView(selection: $selectedTab) {
+                    ForEach(Array(tabs.enumerated()), id: \.element.id) { index, tab in
+                        tab.view
+                            .tag(index)
+                    }
+                }
+                .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                
+                HStack {
+                    ForEach(0..<tabs.count, id: \.self) { index in
+                        Circle()
+                            .fill(index == selectedTab ? Color.blue : Color.gray)
+                            .frame(width: 15, height: 15)
+                            .onTapGesture {
+                                selectedTab = index
+                            }
+                    }
+                }
+            }
+            .applyBackground()
+            .sheet(isPresented: $showingSettings) {
+                SettingsView()
+            }
+            .sheet(isPresented: $showingGroupSettings) {
+                GroupSettingsView()
+            }
+            .sheet(isPresented: $showingGroupCreation) {
+                GroupCreationView()
+            }
+            .sheet(isPresented: $showingProfile) {
+                ProfileView()
+            }
+            .sheet(isPresented: $showingBetCreation) {
+                CreateBetView()
+            }
+            
+            if selectedTab == 0 {
+                VStack {
+                    Text(tabs[selectedTab].title)
+                        .font(.largeTitle)
+                        .foregroundColor(.white)
+                        .fontWeight(.bold)
+                        .frame(maxWidth: .infinity, alignment: .top)
+                        .padding([.top], 26)
+                    
+                    Spacer()
+                }
+            }
+            else {
+                VStack {
+                    Button(action: {
+                        showingGroupSelector.toggle()
+                    }) {
+                        VStack {
+                            Text(global.selectedGroup)
+                                .font(.largeTitle)
+                                .foregroundColor(.white)
+                                .fontWeight(.bold)
+                                .frame(maxWidth: .infinity, alignment: .top)
+                                .padding([.top], 26)
+                            
+                            Text("Change v")
+                                .font(.caption2)
+                                .foregroundColor(.white)
+                                .fontWeight(.bold)
+                            
+                            if showingGroupSelector {
+                                dropdownMenu()
+                                    .transition(.move(edge: .top).combined(with: .opacity))
+                                    .animation(.easeInOut, value: showingGroupSelector)
+                            }
+                        }
+                    }
+                    .frame(width:200)
+                    
+                    Spacer()
                 }
             }
         }
-        .applyBackground()
-        .sheet(isPresented: $showingSettings) {
-            SettingsView()
+        .onChange(of: global.selectedGroup) {
+            tabs[1].title = global.selectedGroup
         }
+    }
+    
+    @ViewBuilder
+    private func dropdownMenu() -> some View {
+       VStack {
+           ForEach(Global.shared.groupPages, id: \.name) { group in
+               Button(action: {
+                   Global.shared.selectedGroup = group.name
+                   showingGroupSelector = false
+               }) {
+                   Text(group.name)
+                       .foregroundColor(.white)
+                       .frame(maxWidth: .infinity)
+                       .padding()
+                       .background(Color.blue.opacity(0.7))
+                       .cornerRadius(8)
+               }
+           }
+           
+           Button(action: {
+               showingGroupSelector = false
+               showingGroupCreation = true
+           }) {
+               Text("New")
+                   .foregroundColor(.white)
+                   .frame(maxWidth: .infinity)
+                   .padding()
+                   .background(Color.green.opacity(0.7))
+                   .cornerRadius(8)
+           }
+       }
+       .padding()
+       .background(Color.white.opacity(0.9))
+       .cornerRadius(12)
+       .shadow(radius: 5)
+       .padding(.horizontal, 20)
     }
 }
 
