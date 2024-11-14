@@ -11,7 +11,7 @@ class Global: ObservableObject {
     static let shared = Global()
     
     @Published var selectedProfileIcon: String = "person.crop.circle.fill"
-    @Published var selectedGroup: String = "Group 1"
+    @Published var selectedGroup: String = "The Avengers"
     @Published var betsUserIsIn = ["Friendlier Wager", "Friendly Wager"]
 
     @AppStorage("hasOnboarded") var hasOnboarded: Bool = false

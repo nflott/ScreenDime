@@ -17,11 +17,11 @@ struct CreateBetView: View {
     @State var appTracked = "Select what apps to track"
     let metrics = ["Daily Average", "Weekly Average", "Overall Usage"]
     let apps = ["All apps", "Snapchat", "Instagram", "Facebook", "TikTok", "Reddit", "iMessage"]
-       
+    
     @State var startDate = Date()
     @State var endDate = Date()
     @State var stakes = ""
-
+    
     var body: some View {
         VStack {
             Text("Create a Bet")
@@ -100,13 +100,13 @@ struct CreateBetView: View {
                     startDate: startDate,
                     endDate: endDate
                 )
-
+                
                 if let index = Global.shared.groupPages.firstIndex(where: { $0.name == Global.shared.selectedGroup }) {
                     var group = Global.shared.groupPages[index]
                     group.addBet(bet: newBet.id)
                     Global.shared.groupPages[index] = group
                 }
-
+                
                 dismiss()
             }) {
                 Text("Create Bet")
