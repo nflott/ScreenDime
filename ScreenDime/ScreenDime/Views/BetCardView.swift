@@ -57,28 +57,30 @@ struct BetCardView: View {
                     
                     Spacer()
                     
-                    Button(
-                        action: {
-                            showingAcceptDialog.toggle()
-                        }){
-                            Image(systemName: "hand.thumbsup.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 40, height: 40)
-                                .foregroundColor(.blue)
-                        }
-                        .padding([.trailing], 15)
-                    
-                    Button(
-                        action: {
-                            showingRejectDialog.toggle()
-                        }){
-                            Image(systemName: "hand.thumbsdown.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 40, height: 40)
-                                .foregroundColor(.red)
-                        }
+                    if isActive {
+                        Button(
+                            action: {
+                                showingAcceptDialog.toggle()
+                            }){
+                                Image(systemName: "hand.thumbsup.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 40, height: 40)
+                                    .foregroundColor(.blue)
+                            }
+                            .padding([.trailing], 15)
+                        
+                        Button(
+                            action: {
+                                showingRejectDialog.toggle()
+                            }){
+                                Image(systemName: "hand.thumbsdown.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 40, height: 40)
+                                    .foregroundColor(.red)
+                            }
+                    }
                 }
                 // Stakes text
                 Text("Stakes: \(stakes)")
