@@ -91,23 +91,20 @@ struct CreateBetView: View {
             
             // Create bet and save it to the current group
             Button(action: {
-                let newBet = Bet(
-                    name: betName,
-                    metric: metric,
-                    appTracking: appTracked,
-                    participants: [],
-                    stakes: stakes,
-                    startDate: startDate,
-                    endDate: endDate
-                )
-
-                if let index = Global.shared.groupPages.firstIndex(where: { $0.name == Global.shared.selectedGroup }) {
-                    var group = Global.shared.groupPages[index]
-                    group.addBet(bet: newBet.id)
-                    Global.shared.groupPages[index] = group
-                }
-
-                dismiss()
+                if let group = Global.shared.groupPages.first(where: { $0.name == Global.shared.selectedGroup }) {
+                        Global.shared.createBet(
+                            name: betName,
+                            metric: metric,
+                            appTracking: appTracked,
+                            participants: [],
+                            stakes: stakes,
+                            startDate: startDate,
+                            endDate: endDate,
+                            group: group.id
+                        )
+                    }
+                    
+                    dismiss()
             }) {
                 Text("Create Bet")
                     .fontWeight(.bold)
@@ -141,8 +138,4 @@ struct CreateBetView_Previews: PreviewProvider {
     static var previews: some View {
         CreateBetView()
     }
-}
-
-#Preview {
-    
 }

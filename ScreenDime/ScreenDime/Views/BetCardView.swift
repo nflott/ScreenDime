@@ -56,7 +56,7 @@ struct BetCardView: View {
                     
                     Spacer()
                     
-                    if isActive {
+                    if isActive && !Global.shared.betsUserIsIn.contains(title) {
                         Button(
                             action: {
                                 showingAcceptDialog.toggle()
@@ -139,9 +139,46 @@ struct BetCardView: View {
         .sheet(isPresented: $showingFullBet) {
             BetView(bet: bet)
         }
+        if showingAcceptDialog {
+            VStack(spacing: 20) {
+                Text("New Bet")
+                    .font(.headline)
+                
+                Text("Join \(title)?")
+                    .multilineTextAlignment(.center)
+                    .padding()
+                
+                HStack {
+                    Button("Cancel") {
+                        showingAcceptDialog = false
+                    }
+                    .padding()
+                    .background(Color.red)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+                    
+                    Button("Confirm") {
+                        showingAcceptDialog = false
+                        acceptBet()
+                    }
+                    .padding()
+                    .background(Color.green)
+                    .foregroundColor(.white)
+                    .cornerRadius(8)
+                }
+            }
+            .frame(width: 350, height: 300)
+            .background(Color.white)
+            .cornerRadius(10)
+            .shadow(radius: 10)
+            .padding()
+        }
     }
     
-    // Adjust card height based on the number of members
+    private func acceptBet() {
+        Global.shared.betsUserIsIn.append(title)
+    }
+    
     private func dynamicCardHeight() -> CGFloat {
         switch members.count {
         case 0:
@@ -155,7 +192,6 @@ struct BetCardView: View {
         }
     }
 
-    // Function to get user details from UUIDs
     private func getUserDetails(for members: [UUID]) -> [(name: String, screenTime: String)] {
         return members.compactMap { memberUUID in
             if let user = Global.shared.appUsers.first(where: { $0.id == memberUUID }) {

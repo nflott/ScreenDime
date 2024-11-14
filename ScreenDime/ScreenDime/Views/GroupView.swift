@@ -32,6 +32,7 @@ struct GroupView: View {
                             }
                         }
                     }
+                    .padding([.top], 8)
                     
                     // Show message if no bets are available
                     if selectedGroup.bets.isEmpty {
