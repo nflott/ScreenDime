@@ -137,3 +137,12 @@ struct CreateBetView: View {
         validDates = normalizedStartDate <= normalizedEndDate && normalizedEndDate >= today && normalizedStartDate >= today
     }
 }
+struct CreateBetView_Previews: PreviewProvider {
+    static var previews: some View {
+        CreateBetView()
+    }
+}
+
+#Preview {
+    
+}
