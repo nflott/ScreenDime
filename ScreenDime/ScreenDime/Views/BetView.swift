@@ -25,6 +25,7 @@ struct BetView: View {
                 .padding()
                 .foregroundColor(.white)
                 .fontWeight(.bold)
+                .padding([.top], 20)
             
             Text("Started: \(bet.startDate.formatted(date: .abbreviated, time: .omitted))")
                 .padding()
@@ -39,6 +40,16 @@ struct BetView: View {
                 Text("This bet has ended.")
                     .foregroundColor(.white)
                     .font(.title2)
+            }
+            HStack {
+                Text("Leaderboard")
+                    .font(.title)
+                    .padding()
+                    .padding([.bottom], -20)
+                    .foregroundColor(.white)
+                    .fontWeight(.bold)
+                
+                Spacer()
             }
             
             VStack {

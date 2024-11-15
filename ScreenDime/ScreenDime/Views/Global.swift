@@ -67,11 +67,17 @@ class Global: ObservableObject {
             bets: [friendlierWager.id, friendlyWager.id]
         )
         
-        groupPages.append(group1)
+        let group2 = Group(
+            name: "Roomies!",
+            members: [bob.id, steve.id, daniel.id],
+            bets: [])
+        
+        groupPages.append(contentsOf:[group1, group2])
 
         // assign groups and bets to users
         appUsers.indices.forEach { index in
             appUsers[index].addGroup(group: group1.id)
+            appUsers[index].addGroup(group: group2.id)
             
             let userBets = bets.filter { $0.participants.contains(appUsers[index].id) }
             userBets.forEach { bet in

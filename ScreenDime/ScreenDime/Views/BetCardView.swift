@@ -46,23 +46,14 @@ struct BetCardView: View {
                         Button(action: {
                             showingAcceptDialog.toggle()
                         }) {
-                            Image(systemName: "hand.thumbsup.fill")
-                                .resizable()
+                            Text("Join Bet")
                                 .scaledToFit()
-                                .frame(width: 40, height: 40)
-                                .foregroundColor(.blue)
+                                .frame(width: 80, height: 40)
+                                .foregroundColor(.white)
+                                .background(Color.blue)
+                                .cornerRadius(8)
                         }
                         .padding([.trailing], 15)
-                        
-                        Button(action: {
-                            showingRejectDialog.toggle()
-                        }) {
-                            Image(systemName: "hand.thumbsdown.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 40, height: 40)
-                                .foregroundColor(.red)
-                        }
                     }
                 }
                 // Stakes text

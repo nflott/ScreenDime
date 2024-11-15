@@ -16,6 +16,7 @@ struct VerificationView: View {
     @State private var codeSent = false
     @State private var areaCode = "+1"
     @State private var showCodeDialog = false
+    @State private var skipToHome: Bool = false
     
     let areaCodes = ["+1", "+44", "+61", "+91", "+38"]
 
@@ -106,6 +107,23 @@ struct VerificationView: View {
             }
             .fullScreenCover(isPresented: $showNextView) {
                 OnboardingView()
+            }
+            .fullScreenCover(isPresented: $skipToHome) {
+                HomeView()
+            }
+            
+            VStack {
+                HStack {
+                    Button(action: {
+                        skipToHome.toggle()
+                    }) {
+                        Text("Skip Onboarding")
+                            .font(.title3)
+                            .foregroundColor(.white)
+                    }
+                    Spacer()
+                }
+                Spacer()
             }
             
             if showCodeDialog {

@@ -146,7 +146,6 @@ struct HomeView: View {
                                 .padding([.top], 26)
                             
                             Text("Change v")
-                                .font(.caption2)
                                 .foregroundColor(.white)
                                 .fontWeight(.bold)
                             
