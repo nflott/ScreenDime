@@ -22,7 +22,7 @@ struct SplashScreen: View {
                     .opacity(opacity)
                     .onAppear {
                         // Start fade-out animation
-                        withAnimation(.easeInOut(duration: 2.5)) {
+                        withAnimation(.easeInOut(duration: 25)) {
                             opacity = 0.0
                         }
                         
