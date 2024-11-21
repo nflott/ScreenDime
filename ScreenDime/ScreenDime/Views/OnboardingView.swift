@@ -11,6 +11,8 @@ struct OnboardingView: View {
     @State private var needsToShareData = false
     @State private var showNextScreen = false
     @State private var username = ""
+    @State private var name = ""
+    @State private var dateOfBirth = Date()
     @State private var isUsernameTaken = false
     @State private var takenUsernames = ["Luke", "Maddie", "Noah"]
     @State private var showConfirmationDialog = false
@@ -18,13 +20,13 @@ struct OnboardingView: View {
     var body: some View {
         NavigationView {
             ZStack {
-                VStack {
+                VStack(spacing: 20) {
                     Text("Welcome to ScreenDime!")
                         .font(.largeTitle)
-                        .padding()
                         .fontWeight(.bold)
                         .foregroundColor(.white)
                         .multilineTextAlignment(.center)
+                        .padding()
                     
                     if isUsernameTaken {
                         Text("Username is already taken")
@@ -35,26 +37,39 @@ struct OnboardingView: View {
                     TextField("Enter username", text: $username)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding()
+                        .autocapitalization(.none)
                         .onChange(of: username) {
                             isUsernameTaken = false
                         }
-                        .fullScreenCover(isPresented: $showNextScreen) {
-                            ProfilePhotoView()
-                        }
                     
-                    // If username is less than 3 characters, button shouldn't work.
+                    TextField("Enter your full name", text: $name)
+                        .textFieldStyle(RoundedBorderTextFieldStyle())
+                        .padding()
+                        .autocapitalization(.words)
+                    
+                    HStack {
+                        Text("Enter your birthdate:")
+                            .foregroundColor(.white)
+                            .fontWeight(.bold)
+                        
+                        DatePicker("Date of Birth", selection: $dateOfBirth, displayedComponents: .date)
+                            .labelsHidden()
+                    }
+                
+                    
+                    // Next Button
                     Button(action: {
                         checkUsername()
                     }) {
                         Text("Next")
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(username.count < 2 || isUsernameTaken ? Color.gray : Color.blue)
+                            .background(canProceed() ? Color.blue : Color.gray)
                             .foregroundColor(.white)
                             .cornerRadius(8)
                     }
                     .padding()
-                    .disabled(username.count > 2 ? false : true)
+                    .disabled(!canProceed())
                 }
                 .padding()
                 .sheet(isPresented: $needsToShareData) {
@@ -62,13 +77,16 @@ struct OnboardingView: View {
                         PermissionsView()
                     }
                 }
+                .fullScreenCover(isPresented: $showNextScreen) {
+                    ProfilePhotoView()
+                }
                 
                 if showConfirmationDialog {
                     VStack(spacing: 20) {
                         Text("Confirm Username")
                             .font(.headline)
                         
-                        Text("Are you sure you want to change your username to '\(username)'? You can't change it later!")
+                        Text("Are you sure you want to set your username to '\(username)'? You can't change it later!")
                             .multilineTextAlignment(.center)
                             .padding()
                         
@@ -103,10 +121,16 @@ struct OnboardingView: View {
         }
     }
     
+    func canProceed() -> Bool {
+        let calendar = Calendar.current
+        let dob = calendar.startOfDay(for: dateOfBirth)
+        let today = calendar.startOfDay(for: Date())
+            
+        return !name.isEmpty && username.count >= 3 && !isUsernameTaken && !name.isEmpty && dob < today
+    }
+    
     func checkUsername() {
         isUsernameTaken = takenUsernames.contains(username)
-        
-        // If the username is unique, add it to the existing list
         if !isUsernameTaken {
             showConfirmationDialog = true
         }

@@ -8,6 +8,7 @@
 import SwiftUI
 
 struct ProfilePhotoView: View {
+    @Environment(\.dismiss) var dismiss
     @State private var showNextScreen = false
     @State private var showIconPicker = false
     @State private var showImagePicker = false
@@ -80,14 +81,31 @@ struct ProfilePhotoView: View {
                 ImagePickerView()
             }
             
-            Button(action: {
-                showNextScreen = true
-            }) {
-                Text("Skip for now")
-                    .padding(8)
-                    .foregroundColor(.white)
+            if !Global.shared.hasOnboarded {
+                Button(action: {
+                    showNextScreen = true
+                }) {
+                    Text("Skip for now")
+                        .padding(8)
+                        .foregroundColor(.white)
+                }
+                .padding()
             }
-            .padding()
+            else {
+                Button(action: {
+                    dismiss()
+                }) {
+                    Image(systemName: "arrow.left")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 25, height: 25)
+                        .foregroundColor(.blue)
+                        .fontWeight(.bold)
+                        .padding(.leading, 10)
+                        .padding(.trailing)
+                }
+            }
+            
         }
     }
 }

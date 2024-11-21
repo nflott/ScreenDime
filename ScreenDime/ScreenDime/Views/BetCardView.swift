@@ -26,10 +26,10 @@ struct BetCardView: View {
             }) {
                 // Set color based on the bet's start status
                 Rectangle()
-                    .fill(bet.hasStarted() ? activeColor : stillStartingColor) // Green if not started, Blue if started
+                    .fill(cardColor())
                     .frame(maxWidth: .infinity, minHeight: dynamicCardHeight()) // Dynamic card height
                     .cornerRadius(10)
-                    .shadow(color: bet.hasStarted() ? .blue.opacity(0.6) : .green.opacity(0.6), radius: 10, x: 0, y: 0) // Shadow color based on the state
+                    .shadow(color: cardShadowColor(), radius: 10, x: 0, y: 0) // Shadow color based on the state
             }
             
             VStack(alignment: .leading, spacing: 8) {
@@ -38,24 +38,50 @@ struct BetCardView: View {
                     Text(title)
                         .font(.headline)
                         .foregroundColor(.white)
-                    
+
                     Spacer()
-                    
-                    // Only show thumbs up and down if the bet has not started yet
-                    if !bet.hasStarted() && !global.betsUserIsIn.contains(title) && !betRejected {
-                        Button(action: {
-                            showingAcceptDialog.toggle()
-                        }) {
-                            Text("Join Bet")
-                                .scaledToFit()
-                                .frame(width: 80, height: 40)
-                                .foregroundColor(.white)
-                                .background(Color.blue)
-                                .cornerRadius(8)
+
+                    // Status message or button
+                    if bet.hasEnded() {
+                        // Display "Bet Ended" text
+                        Text("Bet Ended")
+                            .font(.footnote)
+                            .foregroundColor(.white.opacity(0.7))
+                    } else if !bet.hasStarted() {
+                        if global.mainUser.bets.contains(bet.id) {
+                            // Display countdown to when it starts
+                            let countdown = bet.startDate.timeIntervalSinceNow
+                            if countdown > 0 {
+                                Text("Starts in \(formatCountdown(countdown))")
+                                    .font(.footnote)
+                                    .foregroundColor(.white.opacity(0.7))
+                            }
+                        } else {
+                            // Show "Join Bet" button
+                            Button(action: {
+                                showingAcceptDialog.toggle()
+                            }) {
+                                Text("Join Bet")
+                                    .scaledToFit()
+                                    .frame(width: 80, height: 40)
+                                    .foregroundColor(.white)
+                                    .background(Color.blue)
+                                    .cornerRadius(8)
+                            }
+                            .padding([.trailing], 15)
                         }
-                        .padding([.trailing], 15)
+                    } else {
+                        // Display time remaining for active bet
+                        let timeRemaining = bet.endDate.timeIntervalSinceNow
+                        if timeRemaining > 0 {
+                            Text("Time left: \(formatCountdown(timeRemaining))")
+                                .font(.footnote)
+                                .foregroundColor(.white.opacity(0.7))
+                        }
                     }
                 }
+
+                
                 // Stakes text
                 Text("Stakes: \(stakes)")
                     .font(.subheadline)
@@ -63,7 +89,7 @@ struct BetCardView: View {
                                 
                 // Bet members
                 VStack(alignment: .leading, spacing: 4) {
-                    let sortedMembers = getUserDetails(for: members).sorted {
+                    let sortedMembers = getUserDetails(for: bet.participants).sorted {
                         screenTimeToMinutes($0.screenTime) < screenTimeToMinutes($1.screenTime)
                     }
                     
@@ -95,11 +121,13 @@ struct BetCardView: View {
                         }
                     }
                     
-                    // Show "+X more" if there are more than 3 members
+                    
                     if members.count == 0 {
                         Text("No one's here yet...")
                             .foregroundColor(.white)
                     }
+                    
+                    // Show "+X more" if there are more than 3 members
                     if members.count > 3 {
                         Text("+\(members.count - 3) more")
                             .foregroundColor(.white)
@@ -116,8 +144,6 @@ struct BetCardView: View {
         }
         if showingAcceptDialog {
             VStack(spacing: 20) {
-                Text("New Bet")
-                    .font(.headline)
                 
                 Text("Join \(title)?")
                     .multilineTextAlignment(.center)
@@ -142,8 +168,9 @@ struct BetCardView: View {
                     .cornerRadius(8)
                 }
             }
-            .frame(width: 350, height: 300)
-            .background(Color.white)
+            .frame(width: 215, height: 175)
+            .multilineTextAlignment(.center)
+            .applyBackground()
             .cornerRadius(10)
             .shadow(radius: 10)
             .padding()
@@ -202,10 +229,21 @@ struct BetCardView: View {
         return minutes
     }
     
-    private func acceptBet() {
-        // Add the bet's title to the 'betsUserIsIn' array
-        Global.shared.betsUserIsIn.append(title)
+    private func formatCountdown(_ interval: TimeInterval) -> String {
+        let seconds = Int(interval) % 60
+        let minutes = (Int(interval) / 60) % 60
+        let hours = (Int(interval) / 3600)
         
+        if hours > 0 {
+            return "\(hours)h \(minutes)m"
+        } else if minutes > 0 {
+            return "\(minutes)m \(seconds)s"
+        } else {
+            return "\(seconds)s"
+        }
+    }
+    
+    private func acceptBet() {
         // Find the bet in Global.shared.bets based on the title
         guard let bet = Global.shared.bets.first(where: { $0.name == title }) else {
             print("Bet not found!")
@@ -215,8 +253,27 @@ struct BetCardView: View {
         // Add the user to the bet and the bet to the user's list
         Global.shared.addUserToBet(addedUser: Global.shared.mainUser.id, bet: bet.id)
     }
-
     
+    private func cardColor() -> Color {
+        if bet.hasEnded() {
+            return inactiveColor
+        } else if !bet.hasStarted() {
+            return stillStartingColor
+        } else {
+            return activeColor
+        }
+    }
+
+    private func cardShadowColor() -> Color {
+        if bet.hasEnded() {
+            return inactiveColor.opacity(0.6)
+        } else if !bet.hasStarted() {
+            return stillStartingColor.opacity(0.6)
+        } else {
+            return activeColor.opacity(0.6)
+        }
+    }
+
     private func rejectBet() {
         betRejected = true
     }
@@ -242,14 +299,17 @@ struct BetCardView: View {
                 return nil
             }
         }
-        
-        if let mainUser = global.appUsers.first(where: { $0.id == global.mainUser.id }), !members.contains(global.mainUser.id) {
-            userDetails.insert((name: mainUser.name, screenTime: mainUser.screenTime), at: 0)
+
+        if members.contains(global.mainUser.id) {
+            if let mainUser = global.appUsers.first(where: { $0.id == global.mainUser.id }) {
+                userDetails.insert((name: mainUser.name, screenTime: mainUser.screenTime), at: 0)
+            }
         }
-        
-        print(userDetails)
+
+        print("\(title): \(userDetails)")
         return userDetails
     }
+
 
 }
 

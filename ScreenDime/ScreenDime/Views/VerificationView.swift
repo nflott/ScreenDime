@@ -112,19 +112,19 @@ struct VerificationView: View {
                 HomeView()
             }
             
-            VStack {
-                HStack {
-                    Button(action: {
-                        skipToHome.toggle()
-                    }) {
-                        Text("Skip Onboarding")
-                            .font(.title3)
-                            .foregroundColor(.white)
-                    }
-                    Spacer()
-                }
-                Spacer()
-            }
+//            VStack {
+//                HStack {
+//                    Button(action: {
+//                        skipToHome.toggle()
+//                    }) {
+//                        Text("Skip Onboarding")
+//                            .font(.title3)
+//                            .foregroundColor(.white)
+//                    }
+//                    Spacer()
+//                }
+//                Spacer()
+//            }
             
             if showCodeDialog {
                 VStack(spacing: 20) {

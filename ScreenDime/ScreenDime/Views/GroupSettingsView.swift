@@ -24,15 +24,12 @@ struct GroupSettingsView: View {
                         .padding(.trailing)
                 }
                 
-                
                 // Title
                 Text("Group Settings")
                     .font(.largeTitle)
                     .fontWeight(.bold)
                     .foregroundColor(.white)
-                
-                
-                
+                                
                 Spacer()
                 
             }
