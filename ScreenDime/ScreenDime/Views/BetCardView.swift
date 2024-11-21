@@ -11,7 +11,6 @@ struct BetCardView: View {
     
     @State var showingFullBet: Bool = false
     @State var showingAcceptDialog: Bool = false
-    @State var showingRejectDialog: Bool = false
     @State var betRejected: Bool = false
     
     // Colors for active and inactive states
@@ -59,6 +58,7 @@ struct BetCardView: View {
                         } else {
                             // Show "Join Bet" button
                             Button(action: {
+                                print("Showing accept dialog")
                                 showingAcceptDialog.toggle()
                             }) {
                                 Text("Join Bet")
@@ -151,6 +151,7 @@ struct BetCardView: View {
                 
                 HStack {
                     Button("Cancel") {
+                        print("Cancelling...")
                         showingAcceptDialog = false
                     }
                     .padding()
@@ -159,8 +160,9 @@ struct BetCardView: View {
                     .cornerRadius(8)
                     
                     Button("Confirm") {
-                        showingAcceptDialog = false
+                        print("Accepting Bet")
                         acceptBet()
+                        showingAcceptDialog = false
                     }
                     .padding()
                     .background(Color.green)
@@ -171,38 +173,6 @@ struct BetCardView: View {
             .frame(width: 215, height: 175)
             .multilineTextAlignment(.center)
             .applyBackground()
-            .cornerRadius(10)
-            .shadow(radius: 10)
-            .padding()
-        }
-        
-        if showingRejectDialog {
-            VStack(spacing: 20) {
-                Text("Are you sure you don't want to join \(title)?")
-                    .multilineTextAlignment(.center)
-                    .padding()
-                
-                HStack {
-                    Button("Cancel") {
-                        showingRejectDialog = false
-                    }
-                    .padding()
-                    .background(Color.red)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-                    
-                    Button("Confirm") {
-                        showingRejectDialog = false
-                        rejectBet()
-                    }
-                    .padding()
-                    .background(Color.green)
-                    .foregroundColor(.white)
-                    .cornerRadius(8)
-                }
-            }
-            .frame(width: 350, height: 300)
-            .background(Color.white)
             .cornerRadius(10)
             .shadow(radius: 10)
             .padding()
@@ -244,13 +214,11 @@ struct BetCardView: View {
     }
     
     private func acceptBet() {
-        // Find the bet in Global.shared.bets based on the title
         guard let bet = Global.shared.bets.first(where: { $0.name == title }) else {
             print("Bet not found!")
             return
         }
-        
-        // Add the user to the bet and the bet to the user's list
+        print("Adding \(bet.name) to main user")
         Global.shared.addUserToBet(addedUser: Global.shared.mainUser.id, bet: bet.id)
     }
     
@@ -309,7 +277,5 @@ struct BetCardView: View {
         print("\(title): \(userDetails)")
         return userDetails
     }
-
-
 }
 
