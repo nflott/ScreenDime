@@ -2,6 +2,7 @@ import SwiftUI
 
 struct GroupSettingsView: View {
     @ObservedObject private var global = Global.shared
+    @Environment(\.dismiss) var dismiss
     @State private var showActiveBets = true
     @State private var isEditingGroupName = false
     @State private var editedGroupName: String = ""
@@ -9,12 +10,35 @@ struct GroupSettingsView: View {
 
     var body: some View {
         VStack {
-            // Title
-            Text("Group Settings")
-                .font(.largeTitle)
-                .fontWeight(.bold)
-                .padding(.top)
-                .foregroundColor(.white)
+            HStack {
+                Button(action: {
+                    dismiss()
+                }) {
+                    Image(systemName: "arrow.left")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 25, height: 25)
+                        .foregroundColor(.blue)
+                        .fontWeight(.bold)
+                        .padding(.leading, 10)
+                        .padding(.trailing)
+                }
+                
+                
+                // Title
+                Text("Group Settings")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                
+                
+                
+                Spacer()
+                
+            }
+            .padding()
+            
+            
             
             // Current group information
             if let selectedGroup = global.groupPages.first(where: { $0.name == global.selectedGroup }) {
