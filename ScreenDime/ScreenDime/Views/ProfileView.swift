@@ -10,17 +10,39 @@ import SwiftUI
 struct ProfileView: View {
     @ObservedObject private var global = Global.shared
     
+    @Environment(\.dismiss) var dismiss
+    
     @State var showProfilePhotoPicker: Bool = false
     
     var body: some View {
         VStack {
-            Text("Your Profile")
-                .font(.largeTitle)
-                .padding()
-                .foregroundColor(.white)
-                .fontWeight(.bold)
-            
-            Spacer()
+            HStack {
+                Button(action: {
+                    dismiss()
+                }) {
+                    Image(systemName: "arrow.left")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 25, height: 25)
+                        .foregroundColor(.blue)
+                        .fontWeight(.bold)
+                        .padding(.leading, 20)
+                        .padding(.trailing, 25)
+                }
+                
+                
+                Text("Your Profile")
+                    .font(.largeTitle)
+                    .padding()
+                    .foregroundColor(.white)
+                    .fontWeight(.bold)
+                
+                
+                
+                Spacer()
+                
+            }
+            .padding()
             
             HStack {
                 Button(action: {
