@@ -89,7 +89,8 @@ struct BetCardView: View {
                                 
                 // Bet members
                 VStack(alignment: .leading, spacing: 4) {
-                    let sortedMembers = getUserDetails(for: bet.participants).sorted {
+                    let userDetails = bet.participants.map { getUserDetails(for: $0) }
+                    let sortedMembers = userDetails.compactMap { $0 }.sorted {
                         screenTimeToMinutes($0.screenTime) < screenTimeToMinutes($1.screenTime)
                     }
                     
@@ -259,23 +260,14 @@ struct BetCardView: View {
         }
     }
 
-    private func getUserDetails(for members: [UUID]) -> [(name: String, screenTime: String)] {
-        var userDetails = members.compactMap { memberUUID in
-            if let user = global.appUsers.first(where: { $0.id == memberUUID }) {
-                return (name: user.name, screenTime: user.screenTime)
-            } else {
-                return nil
-            }
+    private func getUserDetails(for memberUUID: UUID) -> (name: String, screenTime: String)? {
+        if let user = Global.shared.appUsers.first(where: { $0.id == memberUUID }) {
+            return (name: user.name, screenTime: user.screenTime)
         }
-
-        if members.contains(global.mainUser.id) {
-            if let mainUser = global.appUsers.first(where: { $0.id == global.mainUser.id }) {
-                userDetails.insert((name: mainUser.name, screenTime: mainUser.screenTime), at: 0)
-            }
+        else if memberUUID == Global.shared.mainUser.id {
+            return (name: Global.shared.mainUser.name, screenTime: Global.shared.mainUser.screenTime)
         }
-
-        print("\(title): \(userDetails)")
-        return userDetails
+        return nil
     }
 }
 

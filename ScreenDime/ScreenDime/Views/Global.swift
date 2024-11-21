@@ -159,11 +159,15 @@ class Global: ObservableObject {
         }
         
         print("Calling .joinbet on \(bets[betIndex].name)")
+        print("Bet participants: \(bets[betIndex].participants)")
         bets[betIndex].joinBet(user: addedUser)
+        print("Bet participants after: \(bets[betIndex].participants)")
 
         if addedUser == mainUser.id {
             print("addedUser is the Main User")
+            print("Main user bets: \(mainUser.bets)")
             mainUser.addBet(bet: bet)
+            print("Main user bets: \(mainUser.bets)")
         } else if let userIndex = appUsers.firstIndex(where: { $0.id == addedUser }) {
             print("Added user is NOT the Main User")
             appUsers[userIndex].addBet(bet: bet)
