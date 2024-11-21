@@ -47,6 +47,7 @@ struct Activity: Identifiable {
     var bet: String
     var date: String
 }
+
 let sampleActivityData: [Activity] = [
     Activity(name: "Bob", bet: "doing dishes", date: "Nov 13, 2024"),
     Activity(name: "Alice", bet: "$20", date: "Nov 12, 2024"),

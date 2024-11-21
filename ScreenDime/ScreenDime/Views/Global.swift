@@ -13,7 +13,6 @@ class Global: ObservableObject {
     
     @Published var selectedProfileIcon: String = "person.crop.circle.fill"
     @Published var selectedGroup: String = "The Avengers"
-    @Published var betsUserIsIn = ["Friendlier Wager", "Friendly Wager"]
 
     @AppStorage("hasOnboarded") var hasOnboarded: Bool = false
     @AppStorage("hasScreenTimePermission") var hasScreenTimePermission: Bool = false
@@ -58,20 +57,35 @@ class Global: ObservableObject {
             endDate: Date().addingTimeInterval(-1)
         )
         
-        bets.append(contentsOf:[friendlierWager, friendlyWager])
+        let friendliestWager = Bet(
+            name: "Friendliest Wager",
+            metric: "Weekly",
+            appTracking: "All Apps",
+            participants: [alice.id],
+            stakes: "Loser deals with the mice",
+            startDate: Date().addingTimeInterval(220000),
+            endDate: Date().addingTimeInterval(500000))
+        
+        bets.append(contentsOf:[friendliestWager, friendlierWager, friendlyWager])
         
         // create groups
         let group1 = Group(
             name: "The Avengers",
             members: [alice.id, bob.id, steve.id, daniel.id],
-            bets: [friendlierWager.id, friendlyWager.id]
+            bets: [friendliestWager.id, friendlierWager.id, friendlyWager.id]
         )
         
-        groupPages.append(group1)
+        let group2 = Group(
+            name: "Roomies!",
+            members: [bob.id, steve.id, daniel.id],
+            bets: [])
+        
+        groupPages.append(contentsOf:[group1, group2])
 
         // assign groups and bets to users
         appUsers.indices.forEach { index in
             appUsers[index].addGroup(group: group1.id)
+            appUsers[index].addGroup(group: group2.id)
             
             let userBets = bets.filter { $0.participants.contains(appUsers[index].id) }
             userBets.forEach { bet in
@@ -138,23 +152,20 @@ class Global: ObservableObject {
             print("Bet not found!")
             return
         }
-        
-        if mainUser.id == addedUser {
-            print("Main user identified")
-            print(bets[betIndex].joinBet(user: mainUser.id))
-            mainUser.addBet(bet: bet)
+
+        if bets[betIndex].participants.contains(addedUser) {
+            print("User is already a participant in the bet.")
+            return
         }
-        else {
-            guard let userIndex = appUsers.firstIndex(where: { $0.id == addedUser }) else {
-                print("User not found!")
-                return
-            }
-            print("Other user identified")
-            print(bets[betIndex].joinBet(user: addedUser))
+
+        bets[betIndex].joinBet(user: addedUser)
+
+        if addedUser == mainUser.id {
+            mainUser.addBet(bet: bet)
+        } else if let userIndex = appUsers.firstIndex(where: { $0.id == addedUser }) {
             appUsers[userIndex].addBet(bet: bet)
         }
     }
-
 }
 
 struct Background: ViewModifier {

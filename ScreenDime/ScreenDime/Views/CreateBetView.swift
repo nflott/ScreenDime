@@ -17,18 +17,38 @@ struct CreateBetView: View {
     @State var appTracked = "Select what apps to track"
     let metrics = ["Daily Average", "Weekly Average", "Overall Usage"]
     let apps = ["All apps", "Snapchat", "Instagram", "Facebook", "TikTok", "Reddit", "iMessage"]
-       
+    
     @State var startDate = Date()
     @State var endDate = Date()
     @State var stakes = ""
-
+    
     var body: some View {
         VStack {
-            Text("Create a Bet")
-                .font(.largeTitle)
-                .padding()
-                .foregroundColor(.white)
-                .fontWeight(.bold)
+            HStack {
+                Button(action: {
+                    dismiss()
+                }) {
+                    Image(systemName: "arrow.left")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 25, height: 25)
+                        .foregroundColor(.blue)
+                        .fontWeight(.bold)
+                        .padding(.leading, 10)
+                        .padding(.trailing)
+                }
+                
+                // Title
+                Text("Create Bet")
+                    .font(.largeTitle)
+                    .fontWeight(.bold)
+                    .foregroundColor(.white)
+                                
+                Spacer()
+                
+            }
+            .padding()
+
             
             // Write in a name for the bet
             TextField("Name your bet", text: $betName)

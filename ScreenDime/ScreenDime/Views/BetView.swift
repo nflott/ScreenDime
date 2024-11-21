@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct BetView: View {
+    @Environment(\.dismiss) var dismiss
+    
     @State var bet: Bet
     
     // Function to get user details based on UUIDs
@@ -20,11 +22,32 @@ struct BetView: View {
     
     var body: some View {
         VStack {
-            Text("\(bet.name)")
-                .font(.largeTitle)
-                .padding()
-                .foregroundColor(.white)
-                .fontWeight(.bold)
+            HStack {
+                Button(action: {
+                    dismiss()
+                }) {
+                    Image(systemName: "arrow.left")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 25, height: 25)
+                        .foregroundColor(.blue)
+                        .fontWeight(.bold)
+                        .padding(.leading, 20)
+                }
+                
+                
+                Text("\(bet.name)")
+                    .font(.largeTitle)
+                    .padding()
+                    .foregroundColor(.white)
+                    .fontWeight(.bold)
+                
+                
+                
+                Spacer()
+                
+            }
+            .padding()
             
             Text("Started: \(bet.startDate.formatted(date: .abbreviated, time: .omitted))")
                 .padding()
@@ -39,6 +62,16 @@ struct BetView: View {
                 Text("This bet has ended.")
                     .foregroundColor(.white)
                     .font(.title2)
+            }
+            HStack {
+                Text("Leaderboard")
+                    .font(.title)
+                    .padding()
+                    .padding([.bottom], -20)
+                    .foregroundColor(.white)
+                    .fontWeight(.bold)
+                
+                Spacer()
             }
             
             VStack {
@@ -127,4 +160,19 @@ struct BetView: View {
         let components = calendar.dateComponents([.day], from: date1, to: date2)
         return components.day ?? 0
     }
+}
+
+struct BetView_Preview: PreviewProvider {
+    static var previews: some View {
+        BetView(bet: Bet(
+            name: "Friendly Wager",
+            metric: "Weekly",
+            appTracking: "All Apps",
+            participants: [],
+            stakes: "Loser does the dishes",
+            startDate: Date().addingTimeInterval(-5),
+            endDate: Date().addingTimeInterval(-1)
+        ))
+    }
+    
 }

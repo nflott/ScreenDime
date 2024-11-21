@@ -10,7 +10,6 @@ import SwiftUI
 struct HomeView: View {
     @ObservedObject private var global = Global.shared
 
-    @State private var showingSettings = false
     @State private var showingGroupSettings = false
     @State private var showingGroupCreation = false
     @State private var showingProfile = false
@@ -29,20 +28,6 @@ struct HomeView: View {
                 HStack {
                     if(selectedTab == 0) {
                         Button(action: {
-                            showingSettings.toggle()
-                        }) {
-                            Image(systemName: "gearshape.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 40, height: 40)
-                                .foregroundColor(.white)
-                                .padding([.leading, .trailing], 10)
-                        }
-                        .padding()
-                        
-                        Spacer()
-                        
-                        Button(action: {
                             showingProfile.toggle()
                         }) {
                             Image(systemName: Global.shared.selectedProfileIcon)
@@ -53,12 +38,14 @@ struct HomeView: View {
                                 .padding([.leading, .trailing], 10)
                         }
                         .padding()
+                        
+                        Spacer()
                     }
                     else {
                         Button(action: {
                             showingGroupSettings.toggle()
                         }) {
-                            Image(systemName: "gearshape.fill")
+                            Image(systemName: "person.2.circle.fill")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 40, height: 40)
@@ -68,18 +55,6 @@ struct HomeView: View {
                         .padding()
                         
                         Spacer()
-                        
-                        Button(action: {
-                            showingBetCreation.toggle()
-                        }) {
-                            Image(systemName: "plus.circle.fill")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 40, height: 40)
-                                .foregroundColor(.white)
-                                .padding([.leading, .trailing], 10)
-                        }
-                        .padding()
                     }
                 }
                 .padding([.top, .bottom], 10)
@@ -104,9 +79,6 @@ struct HomeView: View {
                 }
             }
             .applyBackground()
-            .sheet(isPresented: $showingSettings) {
-                SettingsView()
-            }
             .sheet(isPresented: $showingGroupSettings) {
                 GroupSettingsView()
             }
@@ -120,6 +92,7 @@ struct HomeView: View {
                 CreateBetView()
             }
             
+            // Display the group name or settings icon based on the tab
             if selectedTab == 0 {
                 VStack {
                     Text(tabs[selectedTab].title)
@@ -137,29 +110,58 @@ struct HomeView: View {
                     Button(action: {
                         showingGroupSelector.toggle()
                     }) {
-                        VStack {
+                        HStack(spacing: 4) {
                             Text(global.selectedGroup)
                                 .font(.largeTitle)
                                 .foregroundColor(.white)
                                 .fontWeight(.bold)
-                                .frame(maxWidth: .infinity, alignment: .top)
-                                .padding([.top], 26)
-                            
-                            Text("Change v")
-                                .font(.caption2)
+                                .underline(color: .white)
+
+                            Image(systemName: "arrowtriangle.down.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 10, height: 10)
                                 .foregroundColor(.white)
-                                .fontWeight(.bold)
-                            
-                            if showingGroupSelector {
-                                dropdownMenu()
-                                    .transition(.move(edge: .top).combined(with: .opacity))
-                                    .animation(.easeInOut, value: showingGroupSelector)
-                            }
                         }
+                        .frame(maxWidth: .infinity, alignment: .top)
+                        .padding([.top], 26)
                     }
-                    .frame(width:200)
-                    
+                    .buttonStyle(PlainButtonStyle())
+
+                    if showingGroupSelector {
+                        dropdownMenu()
+                            .transition(.move(edge: .top).combined(with: .opacity))
+                            .animation(.easeInOut, value: showingGroupSelector)
+                    }
+
                     Spacer()
+                }
+            }
+
+            // Floating plus button to create a bet
+            if selectedTab == 1 {
+                VStack {
+                    Spacer()
+                    
+                    HStack {
+                        Spacer()
+                        Button(action: {
+                            showingBetCreation.toggle()
+                        }) {
+                            Circle()
+                                .fill(Color.blue)
+                                .frame(width: 60, height: 60)
+                                .overlay(
+                                    Image(systemName: "plus")
+                                        .resizable()
+                                        .scaledToFit()
+                                        .frame(width: 30, height: 30)
+                                        .foregroundColor(.white)
+                                )
+                                .shadow(radius: 10)
+                        }
+                        .padding([.bottom, .trailing], 20)
+                    }
                 }
             }
         }
@@ -167,6 +169,7 @@ struct HomeView: View {
             tabs[1].title = global.selectedGroup
         }
     }
+
     
     @ViewBuilder
     private func dropdownMenu() -> some View {

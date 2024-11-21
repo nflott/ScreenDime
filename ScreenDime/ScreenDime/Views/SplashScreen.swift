@@ -32,7 +32,6 @@ struct SplashScreen: View {
                         }
                     }
             }
-            
             .fullScreenCover(isPresented: $showNextScreen) {
                 if !Global.shared.hasOnboarded {
                     VerificationView()

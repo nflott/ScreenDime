@@ -36,6 +36,10 @@ struct Bet: Identifiable {
         return Date() >= startDate
     }
     
+    func hasEnded() -> Bool {
+        return Date() >= endDate
+    }
+    
     mutating func joinBet(user: UUID) -> String {
         guard !isActive() else {
             return "Bet is currently active. You cannot join."

@@ -8,14 +8,73 @@
 import SwiftUI
 
 struct ProfileView: View {
+    @ObservedObject private var global = Global.shared
+    
+    @Environment(\.dismiss) var dismiss
+    
+    @State var showProfilePhotoPicker: Bool = false
+    
     var body: some View {
         VStack {
-            Text("Profile")
-                .font(.largeTitle)
-                .padding()
+            HStack {
+                Button(action: {
+                    dismiss()
+                }) {
+                    Image(systemName: "arrow.left")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 25, height: 25)
+                        .foregroundColor(.blue)
+                        .fontWeight(.bold)
+                        .padding(.leading, 20)
+                        .padding(.trailing, 25)
+                }
+                
+                
+                Text("Your Profile")
+                    .font(.largeTitle)
+                    .padding()
+                    .foregroundColor(.white)
+                    .fontWeight(.bold)
+                
+                
+                
+                Spacer()
+                
+            }
+            .padding()
+            
+            HStack {
+                Button(action: {
+                    showProfilePhotoPicker.toggle()
+                }) {
+                    Text("Change profile picture")
+                        .fontWeight(.bold)
+                        .frame(maxWidth: .infinity, maxHeight: 50)
+                        .font(.headline)
+                        .foregroundColor(.white)
+                        .background(Color.blue)
+                        .cornerRadius(8)
+                        .padding()
+                    
+                }
+                
+            }
+            .padding(.bottom, 150)
+            
+            Text("More options coming soon!")
+                .fontWeight(.bold)
+                .font(.headline)
+                .foregroundColor(.white)
+                .padding(.bottom, 400)
         }
+        
+       
         .navigationBarTitle("Profile", displayMode: .inline)
         .applyBackground()
+        .sheet(isPresented: $showProfilePhotoPicker) {
+            ProfilePhotoView()
+        }
     }
 }
 
