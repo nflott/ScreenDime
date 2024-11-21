@@ -137,27 +137,31 @@ struct HomeView: View {
                     Button(action: {
                         showingGroupSelector.toggle()
                     }) {
-                        VStack {
-                            Text(global.selectedGroup)
-                                .font(.largeTitle)
+                        HStack(spacing: 4) { // Add small spacing between the arrow and the text
+                                    
+                                    Text(global.selectedGroup)
+                                        .font(.largeTitle)
+                                        .foregroundColor(.white)
+                                        .fontWeight(.bold)
+                                        .underline(color: .white)
+                            
+                            Image(systemName: "arrowtriangle.down.fill")
+                                .resizable()
+                                .scaledToFit()
+                                .frame(width: 10, height: 10)
                                 .foregroundColor(.white)
-                                .fontWeight(.bold)
+                                }
                                 .frame(maxWidth: .infinity, alignment: .top)
                                 .padding([.top], 26)
-                            
-                            Text("Change v")
-                                .foregroundColor(.white)
-                                .fontWeight(.bold)
-                            
-                            if showingGroupSelector {
-                                dropdownMenu()
-                                    .transition(.move(edge: .top).combined(with: .opacity))
-                                    .animation(.easeInOut, value: showingGroupSelector)
                             }
-                        }
-                    }
-                    .frame(width:200)
+                            .buttonStyle(PlainButtonStyle())
                     
+                    if showingGroupSelector {
+                        dropdownMenu()
+                            .transition(.move(edge: .top).combined(with: .opacity))
+                            .animation(.easeInOut, value: showingGroupSelector)
+                    }
+
                     Spacer()
                 }
             }
