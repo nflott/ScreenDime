@@ -18,7 +18,7 @@ class Global: ObservableObject {
     @AppStorage("hasScreenTimePermission") var hasScreenTimePermission: Bool = false
     
     @Published var appUsers: [User] = []
-    @Published var mainUser: User = User(name: "You", age: 21, phoneNumber: "987237487", screenTime: "0h 0m", email: "you@gmail.com", invites: [], groups: [], bets: [])
+    @Published var mainUser: User = User(name: "You", age: 21, phoneNumber: "987237487", screenTime: "4h 24m", email: "you@gmail.com", invites: [], groups: [], bets: [])
     @Published var bets: [Bet] = []
     @Published var groupPages: [Group] = []
     
@@ -154,22 +154,14 @@ class Global: ObservableObject {
         }
 
         if bets[betIndex].participants.contains(addedUser) {
-            print("User is already a participant in the bet.")
             return
         }
         
-        print("Calling .joinbet on \(bets[betIndex].name)")
-        print("Bet participants: \(bets[betIndex].participants)")
-        bets[betIndex].joinBet(user: addedUser)
-        print("Bet participants after: \(bets[betIndex].participants)")
+        print(bets[betIndex].joinBet(user: addedUser))
 
         if addedUser == mainUser.id {
-            print("addedUser is the Main User")
-            print("Main user bets: \(mainUser.bets)")
             mainUser.addBet(bet: bet)
-            print("Main user bets: \(mainUser.bets)")
         } else if let userIndex = appUsers.firstIndex(where: { $0.id == addedUser }) {
-            print("Added user is NOT the Main User")
             appUsers[userIndex].addBet(bet: bet)
         }
     }

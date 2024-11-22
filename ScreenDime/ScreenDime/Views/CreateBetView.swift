@@ -142,7 +142,7 @@ struct CreateBetView: View {
     }
     
     func fieldsCompleted() -> Bool {
-        return (stakes != "") && (metric != "Select how to measure your usage") && (appTracked != "Select what apps to track") && validDates
+        return (stakes != "") && (metric != metric) && (appTracked != appTracked) && validDates
     }
     
     func checkDates() {
