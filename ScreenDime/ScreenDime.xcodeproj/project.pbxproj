@@ -61,6 +61,7 @@
 		41CCBCA32CE663DA0016E142 /* Exceptions for "ScreenDime" folder in "ScreenDime" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
+				"Preview Content",
 				"Test Plans/TestPlan.xctestplan",
 			);
 			target = 416754562CA2F65B00EEA777 /* ScreenDime */;
