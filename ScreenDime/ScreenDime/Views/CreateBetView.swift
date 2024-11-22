@@ -73,6 +73,7 @@ struct CreateBetView: View {
             }
             label: {
                 Label(appTracked, systemImage: "arrowtriangle.down.circle")
+                    .foregroundColor(.blue)
             }
             .padding()
             
@@ -142,7 +143,7 @@ struct CreateBetView: View {
     }
     
     func fieldsCompleted() -> Bool {
-        return (stakes != "") && (metric != metric) && (appTracked != appTracked) && validDates
+        return (betName != "") && (stakes != "") && (metric != "Select how to measure your usage") && (appTracked != "Select what apps to track") && validDates
     }
     
     func checkDates() {
