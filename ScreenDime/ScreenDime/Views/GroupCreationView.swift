@@ -12,11 +12,25 @@ struct GroupCreationView: View {
     
     var body: some View {
         VStack {
-            Text("Create a New Group")
-                .font(.largeTitle)
-                .padding()
-                .foregroundColor(.white)
-                .fontWeight(.bold)
+            HStack {
+                Button(action: {
+                    dismiss()
+                }) {
+                    Image(systemName: "arrow.left")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 25, height: 25)
+                        .foregroundColor(.blue)
+                        .fontWeight(.bold)
+                        .padding(.leading, 20)
+                }
+                
+                Text("Create Group")
+                    .font(.largeTitle)
+                    .padding()
+                    .foregroundColor(.white)
+                    .fontWeight(.bold)
+            }
             
             Text("Group Name")
                 .foregroundColor(.white)
