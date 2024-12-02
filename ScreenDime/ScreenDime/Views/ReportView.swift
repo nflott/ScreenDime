@@ -1,6 +1,8 @@
 import SwiftUI
 
 struct ReportView: View {
+    @Environment(\.dismiss) var dismiss
+    
     // temp data -----
     let appUsageData: [String: String] = [
         "Instagram": "2h 5m",
@@ -15,19 +17,38 @@ struct ReportView: View {
     
     var body: some View {
         ZStack {
-           
             Color.black.ignoresSafeArea()
-            
-            ScrollView {
-                VStack(spacing: 30) {
-                    DailyAverageView(dailyAverage: dailyAverage)
-                    WeeklyTotalView(totalWeeklyScreenTime: totalWeeklyScreenTime)
-                    AppUsageListView(appUsageData: appUsageData)
+
+            VStack {
+                HStack {
+                    Button(action: {
+                        dismiss()
+                    }) {
+                        Image(systemName: "arrow.left")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 25, height: 25)
+                            .foregroundColor(.blue)
+                            .fontWeight(.bold)
+                            .padding(.leading, 20)
+                    }
+                    .padding()
+                    
                     Spacer()
                 }
-                .navigationBarTitle("Screen Time Report", displayMode: .inline)
-                .padding()
+                
+                ScrollView {
+                    VStack(spacing: 30) {
+                        DailyAverageView(dailyAverage: dailyAverage)
+                        WeeklyTotalView(totalWeeklyScreenTime: totalWeeklyScreenTime)
+                        AppUsageListView(appUsageData: appUsageData)
+                        Spacer()
+                    }
+                    .navigationBarTitle("Screen Time Report", displayMode: .inline)
+                    .padding()
+                }
             }
+            .applyBackground()
         }
     }
 }

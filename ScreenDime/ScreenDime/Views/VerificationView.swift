@@ -36,6 +36,11 @@ struct VerificationView: View {
                         .foregroundColor(.white)
                         .multilineTextAlignment(.center)
                     
+                    Text("Because this is still a beta version of the app, we won't actually be tracking your phone number or sending a text - but feel free to act as though we were!")
+                        .padding()
+                        .foregroundColor(.white)
+                        .multilineTextAlignment(.center)
+                    
                     HStack(spacing:0) {
                         Picker("Select Area Code", selection: $areaCode) {
                             ForEach(areaCodes, id: \.self) { code in

@@ -41,11 +41,13 @@ struct OnboardingView: View {
                         .onChange(of: username) {
                             isUsernameTaken = false
                         }
+                        .disableAutocorrection(true)
                     
                     TextField("Enter your full name", text: $name)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding()
                         .autocapitalization(.words)
+                        .disableAutocorrection(true)
                     
                     HStack {
                         Text("Enter your birthdate:")
@@ -126,7 +128,7 @@ struct OnboardingView: View {
         let dob = calendar.startOfDay(for: dateOfBirth)
         let today = calendar.startOfDay(for: Date())
             
-        return !name.isEmpty && username.count >= 3 && !isUsernameTaken && !name.isEmpty && dob < today
+        return !name.isEmpty /*&& username.count >= 3*/ && !isUsernameTaken && !name.isEmpty /*&& dob < today*/
     }
     
     func checkUsername() {
