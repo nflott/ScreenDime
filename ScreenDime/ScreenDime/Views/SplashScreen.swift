@@ -26,7 +26,7 @@ struct SplashScreen: View {
                             opacity = 0.0
                         }
                         
-                        // Navigate to the next screen after the animation
+                        //Navigate to the next screen after the animation
                         DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
                             showNextScreen = true
                         }

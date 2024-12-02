@@ -159,7 +159,7 @@ struct OnboardingView: View {
         let dob = calendar.startOfDay(for: dateOfBirth)
         let today = calendar.startOfDay(for: Date())
             
-        return !name.isEmpty && username.count >= 3 && !isUsernameTaken && !name.isEmpty && dob < today
+        return !name.isEmpty /*&& username.count >= 3*/ && !isUsernameTaken && !name.isEmpty //"&& dob < today
     }
     
     func checkUsername() {
