@@ -100,7 +100,7 @@ struct GroupCreationView: View {
             // Create group and save it to the current group
             Button(action: {
                 Global.shared.createGroup(name: groupName, members: members)
-                // Make the tab switch to the new group!!
+                Global.shared.selectedGroup = groupName
                 dismiss()
             }) {
                 Text("Create Group")
@@ -114,8 +114,12 @@ struct GroupCreationView: View {
             }
             .disabled(fieldsCompleted() ? false : true)
         }
-            .padding()
-            .applyBackground()
+        .padding()
+        .applyBackground()
+        .onAppear {
+            // Initialize matchedUsers with all users when the view appears
+            matchedUsers = global.appUsers.map { $0.id }
+        }
     }
     
     // Function to check for completed fields
@@ -125,10 +129,15 @@ struct GroupCreationView: View {
     
     // Function to update matched users based on searchText
     func filterMatchedUsers() {
-        matchedUsers = global.appUsers.filter { user in
-            user.name.lowercased().hasPrefix(searchText.lowercased()) &&  // Name should start with searchText
-            !members.contains(user.id)      // Avoid already added members
-        }.map { $0.id }
+        // Only filter if there is search text, otherwise show all users
+        if searchText.isEmpty {
+            matchedUsers = global.appUsers.map { $0.id }
+        } else {
+            matchedUsers = global.appUsers.filter { user in
+                user.name.lowercased().hasPrefix(searchText.lowercased()) &&  // Name should start with searchText
+                !members.contains(user.id)      // Avoid already added members
+            }.map { $0.id }
+        }
     }
 }
 

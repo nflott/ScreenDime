@@ -10,6 +10,7 @@ import SwiftUI
 struct OnboardingView: View {
     @State private var needsToShareData = false
     @State private var showNextScreen = false
+    @State private var showWheelPicker = false
     @State private var username = ""
     @State private var name = ""
     @State private var dateOfBirth = Date()
@@ -49,13 +50,39 @@ struct OnboardingView: View {
                         .autocapitalization(.words)
                         .disableAutocorrection(true)
                     
-                    HStack {
-                        Text("Enter your birthdate:")
-                            .foregroundColor(.white)
-                            .fontWeight(.bold)
+                    ZStack {
+                        HStack {
+                            Text("Enter your birthdate:")
+                                .foregroundColor(.white)
+                                .fontWeight(.bold)
+                            
+                            Button(action: {
+                                showWheelPicker = true
+                            }) {
+                                Text(formatDate(date: dateOfBirth))
+                                    .foregroundColor(.blue)
+                            }
+                        }
                         
-                        DatePicker("Date of Birth", selection: $dateOfBirth, displayedComponents: .date)
-                            .labelsHidden()
+                        if showWheelPicker {
+                            VStack {
+                                DatePicker("Select Date", selection: $dateOfBirth, displayedComponents: .date)
+                                    .datePickerStyle(.wheel)
+                                    .labelsHidden()
+                                
+                                Button("Done") {
+                                    showWheelPicker = false
+                                }
+                                .padding()
+                                .background(Color.blue)
+                                .foregroundColor(.white)
+                                .cornerRadius(8)
+                            }
+                            .padding()
+                            .applyBackground()
+                            .cornerRadius(12)
+                            .shadow(radius: 10)
+                        }
                     }
                 
                     
@@ -88,7 +115,7 @@ struct OnboardingView: View {
                         Text("Confirm Username")
                             .font(.headline)
                         
-                        Text("Are you sure you want to set your username to '\(username)'? You can't change it later!")
+                        Text("Are you sure you want to set your username to \(username)? You can't change it later!")
                             .multilineTextAlignment(.center)
                             .padding()
                         
@@ -121,6 +148,12 @@ struct OnboardingView: View {
             .padding()
             .applyBackground()
         }
+    }
+    
+    private func formatDate(date: Date) -> String {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "MMM d, yyyy" // Truncated month format
+        return formatter.string(from: date)
     }
     
     func canProceed() -> Bool {

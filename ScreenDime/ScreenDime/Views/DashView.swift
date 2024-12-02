@@ -57,9 +57,7 @@ let sampleActivityData: [Activity] = [
     Activity(name: "John", bet: "$3", date: "Nov 11, 2024"),
     Activity(name: "Sarah", bet: "getting lunch", date: "Nov 10, 2024")
 ]
-// ------
 
-// Activity Row view for each item in the list
 struct ActivityRow: View {
     var activity: Activity
     

@@ -16,33 +16,32 @@ struct ProfileView: View {
     
     var body: some View {
         VStack {
-            HStack {
-                Button(action: {
-                    dismiss()
-                }) {
-                    Image(systemName: "arrow.left")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 25, height: 25)
-                        .foregroundColor(.blue)
-                        .fontWeight(.bold)
-                        .padding(.leading, 20)
-                        .padding(.trailing, 25)
+            ZStack {
+                HStack {
+                    Button(action: {
+                        dismiss()
+                    }) {
+                        Image(systemName: "arrow.left")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 25, height: 25)
+                            .foregroundColor(.blue)
+                            .fontWeight(.bold)
+                            .padding(.leading, 20)
+                            .padding(.trailing, 25)
+                    }
+                    
+                    Spacer()
                 }
+                .padding()
                 
-                
-                Text("Your Profile")
+                Text("App Settings")
                     .font(.largeTitle)
                     .padding()
                     .foregroundColor(.white)
                     .fontWeight(.bold)
-                
-                
-                
-                Spacer()
-                
+                    .multilineTextAlignment(.center)
             }
-            .padding()
             
             HStack {
                 Button(action: {

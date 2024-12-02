@@ -48,6 +48,7 @@ struct VerificationView: View {
                             }
                         }
                         .pickerStyle(MenuPickerStyle())
+                        .accentColor(.blue)
                         
                         TextField("Enter your phone number", text: $phoneNumber)
                             .textFieldStyle(RoundedBorderTextFieldStyle())

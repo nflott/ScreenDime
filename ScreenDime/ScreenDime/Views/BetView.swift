@@ -12,14 +12,6 @@ struct BetView: View {
     
     @State var bet: Bet
     
-    // Function to get user details based on UUIDs
-    private func getUserDetails(for memberUUID: UUID) -> (name: String, screenTime: String)? {
-        if let user = Global.shared.appUsers.first(where: { $0.id == memberUUID }) {
-            return (name: user.name, screenTime: user.screenTime)
-        }
-        return nil
-    }
-    
     var body: some View {
         VStack {
             HStack {
@@ -75,39 +67,40 @@ struct BetView: View {
             }
             
             VStack {
-                // Loop through participants (UUIDs) and fetch user details
-                ForEach(0..<bet.participants.count, id: \.self) { index in
-                    if let user = getUserDetails(for: bet.participants[index]) {
-                        HStack {
-                            // Placeholder for photo circle
-                            Circle()
-                                .fill(Color.white.opacity(0.8))
-                                .frame(width: 50, height: 50)
-                                .overlay(
-                                    Image(systemName: "person.fill")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 25, height: 25)
-                                        .foregroundColor(.gray)
-                                )
-                            
-                            // Member's name with ranking number
-                            Text("\(index + 1). \(user.name)")
-                                .foregroundColor(.white)
-                                .font(.title2)
-                            
-                            Spacer()
-                            
-                            // Screen time metric aligned to the right
-                            Text(user.screenTime)
-                                .foregroundColor(.white)
-                                .font(.title2)
-                        }
-                        .padding(.horizontal, 20)
+                let userDetails = bet.participants.map { getUserDetails(for: $0) }
+                let sortedMembers = userDetails.compactMap { $0 }.sorted {
+                    screenTimeToMinutes($0.screenTime) < screenTimeToMinutes($1.screenTime)
+                }
+                ForEach(sortedMembers, id: \.name) { user in
+                    HStack {
+                        Circle()
+                            .fill(Color.white.opacity(0.8))
+                            .frame(width: 50, height: 50)
+                            .overlay(
+                                Image(systemName: "person.fill")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 25, height: 25)
+                                    .foregroundColor(.gray)
+                            )
+                        
+                        // Member's name with ranking number
+                        Text("\(sortedMembers.firstIndex(where: { $0.name == user.name })! + 1). \(user.name)")
+                            .foregroundColor(.white)
+                            .font(.title2)
+                        
+                        Spacer()
+                        
+                        // Screen time metric aligned to the right
+                        Text(user.screenTime)
+                            .foregroundColor(.white)
+                            .font(.title2)
                     }
+                    .padding(.horizontal, 20)
                 }
             }
             .padding(.vertical, 30)
+
             
             HStack {
                 Text("Details")
@@ -149,6 +142,36 @@ struct BetView: View {
             Spacer()
         }
         .applyBackground()
+    }
+    
+    private func screenTimeToMinutes(_ time: String) -> Int {
+        let regex = try! NSRegularExpression(pattern: "(\\d+)(h|m)", options: [])
+        let nsRange = NSRange(time.startIndex..<time.endIndex, in: time)
+        var minutes = 0
+        
+        regex.enumerateMatches(in: time, options: [], range: nsRange) { match, _, _ in
+            if let match = match {
+                let value = (time as NSString).substring(with: match.range(at: 1))
+                let unit = (time as NSString).substring(with: match.range(at: 2))
+                if unit == "h" {
+                    minutes += Int(value)! * 60
+                } else if unit == "m" {
+                    minutes += Int(value)!
+                }
+            }
+        }
+        
+        return minutes
+    }
+    
+    private func getUserDetails(for memberUUID: UUID) -> (name: String, screenTime: String)? {
+        if let user = Global.shared.appUsers.first(where: { $0.id == memberUUID }) {
+            return (name: user.name, screenTime: user.screenTime)
+        }
+        else if memberUUID == Global.shared.mainUser.id {
+            return (name: Global.shared.mainUser.name, screenTime: Global.shared.mainUser.screenTime)
+        }
+        return nil
     }
     
     private func daysLeft() -> Int {

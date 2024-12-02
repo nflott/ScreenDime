@@ -18,7 +18,7 @@ class Global: ObservableObject {
     @AppStorage("hasScreenTimePermission") var hasScreenTimePermission: Bool = false
     
     @Published var appUsers: [User] = []
-    @Published var mainUser: User = User(name: "You", age: 21, phoneNumber: "987237487", screenTime: "0h 0m", email: "you@gmail.com", invites: [], groups: [], bets: [])
+    @Published var mainUser: User = User(name: "You", age: 21, phoneNumber: "987237487", screenTime: "4h 24m", email: "you@gmail.com", invites: [], groups: [], bets: [])
     @Published var bets: [Bet] = []
     @Published var groupPages: [Group] = []
     
@@ -154,11 +154,10 @@ class Global: ObservableObject {
         }
 
         if bets[betIndex].participants.contains(addedUser) {
-            print("User is already a participant in the bet.")
             return
         }
-
-        bets[betIndex].joinBet(user: addedUser)
+        
+        print(bets[betIndex].joinBet(user: addedUser))
 
         if addedUser == mainUser.id {
             mainUser.addBet(bet: bet)
