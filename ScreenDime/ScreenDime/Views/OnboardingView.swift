@@ -107,7 +107,7 @@ struct OnboardingView: View {
                     }
                 }
                 .fullScreenCover(isPresented: $showNextScreen) {
-                    ProfilePhotoView()
+                    OnboardingPhotoView()
                 }
                 
                 if showConfirmationDialog {
@@ -115,7 +115,7 @@ struct OnboardingView: View {
                         Text("Confirm Username")
                             .font(.headline)
                         
-                        Text("Are you sure you want to set your username to \(username)? You can't change it later!")
+                        Text("Are you sure you want to set your username to \(username)?")
                             .multilineTextAlignment(.center)
                             .padding()
                         
@@ -172,7 +172,7 @@ struct OnboardingView: View {
     }
     
     func submitUsername() {
-        takenUsernames.append(username)
+        //takenUsernames.append(username)
         showNextScreen = true
     }
 }

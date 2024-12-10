@@ -1,5 +1,5 @@
 //
-//  ProfilePhotoView.swift
+//  OnboardingPhotoView.swift
 //  ScreenDime
 //
 //  Created by Luke Currier on 11/4/24.
@@ -7,7 +7,7 @@
 
 import SwiftUI
 
-struct ProfilePhotoView: View {
+struct OnboardingPhotoView: View {
     @Environment(\.dismiss) var dismiss
     @State private var showNextScreen = false
     @State private var showIconPicker = false
@@ -81,17 +81,7 @@ struct ProfilePhotoView: View {
                 ImagePickerView()
             }
             
-            if !Global.shared.hasOnboarded {
-                Button(action: {
-                    showNextScreen = true
-                }) {
-                    Text("Skip for now")
-                        .padding(8)
-                        .foregroundColor(.white)
-                }
-                .padding()
-            }
-            else {
+            HStack {
                 Button(action: {
                     dismiss()
                 }) {
@@ -104,6 +94,9 @@ struct ProfilePhotoView: View {
                         .padding(.leading, 10)
                         .padding(.trailing)
                 }
+                .padding()
+                
+                Spacer()
             }
             
         }
@@ -165,8 +158,8 @@ struct ImagePickerView : View {
     }
 }
 
-struct ProfilePhoto_Previews : PreviewProvider {
+struct OnboardingPhoto_Previews : PreviewProvider {
     static var previews: some View {
-        ProfilePhotoView()
+        OnboardingPhotoView()
     }
 }

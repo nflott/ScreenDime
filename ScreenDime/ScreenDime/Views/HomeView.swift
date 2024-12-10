@@ -86,7 +86,7 @@ struct HomeView: View {
                 GroupCreationView()
             }
             .sheet(isPresented: $showingProfile) {
-                ProfileView()
+                SettingsView()
             }
             .sheet(isPresented: $showingBetCreation) {
                 CreateBetView()
