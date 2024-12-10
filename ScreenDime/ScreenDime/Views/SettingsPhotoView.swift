@@ -1,0 +1,106 @@
+//
+//  SettingsPhotoView.swift
+//  ScreenDime
+//
+//  Created by Luke Currier on 11/4/24.
+//
+
+import SwiftUI
+
+struct SettingsPhotoView: View {
+    @Environment(\.dismiss) var dismiss
+    @State private var showIconPicker = false
+    @State private var showImagePicker = false
+    @State private var selectedIcon = ""
+    @ObservedObject var global = Global.shared
+    
+    var body: some View {
+        ZStack(alignment: .topTrailing) {
+            VStack {
+                Text("Set Profile Photo")
+                    .font(.title)
+                    .padding()
+                    .foregroundColor(.white)
+                    .fontWeight(.bold)
+                
+                Image(systemName: Global.shared.selectedProfileIcon)
+                    .font(.system(size: 250))
+                    .frame(width:200, height:300)
+                    .onTapGesture {
+                        showIconPicker = true
+                    }
+                    .padding()
+                
+                HStack {
+                    Button(action: {
+                        showIconPicker = true
+                    }) {
+                        Text("Choose an icon")
+                            .foregroundColor(.white)
+                            .padding()
+                            .cornerRadius(10)
+                            .background(Color.clear)
+                    }
+                    
+                    Button(action: {
+                        showImagePicker = true
+                    }) {
+                        Text("Choose a photo")
+                            .foregroundColor(.white)
+                            .padding()
+                            .cornerRadius(10)
+                            .background(Color.clear)
+                    }
+                }
+                .padding()
+                
+                Button(action: {
+                    dismiss()
+                }) {
+                    Text("Set Photo")
+                        .font(.title2)
+                        .padding()
+                        .foregroundColor(.white)
+                        .background(selectedIcon == Global.shared.selectedProfileIcon ? Color.gray : Color.blue)
+                        .cornerRadius(10)
+                        .frame(width:200)
+                }
+                .padding()
+                .disabled(selectedIcon == Global.shared.selectedProfileIcon)
+            }
+            .padding()
+            .applyBackground()
+            .sheet(isPresented: $showIconPicker) {
+                IconPickerView()
+            }
+            .sheet(isPresented: $showImagePicker) {
+                ImagePickerView()
+            }
+            
+            HStack {
+                Button(action: {
+                    dismiss()
+                }) {
+                    Image(systemName: "arrow.left")
+                        .resizable()
+                        .scaledToFit()
+                        .frame(width: 25, height: 25)
+                        .foregroundColor(.blue)
+                        .fontWeight(.bold)
+                        .padding(.leading, 10)
+                        .padding(.trailing)
+                }
+                .padding()
+                
+                Spacer()
+            }
+            
+        }
+    }
+}
+
+struct SettingsPhoto_Previews : PreviewProvider {
+    static var previews: some View {
+        SettingsPhotoView()
+    }
+}
