@@ -18,7 +18,7 @@ struct SplashScreen: View {
                 Text("ScreenDime")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .foregroundColor(.white)
+                    .fs(style: 1)
                     .opacity(opacity)
                     .onAppear {
                         // Start fade-out animation

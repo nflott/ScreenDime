@@ -7,6 +7,7 @@
 
 import SwiftData
 import Foundation
+import SwiftUI
 
 struct User: Identifiable {
     let id = UUID()
@@ -15,11 +16,12 @@ struct User: Identifiable {
     var phoneNumber: String
     var email: String
     var screenTime: String
+    var profilePicture: Image?
     private(set) var invites: [UUID]
     private(set) var groups: [UUID]
     private(set) var bets: [UUID]
     
-    init(name: String, age: Int, phoneNumber: String, screenTime: String, email: String, invites: [Group], groups: [Group], bets: [Bet]) {
+    init(name: String, age: Int, phoneNumber: String, screenTime: String, email: String, invites: [Group], groups: [Group], bets: [Bet], profilePicture: Image? = nil) {
         self.name = name
         self.age = age
         self.phoneNumber = phoneNumber
@@ -28,6 +30,7 @@ struct User: Identifiable {
         self.invites = []
         self.groups = []
         self.bets = []
+        self.profilePicture = profilePicture
     }
     
     mutating func addInvite(group: UUID) {
@@ -50,5 +53,4 @@ struct User: Identifiable {
             bets.append(bet)
         }
     }
-    
 }

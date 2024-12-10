@@ -20,7 +20,7 @@ struct SettingsPhotoView: View {
                 Text("Set Profile Photo")
                     .font(.title)
                     .padding()
-                    .foregroundColor(.white)
+                    .fs(style: 1)
                     .fontWeight(.bold)
                 
                 Image(systemName: Global.shared.selectedProfileIcon)
@@ -36,7 +36,7 @@ struct SettingsPhotoView: View {
                         showIconPicker = true
                     }) {
                         Text("Choose an icon")
-                            .foregroundColor(.white)
+                            .fs(style: 1)
                             .padding()
                             .cornerRadius(10)
                             .background(Color.clear)
@@ -46,7 +46,7 @@ struct SettingsPhotoView: View {
                         showImagePicker = true
                     }) {
                         Text("Choose a photo")
-                            .foregroundColor(.white)
+                            .fs(style: 1)
                             .padding()
                             .cornerRadius(10)
                             .background(Color.clear)
@@ -60,8 +60,8 @@ struct SettingsPhotoView: View {
                     Text("Set Photo")
                         .font(.title2)
                         .padding()
-                        .foregroundColor(.white)
-                        .background(selectedIcon == Global.shared.selectedProfileIcon ? Color.gray : Color.blue)
+                        .fs(style: 1)
+                        .background(Global.shared.iconColor1)
                         .cornerRadius(10)
                         .frame(width:200)
                 }
@@ -85,7 +85,7 @@ struct SettingsPhotoView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 25, height: 25)
-                        .foregroundColor(.blue)
+                        .fs(style: 2)
                         .fontWeight(.bold)
                         .padding(.leading, 10)
                         .padding(.trailing)

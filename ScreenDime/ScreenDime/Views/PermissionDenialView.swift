@@ -15,13 +15,13 @@ struct PermissionDenialView: View {
         VStack {
             Text("In order to work, ScreenDime needs to access your phone's screen time.")
                 .font(.title2)
-                .foregroundColor(.white)
+                .fs(style: 1)
                 .multilineTextAlignment(.center)
                 .padding()
             
             Text("You'll be able to manage who sees it, and we won't share your data with anyone!")
                 .font(.title2)
-                .foregroundColor(.white)
+                .fs(style: 1)
                 .multilineTextAlignment(.center)
                 .padding()
             
@@ -31,8 +31,8 @@ struct PermissionDenialView: View {
                 Text("Try Again")
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
+                    .fs(style: 1)
+                    .fs(style: 1)
                     .cornerRadius(8)
             }
         }

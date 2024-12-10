@@ -32,7 +32,7 @@ struct CreateBetView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 25, height: 25)
-                        .foregroundColor(.blue)
+                        .fs(style:3)
                         .fontWeight(.bold)
                         .padding(.leading, 10)
                         .padding(.trailing)
@@ -42,8 +42,7 @@ struct CreateBetView: View {
                 Text("Create Bet")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .foregroundColor(.white)
-                                
+                    .fs(style: 1)
                 Spacer()
                 
             }
@@ -62,7 +61,7 @@ struct CreateBetView: View {
                 }
             } label: {
                 Label(metric, systemImage: "arrowtriangle.down.circle")
-                    .foregroundColor(.blue)
+                    .fs(style: 2)
             }
             
             // Select the app to track
@@ -73,7 +72,7 @@ struct CreateBetView: View {
             }
             label: {
                 Label(appTracked, systemImage: "arrowtriangle.down.circle")
-                    .foregroundColor(.blue)
+                    .fs(style: 2)
             }
             .padding()
             
@@ -83,7 +82,7 @@ struct CreateBetView: View {
                 selection: $startDate,
                 displayedComponents: [.date]
             )
-            .foregroundColor(.blue)
+            .fs(style: 2)
             .onChange(of: startDate) {
                 checkDates()
             }
@@ -94,7 +93,7 @@ struct CreateBetView: View {
                 selection: $endDate,
                 displayedComponents: [.date]
             )
-            .foregroundColor(.blue)
+            .fs(style: 2)
             .onChange(of: endDate) {
                 checkDates()
             }
@@ -102,13 +101,15 @@ struct CreateBetView: View {
             // Make sure dates are legitimate
             if !validDates {
                 Text("Invalid dates!")
-                    .foregroundColor(.red)
+                    .fs(style: 4)
             }
             
             // Enter stakes
             TextField("Enter the stakes for this bet", text: $stakes)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
+            
+            Spacer()
             
             // Create bet and save it to the current group
             Button(action: {
@@ -131,8 +132,8 @@ struct CreateBetView: View {
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, maxHeight: 50)
                     .font(.headline)
-                    .background(fieldsCompleted() ? Color.blue : Color.gray)
-                    .foregroundColor(.white)
+                    .background(fieldsCompleted() ? Global.shared.iconColor1 : Color.gray)
+                    .fs(style: 1)
                     .cornerRadius(8)
                     .padding()
             }
