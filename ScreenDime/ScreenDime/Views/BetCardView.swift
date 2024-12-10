@@ -36,7 +36,7 @@ struct BetCardView: View {
                     // Title
                     Text(title)
                         .font(.headline)
-                        .foregroundColor(.white)
+                        .fs(style: 1)
 
                     Spacer()
 
@@ -64,8 +64,8 @@ struct BetCardView: View {
                                 Text("Join Bet")
                                     .scaledToFit()
                                     .frame(width: 80, height: 40)
-                                    .foregroundColor(.white)
-                                    .background(Color.blue)
+                                    .fs(style: 1)
+                                    .fs(style: 1)
                                     .cornerRadius(8)
                             }
                             .padding([.trailing], 15)
@@ -98,7 +98,7 @@ struct BetCardView: View {
                         HStack {
                             // Placeholder for photo circle
                             Circle()
-                                .fill(Color.white.opacity(0.8))
+                                .fill(Global.shared.textColor.opacity(0.8))
                                 .frame(width: 30, height: 30)
                                 .overlay(
                                     Image(systemName: "person.fill")
@@ -110,14 +110,14 @@ struct BetCardView: View {
                             
                             // Member's name with ranking number
                             Text("\(index + 1). \(member.name)")
-                                .foregroundColor(.white)
+                                .fs(style: 1)
                                 .font(.footnote)
                             
                             Spacer()
                             
                             // Screen time metric aligned to the right
                             Text(member.screenTime)
-                                .foregroundColor(.white)
+                                .fs(style: 1)
                                 .font(.footnote)
                         }
                     }
@@ -125,13 +125,13 @@ struct BetCardView: View {
                     
                     if members.count == 0 {
                         Text("No one's here yet...")
-                            .foregroundColor(.white)
+                            .fs(style: 1)
                     }
                     
                     // Show "+X more" if there are more than 3 members
                     if members.count > 3 {
                         Text("+\(members.count - 3) more")
-                            .foregroundColor(.white)
+                            .fs(style: 1)
                             .font(.footnote)
                             .padding([.top], 2)
                     }
@@ -156,8 +156,8 @@ struct BetCardView: View {
                         showingAcceptDialog = false
                     }
                     .padding()
-                    .background(Color.red)
-                    .foregroundColor(.white)
+                    .fs(style: 3)
+                    .fs(style: 1)
                     .cornerRadius(8)
                     
                     Button("Confirm") {
@@ -166,8 +166,8 @@ struct BetCardView: View {
                         showingAcceptDialog = false
                     }
                     .padding()
-                    .background(Color.green)
-                    .foregroundColor(.white)
+                    .fs(style: 2)
+                    .fs(style: 1)
                     .cornerRadius(8)
                 }
             }

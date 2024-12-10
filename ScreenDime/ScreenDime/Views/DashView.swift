@@ -11,7 +11,7 @@ struct DashView: View {
                 HStack {
                     Text("Activity")
                         .fontWeight(.bold)
-                        .foregroundColor(.white)
+                        .fs(style: 1)
                     Spacer()
                 }
                 .padding(.horizontal)
@@ -64,17 +64,17 @@ struct ActivityRow: View {
     var body: some View {
         HStack {
             Text("\(activity.name)")
-                .foregroundColor(.white)
+                .fs(style: 1)
                 .font(.body)
                 .fontWeight(.bold)
             Text("owes")
-                .foregroundColor(.white)
+                .fs(style: 1)
                 .font(.body)
             Text(activity.bet)
-                .foregroundColor(.green)
+                .fs(style: 3)
                 .font(.body)
             Text(activity.date)
-                .foregroundColor(.white)
+                .fs(style: 1)
                 .font(.caption)
                 .frame(maxWidth: .infinity, alignment: .trailing)
         }
@@ -98,14 +98,14 @@ struct WeeklyReportPreview: View {
                 Text("Weekly Report")
                     .font(.headline)
                     .fontWeight(.bold)
-                    .foregroundColor(.white)
+                    .fs(style: 1)
                 Spacer()
                 Button(action: {
                     // Toggle the sheet to show the ReportView
                     showingReport.toggle()
                 }) {
                     Image(systemName: "rectangle.expand.vertical")
-                        .foregroundColor(.white)
+                        .fs(style: 1)
                 }
             }
             .padding(.horizontal)
@@ -120,7 +120,7 @@ struct WeeklyReportPreview: View {
                             .frame(width: 30, height: CGFloat(screenTimeData[day]!)/2)
                         
                         Text(day)
-                            .foregroundColor(.white)
+                            .fs(style: 1)
                             .font(.caption)
                             .frame(width: 30)
                     }

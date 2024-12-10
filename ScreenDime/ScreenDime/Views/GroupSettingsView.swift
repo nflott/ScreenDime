@@ -18,7 +18,7 @@ struct GroupSettingsView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 25, height: 25)
-                        .foregroundColor(.blue)
+                        .fs(style: 2)
                         .fontWeight(.bold)
                         .padding(.leading, 10)
                         .padding(.trailing)
@@ -28,7 +28,7 @@ struct GroupSettingsView: View {
                 Text("Group Settings")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .foregroundColor(.white)
+                    .fs(style: 1)
                                 
                 Spacer()
                 
@@ -47,9 +47,9 @@ struct GroupSettingsView: View {
                                 .textFieldStyle(PlainTextFieldStyle())
                                 .overlay(
                                     RoundedRectangle(cornerRadius: 8)
-                                        .stroke(Color.blue, lineWidth: 1)
+                                        .stroke(Global.shared.iconColor1, lineWidth: 1)
                                 )
-                                .foregroundColor(.white)
+                                .fs(style: 1)
                                 .font(.title2)
                                 .padding(.vertical)
 
@@ -74,7 +74,7 @@ struct GroupSettingsView: View {
                         } else {
                             Text("Current Group: \(selectedGroup.name)")
                                 .font(.title2)
-                                .foregroundColor(.white)
+                                .fs(style: 1)
                                 .padding(.vertical)
                             
                             Button(action: {
@@ -82,7 +82,7 @@ struct GroupSettingsView: View {
                                 editedGroupName = selectedGroup.name
                             }) {
                                 Image(systemName: "pencil")
-                                    .foregroundColor(.white)
+                                    .fs(style: 1)
                             }
                         }
                     }
@@ -91,14 +91,14 @@ struct GroupSettingsView: View {
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Current Users:")
                             .font(.headline)
-                            .foregroundColor(.white)
+                            .fs(style: 1)
                             .padding(.top, 10)
                         
                         ForEach(getUserNamesWithScreenTime(for: selectedGroup.members), id: \.name) { user in
                             HStack {
                                 Text(user.name)
                                     .font(.title3)
-                                    .foregroundColor(.white)
+                                    .fs(style: 1)
                                     .bold()
                                     .padding(.leading)
                                 
@@ -106,7 +106,7 @@ struct GroupSettingsView: View {
                                 
                                 Text(user.screenTime)
                                     .font(.body)
-                                    .foregroundColor(.white)
+                                    .fs(style: 1)
                                     .padding(.trailing)
                             }
                             .padding(.vertical, 5)
@@ -124,7 +124,7 @@ struct GroupSettingsView: View {
                                 .foregroundColor(showActiveBets ? .white : .blue)
                                 .padding(.horizontal)
                                 .padding(.vertical, 5)
-                                .background(showActiveBets ? Color.blue.opacity(0.7) : Color.clear)
+                                .background(showActiveBets ? Global.shared.iconColor1.opacity(0.7) : Color.clear)
                                 .cornerRadius(8)
                         }
                         
@@ -136,7 +136,7 @@ struct GroupSettingsView: View {
                                 .foregroundColor(!showActiveBets ? .white : .blue)
                                 .padding(.horizontal)
                                 .padding(.vertical, 5)
-                                .background(!showActiveBets ? Color.blue.opacity(0.7) : Color.clear)
+                                .background(!showActiveBets ? Global.shared.iconColor1.opacity(0.7) : Color.clear)
                                 .cornerRadius(8)
                         }
                     }
@@ -165,7 +165,7 @@ struct GroupSettingsView: View {
                 }
             } else {
                 Text("No group selected.")
-                    .foregroundColor(.white)
+                    .fs(style: 1)
                     .padding()
             }
         }
@@ -217,7 +217,7 @@ struct GroupSettingsView: View {
         VStack(alignment: .leading) {
             if bets.isEmpty {
                 Text(title)
-                    .foregroundColor(.white)
+                    .fs(style: 1)
                     .font(.callout)
                     .bold()
                     .multilineTextAlignment(.center)
@@ -227,35 +227,35 @@ struct GroupSettingsView: View {
                     VStack(alignment: .leading, spacing: 5) {
                         Text("Bet Name: \(bet.name)")
                             .font(.title3)
-                            .foregroundColor(.white)
+                            .fs(style: 1)
                             .bold()
                         
                         Text("Tracking App: \(bet.appTracking)")
                             .font(.subheadline)
-                            .foregroundColor(.white)
+                            .fs(style: 1)
                         
                         Text("Participants:")
                             .font(.subheadline)
-                            .foregroundColor(.white)
+                            .fs(style: 1)
                             .bold()
                         
                         ForEach(getUserNames(for: bet.participants), id: \.self) { participantName in
                             Text(participantName)
-                                .foregroundColor(.white)
+                                .fs(style: 1)
                                 .padding(.leading)
                         }
                         
                         Text("Stakes: \(bet.stakes)")
                             .font(.subheadline)
-                            .foregroundColor(.white)
+                            .fs(style: 1)
                         
                         Text("Start Date: \(formatDate(bet.startDate))")
                             .font(.subheadline)
-                            .foregroundColor(.white)
+                            .fs(style: 1)
                         
                         Text("End Date: \(formatDate(bet.endDate))")
                             .font(.subheadline)
-                            .foregroundColor(.white)
+                            .fs(style: 1)
                         
                         Divider()
                             .background(Color.gray)

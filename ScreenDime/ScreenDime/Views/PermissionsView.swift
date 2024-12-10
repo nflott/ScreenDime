@@ -17,12 +17,12 @@ struct PermissionsView: View {
             Text("Screen Time Access")
                 .font(.title)
                 .padding()
-                .foregroundColor(.white)
+                .fs(style: 1)
             
             Text("To help you track your screen usage, please allow ScreenDime to access your screen time data.")
                 .multilineTextAlignment(.center)
                 .padding()
-                .foregroundColor(.white)
+                .fs(style: 1)
             
             Button(action: {
                 requestScreenTimePermission()
@@ -31,8 +31,8 @@ struct PermissionsView: View {
                 Text("Allow Access")
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
+                    .fs(style: 1)
+                    .fs(style: 1)
                     .cornerRadius(8)
             }
             .padding()

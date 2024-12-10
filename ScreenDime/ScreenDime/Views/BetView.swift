@@ -22,7 +22,7 @@ struct BetView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 25, height: 25)
-                        .foregroundColor(.blue)
+                        .fs(style: 2)
                         .fontWeight(.bold)
                         .padding(.leading, 20)
                 }
@@ -31,7 +31,7 @@ struct BetView: View {
                 Text("\(bet.name)")
                     .font(.largeTitle)
                     .padding()
-                    .foregroundColor(.white)
+                    .fs(style: 1)
                     .fontWeight(.bold)
                 
                 
@@ -43,16 +43,16 @@ struct BetView: View {
             
             Text("Started: \(bet.startDate.formatted(date: .abbreviated, time: .omitted))")
                 .padding()
-                .foregroundColor(.white)
+                .fs(style: 1)
                 .font(.title2)
             
             if (daysLeft() > 0) {
                 Text("Ends in: \(daysLeft()) days")
-                    .foregroundColor(.white)
+                    .fs(style: 1)
                     .font(.title2)
             } else {
                 Text("This bet has ended.")
-                    .foregroundColor(.white)
+                    .fs(style: 1)
                     .font(.title2)
             }
             HStack {
@@ -60,7 +60,7 @@ struct BetView: View {
                     .font(.title)
                     .padding()
                     .padding([.bottom], -20)
-                    .foregroundColor(.white)
+                    .fs(style: 1)
                     .fontWeight(.bold)
                 
                 Spacer()
@@ -81,19 +81,19 @@ struct BetView: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 25, height: 25)
-                                    .foregroundColor(.gray)
+                                    .fs(style: 2)
                             )
                         
                         // Member's name with ranking number
                         Text("\(sortedMembers.firstIndex(where: { $0.name == user.name })! + 1). \(user.name)")
-                            .foregroundColor(.white)
+                            .fs(style: 1)
                             .font(.title2)
                         
                         Spacer()
                         
                         // Screen time metric aligned to the right
                         Text(user.screenTime)
-                            .foregroundColor(.white)
+                            .fs(style: 1)
                             .font(.title2)
                     }
                     .padding(.horizontal, 20)
@@ -104,7 +104,7 @@ struct BetView: View {
             
             HStack {
                 Text("Details")
-                    .foregroundColor(.white)
+                    .fs(style: 1)
                     .font(.title2)
                     .fontWeight(.bold)
                 
@@ -114,7 +114,7 @@ struct BetView: View {
             
             HStack {
                 Text("Stakes: \(bet.stakes)")
-                    .foregroundColor(.white)
+                    .fs(style: 1)
                 
                 Spacer()
             }
@@ -123,7 +123,7 @@ struct BetView: View {
             
             HStack {
                 Text("Tracking screen time by: \(bet.metric) use")
-                    .foregroundColor(.white)
+                    .fs(style: 1)
                 
                 Spacer()
             }
@@ -132,7 +132,7 @@ struct BetView: View {
             
             HStack {
                 Text("App(s) tracked: \(bet.appTracking)")
-                    .foregroundColor(.white)
+                    .fs(style: 1)
                 
                 Spacer()
             }

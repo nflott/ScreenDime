@@ -25,7 +25,7 @@ struct SettingsView: View {
                             .resizable()
                             .scaledToFit()
                             .frame(width: 25, height: 25)
-                            .foregroundColor(.blue)
+                            .fs(style: 2)
                             .fontWeight(.bold)
                             .padding(.leading, 20)
                             .padding(.trailing, 25)
@@ -38,7 +38,7 @@ struct SettingsView: View {
                 Text("App Settings")
                     .font(.largeTitle)
                     .padding()
-                    .foregroundColor(.white)
+                    .fs(style: 1)
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
             }
@@ -55,7 +55,7 @@ struct SettingsView: View {
                     }) {
                         Text("    Change")
                             .font(.headline)
-                            .foregroundColor(.white)
+                            .fs(style: 1)
                             .cornerRadius(8)
                     }
                 }
@@ -66,7 +66,7 @@ struct SettingsView: View {
                         Text("Dastardi")
                             .fontWeight(.bold)
                             .font(.title)
-                            .foregroundColor(.white)
+                            .fs(style: 1)
                             .padding([.trailing], -50)
                             .padding([.top, .bottom], 10)
                         
@@ -76,7 +76,7 @@ struct SettingsView: View {
                     HStack {
                         Text("Luke Currier")
                             .font(.callout)
-                            .foregroundColor(.white)
+                            .fs(style: 1)
                             .padding([.top], -10)
                             .padding([.trailing], -50)
                         
@@ -87,15 +87,15 @@ struct SettingsView: View {
             }
             
             Rectangle()
-                .fill(Color.white) // Set the color
-                .frame(height: 3) // Set the thickness
+                .fill(Global.shared.textColor)
+                .frame(height: 3)
                 .padding(.vertical, 5)
             
             HStack {
                 Text("Choose Theme")
                     .fontWeight(.bold)
                     .font(.title)
-                    .foregroundColor(.white)
+                    .fs(style: 1)
                     .padding()
                 Spacer()
             }
@@ -111,8 +111,8 @@ struct SettingsView: View {
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity, maxHeight: 50)
                         .font(.headline)
-                        .foregroundColor(.white)
-                        .background(Color.blue)
+                        .fs(style: 1)
+                        .fs(style: 1)
                         .cornerRadius(8)
                         .padding()
                     

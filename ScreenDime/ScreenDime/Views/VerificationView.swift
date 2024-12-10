@@ -33,12 +33,12 @@ struct VerificationView: View {
                     Text("Verify your phone number")
                         .font(.title)
                         .padding()
-                        .foregroundColor(.white)
+                        .fs(style: 1)
                         .multilineTextAlignment(.center)
                     
                     Text("Because this is still a beta version of the app, we won't actually be tracking your phone number or sending a text - but feel free to act as though we were!")
                         .padding()
-                        .foregroundColor(.white)
+                        .fs(style: 1)
                         .multilineTextAlignment(.center)
                     
                     HStack(spacing:0) {
@@ -64,8 +64,8 @@ struct VerificationView: View {
                         Text("Send Code")
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(isPhoneNumberValid ? Color.blue : Color.gray)
-                            .foregroundColor(.white)
+                            .background(isPhoneNumberValid ? Global.shared.iconColor1 : Color.gray)
+                            .fs(style: 1)
                             .cornerRadius(8)
                     }
                     .disabled(!isPhoneNumberValid)
@@ -75,7 +75,7 @@ struct VerificationView: View {
                     Text("Verify your phone number")
                         .font(.title)
                         .padding()
-                        .foregroundColor(.white)
+                        .fs(style: 1)
                         .multilineTextAlignment(.center)
                     
                     TextField("Enter verification code", text: $inputCode)
@@ -88,8 +88,8 @@ struct VerificationView: View {
                         Text("Verify")
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(String(givenCode) != inputCode ? Color.gray : Color.blue)
-                            .foregroundColor(.white)
+                            .background(String(givenCode) != inputCode ? Color.gray : Global.shared.iconColor1)
+                            .fs(style: 1)
                             .cornerRadius(8)
                     }
                     .padding()
@@ -100,7 +100,7 @@ struct VerificationView: View {
                         showCodeDialog = true
                     }) {
                         Text("Send another code")
-                            .foregroundColor(.blue)
+                            .fs(style: 2)
                     }
                 }
             }
@@ -125,7 +125,7 @@ struct VerificationView: View {
 //                    }) {
 //                        Text("Skip Onboarding")
 //                            .font(.title3)
-//                            .foregroundColor(.white)
+//                            .fs(style: 1)
 //                    }
 //                    Spacer()
 //                }
@@ -142,12 +142,11 @@ struct VerificationView: View {
                         showCodeDialog = false
                     }
                     .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
+                    .fs(style: 1)
                     .cornerRadius(8)
                 }
                 .frame(width: 200, height: 150)
-                .background(Color.white)
+                .background(Global.shared.backgroundColor[0])
                 .cornerRadius(10)
                 .shadow(radius: 10)
                 .padding()

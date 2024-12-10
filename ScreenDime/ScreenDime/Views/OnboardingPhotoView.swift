@@ -21,7 +21,7 @@ struct OnboardingPhotoView: View {
                 Text("Set Profile Photo")
                     .font(.title)
                     .padding()
-                    .foregroundColor(.white)
+                    .fs(style: 1)
                     .fontWeight(.bold)
                 
                 Image(systemName: Global.shared.selectedProfileIcon)
@@ -37,7 +37,7 @@ struct OnboardingPhotoView: View {
                         showIconPicker = true
                     }) {
                         Text("Choose an icon")
-                            .foregroundColor(.white)
+                            .fs(style: 1)
                             .padding()
                             .cornerRadius(10)
                             .background(Color.clear)
@@ -47,7 +47,7 @@ struct OnboardingPhotoView: View {
                         showImagePicker = true
                     }) {
                         Text("Choose a photo")
-                            .foregroundColor(.white)
+                            .fs(style: 1)
                             .padding()
                             .cornerRadius(10)
                             .background(Color.clear)
@@ -61,8 +61,8 @@ struct OnboardingPhotoView: View {
                     Text("Set Photo")
                         .font(.title2)
                         .padding()
-                        .foregroundColor(.white)
-                        .background(selectedIcon == Global.shared.selectedProfileIcon ? Color.gray : Color.blue)
+                        .fs(style: 1)
+                        .background(selectedIcon == Global.shared.selectedProfileIcon ? Color.gray : Global.shared.iconColor1)
                         .cornerRadius(10)
                         .frame(width:200)
                 }
@@ -89,7 +89,7 @@ struct OnboardingPhotoView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 25, height: 25)
-                        .foregroundColor(.blue)
+                        .fs(style: 2)
                         .fontWeight(.bold)
                         .padding(.leading, 10)
                         .padding(.trailing)
@@ -151,8 +151,8 @@ struct ImagePickerView : View {
                     .frame(width:120)
                     .padding()
                     .cornerRadius(10)
-                    .foregroundColor(.white)
-                    .background(Color.blue)
+                    .fs(style: 1)
+                    .fs(style: 1)
             }
         }
     }
