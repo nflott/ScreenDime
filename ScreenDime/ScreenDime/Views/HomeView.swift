@@ -115,7 +115,7 @@ struct HomeView: View {
                                 .font(.largeTitle)
                                 .fs(style: 1)
                                 .fontWeight(.bold)
-                                .underline(color: .white)
+                                .underline()
 
                             Image(systemName: "arrowtriangle.down.fill")
                                 .resizable()
@@ -183,7 +183,7 @@ struct HomeView: View {
                        .fs(style: 1)
                        .frame(maxWidth: .infinity)
                        .padding()
-                       .background(Global.shared.iconColor1.opacity(0.7))
+                       .background(Global.shared.iconColor1)
                        .cornerRadius(8)
                }
            }

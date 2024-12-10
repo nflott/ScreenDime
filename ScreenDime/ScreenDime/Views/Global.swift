@@ -174,14 +174,20 @@ class Global: ObservableObject {
 }
 
 struct Background: ViewModifier {
+    var color: Color? = nil
+    
     func body(content: Content) -> some View {
         ZStack {
-            LinearGradient(
-                gradient: Gradient(colors: Global.shared.backgroundColor),
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .edgesIgnoringSafeArea(.all)
+            if let color = color {
+                color.edgesIgnoringSafeArea(.all)
+            } else {
+                LinearGradient(
+                    gradient: Gradient(colors: Global.shared.backgroundColor),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .edgesIgnoringSafeArea(.all)
+            }
             
             content
         }
@@ -224,15 +230,15 @@ struct BackgroundStyle: ViewModifier {
         switch style {
         case 1:
             content
-                .foregroundColor(Global.shared.iconColor1)
+                .backgroundStyle(Global.shared.iconColor1)
                 .font(.system(size: 16, weight: .regular))
         case 2:
             content
-                .foregroundColor(Global.shared.iconColor2)
+                .backgroundStyle(Global.shared.iconColor2)
                 .font(.system(size: 16, weight: .regular))
         case 3:
             content
-                .foregroundColor(Global.shared.iconColor3)
+                .backgroundStyle(Global.shared.iconColor3)
                 .font(.system(size: 16, weight: .regular))
         default:
             content // Fallback for undefined styles is the basic button color
@@ -244,8 +250,8 @@ struct BackgroundStyle: ViewModifier {
 
 
 extension View {
-    func applyBackground() -> some View {
-        self.modifier(Background())
+    func applyBackground(color: Color? = nil) -> some View {
+        self.modifier(Background(color: color))
     }
     func fs(style: Int) -> some View {
         self.modifier(ForegroundStyle(style: style))

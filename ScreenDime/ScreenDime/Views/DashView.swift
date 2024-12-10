@@ -30,7 +30,7 @@ struct DashView: View {
                 .frame(maxHeight: .infinity)
             }
             .frame(height: 400)
-            .background(Color.black.opacity(0.7))
+            .background(Global.shared.iconColor2)
             .cornerRadius(10)
             .padding(.horizontal)
             
@@ -71,7 +71,7 @@ struct ActivityRow: View {
                 .fs(style: 1)
                 .font(.body)
             Text(activity.bet)
-                .fs(style: 3)
+                .fs(style: 4)
                 .font(.body)
             Text(activity.date)
                 .fs(style: 1)
@@ -82,11 +82,12 @@ struct ActivityRow: View {
     }
 }
 
-// Temp data for screen time ----
 let screenTimeData: [String: Int] = [
     "Sun": 120, "Mon": 150, "Tue": 200, "Wed": 180, "Thu": 140, "Fri": 160, "Sat": 190,
 ]
-// -----
+
+let orderedDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+
 
 // preview card for the Weekly Report
 struct WeeklyReportPreview: View {
@@ -111,18 +112,17 @@ struct WeeklyReportPreview: View {
             .padding(.horizontal)
             .padding(.top)
             
-            // Bar chart showing weekly screen time data
             HStack(spacing: 12) {
-                ForEach(Array(screenTimeData.keys), id: \.self) { day in
+                ForEach(orderedDays, id: \.self) { day in
                     VStack {
                         Rectangle()
-                            .fill(Color.blue)
+                            .fill(Global.shared.iconColor1)
                             .frame(width: 30, height: CGFloat(screenTimeData[day]!)/2)
                         
                         Text(day)
                             .fs(style: 1)
                             .font(.caption)
-                            .frame(width: 30)
+                            .frame(width: 35)
                     }
                 }
             }
@@ -136,7 +136,7 @@ struct WeeklyReportPreview: View {
         }
         .frame(height: 200)
         .frame(maxWidth: .infinity)
-        .background(Color.black.opacity(0.7))
+        .background(Global.shared.iconColor2)
         .cornerRadius(10)
         .padding(.horizontal)
     }

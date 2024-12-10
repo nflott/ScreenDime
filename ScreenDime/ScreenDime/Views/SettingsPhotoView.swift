@@ -61,7 +61,7 @@ struct SettingsPhotoView: View {
                         .font(.title2)
                         .padding()
                         .fs(style: 1)
-                        .background(selectedIcon == Global.shared.selectedProfileIcon ? Color.gray : Global.shared.iconColor1)
+                        .background(Global.shared.iconColor1)
                         .cornerRadius(10)
                         .frame(width:200)
                 }

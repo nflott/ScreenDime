@@ -109,6 +109,8 @@ struct CreateBetView: View {
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
             
+            Spacer()
+            
             // Create bet and save it to the current group
             Button(action: {
                 if let group = Global.shared.groupPages.first(where: { $0.name == Global.shared.selectedGroup }) {

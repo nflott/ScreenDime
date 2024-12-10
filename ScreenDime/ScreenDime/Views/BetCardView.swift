@@ -14,9 +14,9 @@ struct BetCardView: View {
     @State var betRejected: Bool = false
     
     // Colors for active and inactive states
-    let activeColor: Color = .blue
-    let inactiveColor: Color = .gray
-    let stillStartingColor: Color = .green
+    let activeColor: Color = Global.shared.iconColor1
+    let inactiveColor: Color = Global.shared.iconColor3
+    let stillStartingColor: Color = Global.shared.iconColor2
     
     var body: some View {
         ZStack(alignment: .topLeading) {
@@ -37,15 +37,15 @@ struct BetCardView: View {
                     Text(title)
                         .font(.headline)
                         .fs(style: 1)
-
+                    
                     Spacer()
-
+                    
                     // Status message or button
                     if bet.hasEnded() {
                         // Display "Bet Ended" text
                         Text("Bet Ended")
                             .font(.footnote)
-                            .foregroundColor(.white.opacity(0.7))
+                            .fs(style:1)
                     } else if !bet.hasStarted() {
                         if global.mainUser.bets.contains(bet.id) {
                             // Display countdown to when it starts
@@ -62,11 +62,11 @@ struct BetCardView: View {
                                 showingAcceptDialog.toggle()
                             }) {
                                 Text("Join Bet")
-                                    .scaledToFit()
-                                    .frame(width: 80, height: 40)
+                                    .padding()
                                     .fs(style: 1)
-                                    .fs(style: 1)
+                                    .background(Global.shared.iconColor2)
                                     .cornerRadius(8)
+                                    .frame(width:100)
                             }
                             .padding([.trailing], 15)
                         }
@@ -76,17 +76,17 @@ struct BetCardView: View {
                         if timeRemaining > 0 {
                             Text("Time left: \(formatCountdown(timeRemaining))")
                                 .font(.footnote)
-                                .foregroundColor(.white.opacity(0.7))
+                                .fs(style: 1)
                         }
                     }
                 }
-
+                
                 
                 // Stakes text
                 Text("Stakes: \(stakes)")
                     .font(.subheadline)
-                    .foregroundColor(.white.opacity(0.7))
-                                
+                    .fs(style: 1)
+                
                 // Bet members
                 VStack(alignment: .leading, spacing: 4) {
                     let userDetails = bet.participants.map { getUserDetails(for: $0) }
@@ -105,7 +105,7 @@ struct BetCardView: View {
                                         .resizable()
                                         .scaledToFit()
                                         .frame(width: 15, height: 15)
-                                        .foregroundColor(.gray)
+                                        .foregroundStyle(cardColor())
                                 )
                             
                             // Member's name with ranking number
@@ -151,24 +151,28 @@ struct BetCardView: View {
                     .padding()
                 
                 HStack {
-                    Button("Cancel") {
-                        print("Cancelling...")
+                    Button(action: {
                         showingAcceptDialog = false
+                    }) {
+                        Text("Cancel")
+                            .padding()
+                            .fs(style: 1)
+                            .background(Global.shared.iconColor3)
+                            .cornerRadius(8)
+                            .frame(width:100)
                     }
-                    .padding()
-                    .fs(style: 3)
-                    .fs(style: 1)
-                    .cornerRadius(8)
                     
-                    Button("Confirm") {
-                        print("Accepting Bet")
+                    Button(action: {
                         acceptBet()
                         showingAcceptDialog = false
+                    }) {
+                        Text("Accept")
+                            .padding()
+                            .fs(style: 1)
+                            .background(Global.shared.iconColor2)
+                            .cornerRadius(8)
+                            .frame(width:100)
                     }
-                    .padding()
-                    .fs(style: 2)
-                    .fs(style: 1)
-                    .cornerRadius(8)
                 }
             }
             .frame(width: 215, height: 175)
@@ -179,6 +183,7 @@ struct BetCardView: View {
             .padding()
         }
     }
+
     
     private func screenTimeToMinutes(_ time: String) -> Int {
         let regex = try! NSRegularExpression(pattern: "(\\d+)(h|m)", options: [])

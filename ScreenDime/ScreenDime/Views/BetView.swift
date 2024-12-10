@@ -22,7 +22,7 @@ struct BetView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 25, height: 25)
-                        .fs(style: 2)
+                        .fs(style: 1)
                         .fontWeight(.bold)
                         .padding(.leading, 20)
                 }
@@ -74,7 +74,7 @@ struct BetView: View {
                 ForEach(sortedMembers, id: \.name) { user in
                     HStack {
                         Circle()
-                            .fill(Color.white.opacity(0.8))
+                            .fs(style: 1)
                             .frame(width: 50, height: 50)
                             .overlay(
                                 Image(systemName: "person.fill")
@@ -141,7 +141,18 @@ struct BetView: View {
             
             Spacer()
         }
-        .applyBackground()
+        .applyBackground(color:betStatusColor)
+    }
+    
+    private var betStatusColor: Color {
+        let currentDate = Date()
+        if currentDate < bet.startDate {
+            return Global.shared.iconColor2
+        } else if currentDate > bet.endDate {
+            return Global.shared.iconColor3
+        } else {
+            return Global.shared.iconColor1
+        }
     }
     
     private func screenTimeToMinutes(_ time: String) -> Int {
