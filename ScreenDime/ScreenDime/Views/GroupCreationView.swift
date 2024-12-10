@@ -57,9 +57,9 @@ struct GroupCreationView: View {
                             .foregroundColor(.primary)
                         Spacer()
                         Button(action: {
-                            members.append(user.id)  // Add the user to members list by UUID
+                            members.append(user.id)  // Add the user to the members list
                             searchText = ""           // Clear the search text
-                            filterMatchedUsers()      // Refresh matched users
+                            filterMatchedUsers()      // Refresh matched users after adding
                         }) {
                             Image(systemName: "plus.circle.fill")
                                 .foregroundColor(.blue)
@@ -78,20 +78,26 @@ struct GroupCreationView: View {
                         .foregroundColor(.white)
                         .padding(.leading)
                     
-                    HStack(spacing: 10) {
+                    // Use LazyVGrid for wrapping layout
+                    let columns = [
+                        GridItem(.flexible(), spacing: 10),
+                        GridItem(.flexible(), spacing: 10),
+                        GridItem(.flexible(), spacing: 10),
+                        GridItem(.flexible(), spacing: 10)
+                    ]
+                    
+                    LazyVGrid(columns: columns, spacing: 10) {
                         ForEach(members, id: \.self) { userUUID in
-                            // Fetch the user corresponding to the UUID
                             if let user = global.appUsers.first(where: { $0.id == userUUID }) {
-                                HStack {
-                                    Text(user.name.prefix(1)) // Show the first letter of the user's name
+                                ZStack {
+                                    Circle()
+                                        .stroke(Color.white, lineWidth: 2)
+                                        .frame(width: 40, height: 40) // Fixed size for consistency
+                                    Text(user.name.prefix(1)) // Display first initial
                                         .foregroundColor(.white)
-                                        .font(.title2)
-                                        .padding()
-                                        .overlay(
-                                            Circle()
-                                                .stroke(Color.white, lineWidth: 2)
-                                        )
-                                    
+                                        .font(.headline)
+                                }
+                                .overlay(
                                     Button(action: {
                                         // Remove the user from members list
                                         members.removeAll { $0 == userUUID }
@@ -99,15 +105,17 @@ struct GroupCreationView: View {
                                     }) {
                                         Image(systemName: "xmark.circle.fill")
                                             .foregroundColor(.red)
+                                            .offset(x: 10, y: -10) // Position close to top-right
                                     }
-                                }
+                                )
                             }
                         }
                     }
-                    .padding(.leading)
+                    .padding(.horizontal)
                 }
                 .padding(.horizontal)
             }
+
             
             Spacer()
             
@@ -145,12 +153,15 @@ struct GroupCreationView: View {
     func filterMatchedUsers() {
         // Only filter if there is search text, otherwise show all users
         if searchText.isEmpty {
-            matchedUsers = global.appUsers.map { $0.id }
+            matchedUsers = global.appUsers
+                .filter { !members.contains($0.id) } // Exclude already-added members
+                .map { $0.id }
         } else {
-            matchedUsers = global.appUsers.filter { user in
-                user.name.lowercased().hasPrefix(searchText.lowercased()) &&  // Name should start with searchText
-                !members.contains(user.id)      // Avoid already added members
-            }.map { $0.id }
+            matchedUsers = global.appUsers
+                .filter { user in
+                    user.name.lowercased().hasPrefix(searchText.lowercased()) && // Name should match search text
+                    !members.contains(user.id)  // Exclude already-added members
+                }.map { $0.id }
         }
     }
 }
