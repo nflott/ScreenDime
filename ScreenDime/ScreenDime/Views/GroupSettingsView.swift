@@ -121,7 +121,7 @@ struct GroupSettingsView: View {
                         }) {
                             Text("Active Bets")
                                 .font(.headline)
-                                .foregroundColor(showActiveBets ? .white : .blue)
+                                .foregroundColor(showActiveBets ? .white : Global.shared.iconColor1)
                                 .padding(.horizontal)
                                 .padding(.vertical, 5)
                                 .background(showActiveBets ? Global.shared.iconColor1.opacity(0.7) : Color.clear)
@@ -133,7 +133,7 @@ struct GroupSettingsView: View {
                         }) {
                             Text("Inactive Bets")
                                 .font(.headline)
-                                .foregroundColor(!showActiveBets ? .white : .blue)
+                                .foregroundColor(!showActiveBets ? .white : Global.shared.iconColor1)
                                 .padding(.horizontal)
                                 .padding(.vertical, 5)
                                 .background(!showActiveBets ? Global.shared.iconColor1.opacity(0.7) : Color.clear)

@@ -201,7 +201,7 @@ struct HomeView: View {
                    .fs(style: 1)
                    .frame(maxWidth: .infinity)
                    .padding()
-                   .background(Global.shared.iconColor2.opacity(0.7))
+                   .background(Global.shared.iconColor2)
                    .cornerRadius(8)
            }
        }
