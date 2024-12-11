@@ -5,6 +5,7 @@ struct DashView: View {
         VStack(spacing: 20) {
             
             WeeklyReportPreview()
+                .shadow(color: Global.shared.iconColor2, radius: 10, x: 0, y: 0)
             
             // 'Activity' card
             VStack {
@@ -33,6 +34,7 @@ struct DashView: View {
             .background(Global.shared.iconColor2)
             .cornerRadius(10)
             .padding(.horizontal)
+            .shadow(color: Global.shared.iconColor2, radius: 10, x: 0, y: 0)
             
             Spacer()
         }
