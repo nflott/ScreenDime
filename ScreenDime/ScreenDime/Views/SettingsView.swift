@@ -13,56 +13,56 @@ struct SettingsView: View {
     @State private var showSplashScreen: Bool = false // State to control the navigation
     
     var body: some View {
-
+        
         NavigationStack {
             ScrollView {
                 VStack {
                     // Header with back button and title
                     ZStack {
-                                    HStack {
-                                        Button(action: {
-                                            dismiss()
-                                        }) {
-                                            Image(systemName: "arrow.left")
-                                                .resizable()
-                                                .scaledToFit()
-                                                .frame(width: 25, height: 25)
-                                                .fs(style: 1)
-                                                .fontWeight(.bold)
-                                                .padding(.leading, 20)
-                                                .padding(.trailing, 25)
-                                        }
-                                        
-                                        Spacer()
-                                    }
-                                    .padding()
-                                    
-                                    Text("App Settings")
-                                        .font(.largeTitle)
-                                        .padding()
-                                        .fs(style: 0)
-                                        .fontWeight(.bold)
-                                        .multilineTextAlignment(.center)
-                                }
+                        HStack {
+                            Button(action: {
+                                dismiss()
+                            }) {
+                                Image(systemName: "arrow.left")
+                                    .resizable()
+                                    .scaledToFit()
+                                    .frame(width: 25, height: 25)
+                                    .fs(style: 1)
+                                    .fontWeight(.bold)
+                                    .padding(.leading, 20)
+                                    .padding(.trailing, 25)
+                            }
+                            
+                            Spacer()
+                        }
+                        .padding()
+                        
+                        Text("App Settings")
+                            .font(.largeTitle)
+                            .padding()
+                            .fs(style: 0)
+                            .fontWeight(.bold)
+                            .multilineTextAlignment(.center)
+                    }
                     
                     // Profile Section
                     VStack {
                         VStack {
-                                            Global.shared.selectedProfileIcon.toImage()
-                                                .resizable()
-                                                .aspectRatio(contentMode: .fill)
-                                                .frame(width: 125, height: 125)
-                                                .clipShape(Circle())
-                                                .contentShape(Circle())
-                                            
-                                            Button(action: {
-                                                showProfilePhotoPicker.toggle()
-                                            }) {
-                                                Text("Change")
-                                                    .font(.headline)
-                                                    .fs(style: 0)
-                                            }
-                                        }
+                            Global.shared.selectedProfileIcon.toImage()
+                                .resizable()
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 125, height: 125)
+                                .clipShape(Circle())
+                                .contentShape(Circle())
+                            
+                            Button(action: {
+                                showProfilePhotoPicker.toggle()
+                            }) {
+                                Text("Change")
+                                    .font(.headline)
+                                    .fs(style: 1)
+                            }
+                        }
                         Spacer()
                         // Username Section with Pencil Icon
                         HStack(spacing: 10) {
@@ -73,13 +73,15 @@ struct SettingsView: View {
                                         .fontWeight(.bold)
                                         .font(.title)
                                         .padding(10)
-                                        .background(Color.white.opacity(0.3))
+                                        .fs(style: 0)
+                                        .background(Global.shared.iconColor1.opacity(0.3))
                                         .cornerRadius(8)
                                         .frame(width: 200)
                                 } else {
                                     Text(username)
                                         .fontWeight(.bold)
                                         .font(.title)
+                                        .fs(style: 0)
                                         .padding(.bottom, 5)
                                 }
                             }
@@ -91,7 +93,7 @@ struct SettingsView: View {
                                 }) {
                                     Text("Save")
                                         .fontWeight(.bold)
-                                        .foregroundColor(.blue)
+                                        .fs(style: 1)
                                         .padding(.horizontal)
                                         .padding(.vertical, 8)
                                 }
@@ -101,6 +103,7 @@ struct SettingsView: View {
                                 }) {
                                     Image(systemName: "pencil")
                                         .font(.system(size: 20))
+                                        .fs(style: 1)
                                 }
                             }
                         }
@@ -108,8 +111,10 @@ struct SettingsView: View {
                         
                         // Full Name Section
                         Text("lcurrier@gmailcom")
+                            .fs(style: 0)
                         // Full Name Section
                         Text("Luke Currier")
+                            .fs(style: 0)
                             .padding(.bottom, 10)
                     }
                     .frame(maxWidth: .infinity)
@@ -119,21 +124,24 @@ struct SettingsView: View {
                     VStack(alignment: .leading, spacing: 15) {
                         Text("Resources")
                             .fontWeight(.bold)
-                        
+                            .fs(style: 0)
                         
                         HStack {
                             Image(systemName: "paintpalette")
+                                .fs(style: 0)
                                 .frame(width: 24, height: 24)
                             
                             Text("Change theme")
                                 .font(.body)
+                                .fs(style: 0)
                             
                             Spacer()
                             
                             Image(systemName: "chevron.right")
+                                .fs(style: 1)
                         }
                         .padding()
-                        .background(Color.white.opacity(0.2))
+                        .background(Global.shared.iconColor1.opacity(0.2))
                         .cornerRadius(8)
                         .onTapGesture {
                             showComingSoonPopup.toggle()
@@ -147,17 +155,20 @@ struct SettingsView: View {
                         
                         HStack {
                             Image(systemName: "shield")
+                                .fs(style: 0)
                                 .frame(width: 24, height: 24)
                             
                             Text("Privacy")
+                                .fs(style: 0)
                                 .font(.body)
                             
                             Spacer()
                             
                             Image(systemName: "chevron.right")
+                                .fs(style: 1)
                         }
                         .padding()
-                        .background(Color.white.opacity(0.2))
+                        .background(Global.shared.iconColor1.opacity(0.2))
                         .cornerRadius(8)
                         .onTapGesture {
                             showComingSoonPopup.toggle()
@@ -165,19 +176,22 @@ struct SettingsView: View {
                         
                         HStack {
                             Image(systemName: "questionmark.circle")
+                                .fs(style: 0)
                                 .frame(width: 24, height: 24)
                             Text("Support")
+                                .fs(style: 0)
                                 .font(.body)
                             Spacer()
                             Image(systemName: "chevron.right")
+                                .fs(style: 1)
                         }
                         .padding()
-                        .background(Color.white.opacity(0.2))
+                        .background(Global.shared.iconColor1.opacity(0.2))
                         .cornerRadius(8)
                         .onTapGesture {
                             showComingSoonPopup.toggle()
                         }
-                
+                        
                     }
                     .padding()
                     
@@ -191,8 +205,8 @@ struct SettingsView: View {
                                 .fontWeight(.bold)
                                 .frame(maxWidth: .infinity, minHeight: 40)
                                 .font(.headline)
-                                .foregroundColor(.white)
-                                .background(Color.red)
+                                .fs(style: 0)
+                                .background(Global.shared.iconColor3)
                                 .cornerRadius(8)
                                 .padding()
                         }
@@ -201,11 +215,11 @@ struct SettingsView: View {
                 .padding()
                 .applyBackground()
             }
-
+            
             .navigationBarHidden(true) // Hide default navigation bar
             .sheet(isPresented: $showProfilePhotoPicker) {
                 SettingsPhotoView()
-
+                
             }
             .alert(isPresented: $showComingSoonPopup) {
                 Alert(title: Text("Coming Soon"), message: Text("This feature is coming soon!"), dismissButton: .default(Text("OK")))
@@ -223,31 +237,31 @@ struct ProfileOption: View {
     var body: some View {
         HStack {
             Image(systemName: iconName)
-                .foregroundColor(.gray)
+                .fs(style: 0)
                 .frame(width: 24, height: 24)
             
             Text(title)
                 .font(.body)
-                .foregroundColor(.white)
+                .fs(style: 0)
             
             Spacer()
             
             if let badgeCount = badgeCount {
                 Text("\(badgeCount)")
                     .font(.caption)
-                    .foregroundColor(.white)
+                    .fs(style: 0)
                     .padding(6)
-                    .background(Circle().fill(Color.green))
+                    .background(Circle().fill(Global.shared.iconColor1))
             }
             
             if showArrow {
                 Image(systemName: "chevron.right")
-                    .foregroundColor(.gray)
-
+                    .fs(style: 1)
+                
             }
         }
         .padding()
-        .background(Color.white.opacity(0.2))
+        .background(Global.shared.iconColor1.opacity(0.2))
         .cornerRadius(8)
     }
 }
@@ -260,20 +274,21 @@ struct ToggleOption: View {
     var body: some View {
         HStack {
             Image(systemName: iconName)
-                .foregroundColor(.gray)
+                .fs(style: 0)
                 .frame(width: 24, height: 24)
             
             Text(title)
+                .fs(style: 0)
                 .font(.body)
             
             Spacer()
             
             Toggle("", isOn: $isOn)
                 .labelsHidden()
-                .toggleStyle(SwitchToggleStyle(tint: .blue))
+                .toggleStyle(SwitchToggleStyle(tint: Global.shared.iconColor1))
         }
         .padding()
-        .background(Color.white.opacity(0.2))
+        .background(Global.shared.iconColor1.opacity(0.2))
         .cornerRadius(8)
     }
 }
