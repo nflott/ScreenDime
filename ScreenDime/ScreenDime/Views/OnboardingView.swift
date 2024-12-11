@@ -25,7 +25,7 @@ struct OnboardingView: View {
                     Text("Welcome to ScreenDime!")
                         .font(.largeTitle)
                         .fontWeight(.bold)
-                        .fs(style: 1)
+                        .fs(style: 0)
                         .multilineTextAlignment(.center)
                         .padding()
                     
@@ -60,7 +60,7 @@ struct OnboardingView: View {
                                 showWheelPicker = true
                             }) {
                                 Text(formatDate(date: dateOfBirth))
-                                    .fs(style: 2)
+                                    .fs(style: 1)
                             }
                         }
                         
@@ -74,8 +74,8 @@ struct OnboardingView: View {
                                     showWheelPicker = false
                                 }
                                 .padding()
-                                .fs(style: 1)
-                                .fs(style: 1)
+                                .fs(style: 0)
+                                .fs(style: 0)
                                 .cornerRadius(8)
                             }
                             .padding()
@@ -94,7 +94,7 @@ struct OnboardingView: View {
                             .frame(maxWidth: .infinity)
                             .padding()
                             .background(canProceed() ? Global.shared.iconColor1 : Color.gray)
-                            .fs(style: 1)
+                            .fs(style: 0)
                             .cornerRadius(8)
                     }
                     .padding()
@@ -124,8 +124,8 @@ struct OnboardingView: View {
                                 showConfirmationDialog = false
                             }
                             .padding()
-                            .fs(style: 3)
-                            .fs(style: 1)
+                            .bs(style: 3)
+                            .fs(style: 0)
                             .cornerRadius(8)
                             
                             Button("Confirm") {
@@ -133,8 +133,8 @@ struct OnboardingView: View {
                                 submitUsername()
                             }
                             .padding()
-                            .fs(style: 2)
-                            .fs(style: 1)
+                            .bs(style: 2)
+                            .fs(style: 0)
                             .cornerRadius(8)
                         }
                     }

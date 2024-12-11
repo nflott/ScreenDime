@@ -9,7 +9,6 @@ import SwiftUI
 
 struct SettingsView: View {
     @ObservedObject private var global = Global.shared
-    
     @Environment(\.dismiss) var dismiss
     
     @State var showProfilePhotoPicker: Bool = false
@@ -38,24 +37,27 @@ struct SettingsView: View {
                 Text("App Settings")
                     .font(.largeTitle)
                     .padding()
-                    .fs(style: 1)
+                    .fs(style: 0)
                     .fontWeight(.bold)
                     .multilineTextAlignment(.center)
             }
             
             HStack {
                 VStack {
-                    Image(systemName: Global.shared.selectedProfileIcon)
-                        .font(.system(size: 125))
+                    Global.shared.selectedProfileIcon.toImage()
+                        .resizable()
+                        .aspectRatio(contentMode: .fill)
+                        .frame(width: 125, height: 125)
+                        .clipShape(Circle())
+                        .contentShape(Circle())
                         .padding()
-                        .padding([.trailing, .bottom], -10)
                     
                     Button(action: {
                         showProfilePhotoPicker.toggle()
                     }) {
                         Text("    Change")
                             .font(.headline)
-                            .fs(style: 1)
+                            .fs(style: 0)
                             .cornerRadius(8)
                     }
                 }
@@ -66,7 +68,7 @@ struct SettingsView: View {
                         Text("Dastardi")
                             .fontWeight(.bold)
                             .font(.title)
-                            .fs(style: 1)
+                            .fs(style: 0)
                             .padding([.trailing], -50)
                             .padding([.top, .bottom], 10)
                         
@@ -76,7 +78,7 @@ struct SettingsView: View {
                     HStack {
                         Text("Luke Currier")
                             .font(.callout)
-                            .fs(style: 1)
+                            .fs(style: 0)
                             .padding([.top], -10)
                             .padding([.trailing], -50)
                         
@@ -95,7 +97,7 @@ struct SettingsView: View {
                 Text("Choose Theme")
                     .fontWeight(.bold)
                     .font(.title)
-                    .fs(style: 1)
+                    .fs(style: 0)
                     .padding()
                 Spacer()
             }
@@ -111,8 +113,8 @@ struct SettingsView: View {
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity, maxHeight: 50)
                         .font(.headline)
-                        .fs(style: 1)
-                        .fs(style: 1)
+                        .fs(style: 0)
+                        .fs(style: 0)
                         .cornerRadius(8)
                         .padding()
                     

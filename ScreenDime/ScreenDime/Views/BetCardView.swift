@@ -36,7 +36,7 @@ struct BetCardView: View {
                     // Title
                     Text(title)
                         .font(.headline)
-                        .fs(style: 1)
+                        .fs(style: 0)
                     
                     Spacer()
                     
@@ -45,7 +45,7 @@ struct BetCardView: View {
                         // Display "Bet Ended" text
                         Text("Bet Ended")
                             .font(.footnote)
-                            .fs(style:1)
+                            .fs(style: 0)
                     } else if !bet.hasStarted() {
                         if global.mainUser.bets.contains(bet.id) {
                             // Display countdown to when it starts
@@ -53,7 +53,7 @@ struct BetCardView: View {
                             if countdown > 0 {
                                 Text("Starts in \(formatCountdown(countdown))")
                                     .font(.footnote)
-                                    .foregroundColor(.white.opacity(0.7))
+                                    .fs(style: 0)
                             }
                         } else {
                             // Show "Join Bet" button
@@ -63,12 +63,11 @@ struct BetCardView: View {
                             }) {
                                 Text("Join Bet")
                                     .padding()
-                                    .fs(style: 1)
-                                    .background(Global.shared.iconColor2)
+                                    .fs(style: 0)
+                                    .background(Global.shared.iconColor1)
                                     .cornerRadius(8)
                                     .frame(width:100)
                             }
-                            .padding([.trailing], 15)
                         }
                     } else {
                         // Display time remaining for active bet
@@ -76,7 +75,7 @@ struct BetCardView: View {
                         if timeRemaining > 0 {
                             Text("Time left: \(formatCountdown(timeRemaining))")
                                 .font(.footnote)
-                                .fs(style: 1)
+                                .fs(style: 0)
                         }
                     }
                 }
@@ -85,7 +84,7 @@ struct BetCardView: View {
                 // Stakes text
                 Text("Stakes: \(stakes)")
                     .font(.subheadline)
-                    .fs(style: 1)
+                    .fs(style: 0)
                 
                 // Bet members
                 VStack(alignment: .leading, spacing: 4) {
@@ -110,14 +109,14 @@ struct BetCardView: View {
                             
                             // Member's name with ranking number
                             Text("\(index + 1). \(member.name)")
-                                .fs(style: 1)
+                                .fs(style: 0)
                                 .font(.footnote)
                             
                             Spacer()
                             
                             // Screen time metric aligned to the right
                             Text(member.screenTime)
-                                .fs(style: 1)
+                                .fs(style: 0)
                                 .font(.footnote)
                         }
                     }
@@ -125,13 +124,13 @@ struct BetCardView: View {
                     
                     if members.count == 0 {
                         Text("No one's here yet...")
-                            .fs(style: 1)
+                            .fs(style: 0)
                     }
                     
                     // Show "+X more" if there are more than 3 members
                     if members.count > 3 {
                         Text("+\(members.count - 3) more")
-                            .fs(style: 1)
+                            .fs(style: 0)
                             .font(.footnote)
                             .padding([.top], 2)
                     }
@@ -156,7 +155,7 @@ struct BetCardView: View {
                     }) {
                         Text("Cancel")
                             .padding()
-                            .fs(style: 1)
+                            .fs(style: 0)
                             .background(Global.shared.iconColor3)
                             .cornerRadius(8)
                             .frame(width:100)
@@ -168,7 +167,7 @@ struct BetCardView: View {
                     }) {
                         Text("Accept")
                             .padding()
-                            .fs(style: 1)
+                            .fs(style: 0)
                             .background(Global.shared.iconColor2)
                             .cornerRadius(8)
                             .frame(width:100)

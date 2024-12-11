@@ -18,11 +18,11 @@ struct SplashScreen: View {
                 Text("ScreenDime")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .fs(style: 1)
+                    .fs(style: 0)
                     .opacity(opacity)
                     .onAppear {
                         // Start fade-out animation
-                        withAnimation(.easeInOut(duration: 25)) {
+                        withAnimation(.easeInOut(duration: 2)) {
                             opacity = 0.0
                         }
                         

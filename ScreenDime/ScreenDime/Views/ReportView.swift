@@ -65,7 +65,7 @@ struct DailyAverageView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             Text(dailyAverage)
                 .font(.system(size: 40))
-                .fs(style: 1)
+                .fs(style: 0)
                 .padding(.top, 3)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -84,7 +84,7 @@ struct WeeklyTotalView: View {
                 .frame(maxWidth: .infinity, alignment: .leading)
             Text(totalWeeklyScreenTime)
                 .font(.system(size: 40))
-                .fs(style: 1)
+                .fs(style: 0)
                 .padding(.top, 3)
                 .frame(maxWidth: .infinity, alignment: .leading)
         }
@@ -105,13 +105,13 @@ struct AppUsageListView: View {
             ForEach(appUsageData.keys.sorted(), id: \.self) { app in
                 HStack {
                     Image(systemName: "app.fill")
-                        .fs(style: 1)
+                        .fs(style: 0)
                         .frame(width: 50, height: 50)
                         .padding(.trailing, 5)
                         .font(.system(size: 35))
                     
                     Text(app)
-                        .fs(style: 1)
+                        .fs(style: 0)
                         .font(.body)
                     
                     Spacer()

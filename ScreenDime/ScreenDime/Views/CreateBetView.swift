@@ -42,7 +42,7 @@ struct CreateBetView: View {
                 Text("Create Bet")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .fs(style: 1)
+                    .fs(style: 0)
                 Spacer()
                 
             }
@@ -133,7 +133,7 @@ struct CreateBetView: View {
                     .frame(maxWidth: .infinity, maxHeight: 50)
                     .font(.headline)
                     .background(fieldsCompleted() ? Global.shared.iconColor1 : Color.gray)
-                    .fs(style: 1)
+                    .fs(style: 0)
                     .cornerRadius(8)
                     .padding()
             }

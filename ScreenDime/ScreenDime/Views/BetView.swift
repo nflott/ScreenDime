@@ -22,7 +22,7 @@ struct BetView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 25, height: 25)
-                        .fs(style: 1)
+                        .fs(style: 0)
                         .fontWeight(.bold)
                         .padding(.leading, 20)
                 }
@@ -31,7 +31,7 @@ struct BetView: View {
                 Text("\(bet.name)")
                     .font(.largeTitle)
                     .padding()
-                    .fs(style: 1)
+                    .fs(style: 0)
                     .fontWeight(.bold)
                 
                 
@@ -43,16 +43,16 @@ struct BetView: View {
             
             Text("Started: \(bet.startDate.formatted(date: .abbreviated, time: .omitted))")
                 .padding()
-                .fs(style: 1)
+                .fs(style: 0)
                 .font(.title2)
             
             if (daysLeft() > 0) {
                 Text("Ends in: \(daysLeft()) days")
-                    .fs(style: 1)
+                    .fs(style: 0)
                     .font(.title2)
             } else {
                 Text("This bet has ended.")
-                    .fs(style: 1)
+                    .fs(style: 0)
                     .font(.title2)
             }
             HStack {
@@ -60,7 +60,7 @@ struct BetView: View {
                     .font(.title)
                     .padding()
                     .padding([.bottom], -20)
-                    .fs(style: 1)
+                    .fs(style: 0)
                     .fontWeight(.bold)
                 
                 Spacer()
@@ -74,7 +74,7 @@ struct BetView: View {
                 ForEach(sortedMembers, id: \.name) { user in
                     HStack {
                         Circle()
-                            .fs(style: 1)
+                            .fs(style: 0)
                             .frame(width: 50, height: 50)
                             .overlay(
                                 Image(systemName: "person.fill")
@@ -86,14 +86,14 @@ struct BetView: View {
                         
                         // Member's name with ranking number
                         Text("\(sortedMembers.firstIndex(where: { $0.name == user.name })! + 1). \(user.name)")
-                            .fs(style: 1)
+                            .fs(style: 0)
                             .font(.title2)
                         
                         Spacer()
                         
                         // Screen time metric aligned to the right
                         Text(user.screenTime)
-                            .fs(style: 1)
+                            .fs(style: 0)
                             .font(.title2)
                     }
                     .padding(.horizontal, 20)
@@ -104,7 +104,7 @@ struct BetView: View {
             
             HStack {
                 Text("Details")
-                    .fs(style: 1)
+                    .fs(style: 0)
                     .font(.title2)
                     .fontWeight(.bold)
                 
@@ -114,7 +114,7 @@ struct BetView: View {
             
             HStack {
                 Text("Stakes: \(bet.stakes)")
-                    .fs(style: 1)
+                    .fs(style: 0)
                 
                 Spacer()
             }
@@ -123,7 +123,7 @@ struct BetView: View {
             
             HStack {
                 Text("Tracking screen time by: \(bet.metric) use")
-                    .fs(style: 1)
+                    .fs(style: 0)
                 
                 Spacer()
             }
@@ -132,7 +132,7 @@ struct BetView: View {
             
             HStack {
                 Text("App(s) tracked: \(bet.appTracking)")
-                    .fs(style: 1)
+                    .fs(style: 0)
                 
                 Spacer()
             }

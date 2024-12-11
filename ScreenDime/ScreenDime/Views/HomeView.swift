@@ -30,12 +30,14 @@ struct HomeView: View {
                         Button(action: {
                             showingProfile.toggle()
                         }) {
-                            Image(systemName: Global.shared.selectedProfileIcon)
+                            Global.shared.selectedProfileIcon.toImage()
                                 .resizable()
-                                .scaledToFit()
-                                .frame(width: 40, height: 40)
-                                .fs(style: 1)
-                                .padding([.leading, .trailing], 10)
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 50, height: 50)
+                                .fs(style: 0)
+                                .padding([.leading, .trailing], 15)
+                                .contentShape(Circle())
+                                .clipShape(Circle())
                         }
                         .padding()
                         .padding([.top, .bottom], -30)
@@ -49,9 +51,9 @@ struct HomeView: View {
                             Image(systemName: "person.2.circle.fill")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 40, height: 40)
-                                .fs(style: 1)
-                                .padding([.leading, .trailing], 10)
+                                .frame(width: 50, height: 50)
+                                .fs(style: 0)
+                                .padding([.leading, .trailing], 15)
                         }
                         .padding()
                         .padding([.top, .bottom], -30)
@@ -100,7 +102,7 @@ struct HomeView: View {
                 VStack {
                     Text(tabs[selectedTab].title)
                         .font(.largeTitle)
-                        .fs(style: 1)
+                        .fs(style: 0)
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity, alignment: .top)
                         .padding([.top], 26)
@@ -117,15 +119,16 @@ struct HomeView: View {
                         HStack(spacing: 4) {
                             Text(global.selectedGroup)
                                 .font(.largeTitle)
-                                .fs(style: 1)
+                                .fs(style: 0)
                                 .fontWeight(.bold)
                                 .underline()
+                                .padding([.leading], 20)
 
                             Image(systemName: "arrowtriangle.down.fill")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 10, height: 10)
-                                .fs(style: 1)
+                                .fs(style: 0)
                         }
                         .frame(maxWidth: .infinity, alignment: .top)
                         .padding([.top], 26)
@@ -161,7 +164,7 @@ struct HomeView: View {
                                         .resizable()
                                         .scaledToFit()
                                         .frame(width: 30, height: 30)
-                                        .fs(style: 1)
+                                        .fs(style: 0)
                                 )
                                 .shadow(radius: 10)
                         }
@@ -185,7 +188,7 @@ struct HomeView: View {
                    showingGroupSelector = false
                }) {
                    Text(group.name)
-                       .fs(style: 1)
+                       .fs(style: 0)
                        .frame(maxWidth: .infinity)
                        .padding()
                        .background(Global.shared.iconColor1)
@@ -198,7 +201,7 @@ struct HomeView: View {
                showingGroupCreation = true
            }) {
                Text("New")
-                   .fs(style: 1)
+                   .fs(style: 0)
                    .frame(maxWidth: .infinity)
                    .padding()
                    .background(Global.shared.iconColor2)
