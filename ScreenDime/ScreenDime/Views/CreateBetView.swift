@@ -88,14 +88,14 @@ struct CreateBetView: View {
             }
             
             //Selecting a different app from the phone
-            if appTracked == "Other" {
+            if (appTracked != apps[0]) && (appTracked != apps[1]) && (appTracked != apps[2]) && (appTracked != apps[3]) && (appTracked != apps[4]) && (appTracked != apps[5]) && (appTracked != apps[6]) && (appTracked != "Select what apps to track") {
                 HStack {
                     Text("Enter what app to track for this bet:")
                         .fs(style: 2)
                         .padding(.horizontal)
                     Spacer()
                 }
-                TextField("", text: $appTracked)
+                TextField("Other", text: $appTracked)
                     .textFieldStyle(RoundedBorderTextFieldStyle())
                     .padding()
             }
