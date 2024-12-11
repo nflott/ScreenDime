@@ -6,14 +6,16 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct OnboardingPhotoView: View {
     @Environment(\.dismiss) var dismiss
     @State private var showNextScreen = false
     @State private var showIconPicker = false
-    @State private var showImagePicker = false
-    @State private var selectedIcon = ""
+    @State private var selectedIcon: Picture? = .systemIcon("")
     @ObservedObject var global = Global.shared
+    @State private var showConfirmationDialog = false
+    @State private var selectedItem: PhotosPickerItem? // Binding to PhotosPickerItem
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -21,53 +23,67 @@ struct OnboardingPhotoView: View {
                 Text("Set Profile Photo")
                     .font(.title)
                     .padding()
-                    .foregroundColor(.white)
+                    .fs(style: 0)
                     .fontWeight(.bold)
                 
-                Image(systemName: Global.shared.selectedProfileIcon)
-                    .font(.system(size: 250))
-                    .frame(width:200, height:300)
+                Global.shared.selectedProfileIcon.toImage()
+                    .resizable()
+                    .aspectRatio(contentMode: .fill) // Change from .scaledToFit to .fill
+                    .frame(width: 150, height: 150) // Set fixed frame
+                    .clipShape(Circle()) // Clip into a circle
+                    .contentShape(Circle()) // Important for tap gesture on the entire circle
+                    .padding()
                     .onTapGesture {
                         showIconPicker = true
                     }
-                    .padding()
                 
                 HStack {
                     Button(action: {
                         showIconPicker = true
                     }) {
-                        Text("Choose an icon")
-                            .foregroundColor(.white)
+                        Text("Choose an Icon")
+                            .fs(style: 1)
                             .padding()
                             .cornerRadius(10)
                             .background(Color.clear)
+                            .frame(width:150)
+                            .bold()
                     }
                     
-                    Button(action: {
-                        showImagePicker = true
-                    }) {
-                        Text("Choose a photo")
-                            .foregroundColor(.white)
-                            .padding()
-                            .cornerRadius(10)
-                            .background(Color.clear)
-                    }
+                    PhotosPicker(
+                        selection: $selectedItem,
+                        matching: .images,
+                        photoLibrary: .shared()) {
+                            Text("Choose a Photo")
+                                .fs(style: 1)
+                                .bold()
+                        }
+                        .onChange(of: selectedItem) { newItem in
+                            Task {
+                                if let selectedItem = newItem {
+                                    if let assetData = try? await selectedItem.loadTransferable(type: Data.self),
+                                       let image = UIImage(data: assetData) {
+                                        global.selectedProfileIcon = .userImage(image)
+                                    }
+                                }
+                            }
+                        }
+                        .padding()
                 }
                 .padding()
                 
                 Button(action: {
-                    showNextScreen = true
+                    showConfirmationDialog = true
                 }) {
-                    Text("Set Photo")
+                    Text("Finish Profile")
                         .font(.title2)
                         .padding()
-                        .foregroundColor(.white)
-                        .background(selectedIcon == Global.shared.selectedProfileIcon ? Color.gray : Color.blue)
+                        .fs(style: 0)
+                        .bs(style: 1)
                         .cornerRadius(10)
                         .frame(width:200)
                 }
                 .padding()
-                .disabled(selectedIcon == Global.shared.selectedProfileIcon)
             }
             .padding()
             .applyBackground()
@@ -76,9 +92,6 @@ struct OnboardingPhotoView: View {
             }
             .sheet(isPresented: $showIconPicker) {
                 IconPickerView()
-            }
-            .sheet(isPresented: $showImagePicker) {
-                ImagePickerView()
             }
             
             HStack {
@@ -89,7 +102,7 @@ struct OnboardingPhotoView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 25, height: 25)
-                        .foregroundColor(.blue)
+                        .fs(style: 1)
                         .fontWeight(.bold)
                         .padding(.leading, 10)
                         .padding(.trailing)
@@ -99,6 +112,48 @@ struct OnboardingPhotoView: View {
                 Spacer()
             }
             
+            if showConfirmationDialog {
+                VStack {
+                    Spacer()
+                    VStack() {
+                        Text("Confirm Profile Creation")
+                            .font(.headline)
+                        
+                        Text("Are you ready to get started?")
+                            .multilineTextAlignment(.center)
+                            .padding()
+                        
+                        HStack {
+                            Spacer()
+                            Button("Not Yet") {
+                                showConfirmationDialog = false
+                            }
+                            .padding()
+                            .padding([.leading, .trailing], 15)
+                            .background(Global.shared.iconColor3)
+                            .fs(style: 0)
+                            .cornerRadius(8)
+                                                        
+                            Button("Let's Go!") {
+                                showNextScreen = true
+                                showConfirmationDialog = false
+                            }
+                            .padding()
+                            .padding([.leading, .trailing], 15)
+                            .background(Global.shared.iconColor2)
+                            .fs(style: 0)
+                            .cornerRadius(8)
+                            Spacer()
+                        }
+                    }
+                    .frame(width: 350, height: 300)
+                    .background(Global.shared.backgroundColor[0])
+                    .cornerRadius(10)
+                    .shadow(radius: 10)
+                    .padding()
+                    Spacer()
+                }
+            }
         }
     }
 }
@@ -106,7 +161,18 @@ struct OnboardingPhotoView: View {
 struct IconPickerView: View {
     @Environment(\.dismiss) var dismiss
     @ObservedObject var global = Global.shared
-    let icons = ["person.crop.circle.fill", "person.circle", "star.fill", "heart.fill"]
+    let icons = [
+        "person.crop.circle.fill", "person.circle", "star.fill",
+        "flame.circle.fill", "flag.2.crossed.circle", "sun.max.fill", "heart.circle.fill",
+        "moon.fill", "snowflake", "circle.hexagongrid.circle.fill",
+        "infinity.circle.fill", "hurricane.circle.fill", "line.3.crossed.swirl.circle",
+        "theatermasks.circle", "theatermasks.circle.fill", "lightbulb.circle", "poweroutlet.type.f",
+        "toilet.circle", "tent.2.circle", "mountain.2.circle"
+    ]
+    
+    let columns = [
+        GridItem(.adaptive(minimum: 60)) // Adjust the minimum size for the grid items
+    ]
     
     var body: some View {
         VStack {
@@ -114,47 +180,37 @@ struct IconPickerView: View {
                 .font(.headline)
                 .padding()
             
-            ScrollView(.horizontal) {
-                HStack {
+            ScrollView {
+                LazyVGrid(columns: columns, spacing: 20) {
                     ForEach(icons, id: \.self) { icon in
                         Image(systemName: icon)
                             .resizable()
-                            .frame(width: 50, height: 50)
+                            .scaledToFit() // Ensure the icon fits within the circle
+                            .frame(width: 50, height: 50) // Same size for all icons
+                            .clipShape(Circle()) // Crop icon to a circle
                             .padding()
+                            .background(
+                                Circle()
+                                    .fill(global.selectedProfileIcon.isSystemIcon(icon) ? Global.shared.iconColor1 : Color.clear)
+                            )
                             .onTapGesture {
-                                Global.shared.selectedProfileIcon = icon
+                                global.selectedProfileIcon = .systemIcon(icon)
                                 dismiss()
                             }
                     }
                 }
+                .padding()
             }
-            .padding()
             
             Button("Close") {
                 dismiss()
             }
+            .padding()
+            .bs(style: 1)
+            .fs(style: 0)
+            .cornerRadius(8)
         }
-    }
-}
-struct ImagePickerView : View {
-    @Environment(\.dismiss) var dismiss
-    var body: some View {
-        VStack {
-            Text("Image picker coming soon!")
-                .font(.headline)
-                .padding()
-            
-            Button(action: {
-                dismiss()
-            }) {
-                Text("Dismiss")
-                    .frame(width:120)
-                    .padding()
-                    .cornerRadius(10)
-                    .foregroundColor(.white)
-                    .background(Color.blue)
-            }
-        }
+        .applyBackground()
     }
 }
 

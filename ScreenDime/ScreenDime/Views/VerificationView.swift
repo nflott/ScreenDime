@@ -33,12 +33,12 @@ struct VerificationView: View {
                     Text("Verify your phone number")
                         .font(.title)
                         .padding()
-                        .foregroundColor(.white)
+                        .fs(style: 0)
                         .multilineTextAlignment(.center)
                     
                     Text("Because this is still a beta version of the app, we won't actually be tracking your phone number or sending a text - but feel free to act as though we were!")
                         .padding()
-                        .foregroundColor(.white)
+                        .fs(style: 0)
                         .multilineTextAlignment(.center)
                     
                     HStack(spacing:0) {
@@ -48,7 +48,7 @@ struct VerificationView: View {
                             }
                         }
                         .pickerStyle(MenuPickerStyle())
-                        .accentColor(.blue)
+                        .accentColor(Global.shared.iconColor1)
                         
                         TextField("Enter your phone number", text: $phoneNumber)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -64,8 +64,8 @@ struct VerificationView: View {
                         Text("Send Code")
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(isPhoneNumberValid ? Color.blue : Color.gray)
-                            .foregroundColor(.white)
+                            .background(isPhoneNumberValid ? Global.shared.iconColor1 : Color.gray)
+                            .fs(style: 0)
                             .cornerRadius(8)
                     }
                     .disabled(!isPhoneNumberValid)
@@ -75,7 +75,7 @@ struct VerificationView: View {
                     Text("Verify your phone number")
                         .font(.title)
                         .padding()
-                        .foregroundColor(.white)
+                        .fs(style: 0)
                         .multilineTextAlignment(.center)
                     
                     TextField("Enter verification code", text: $inputCode)
@@ -88,8 +88,8 @@ struct VerificationView: View {
                         Text("Verify")
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(String(givenCode) != inputCode ? Color.gray : Color.blue)
-                            .foregroundColor(.white)
+                            .background(String(givenCode) != inputCode ? Color.gray : Global.shared.iconColor2)
+                            .fs(style: 0)
                             .cornerRadius(8)
                     }
                     .padding()
@@ -100,7 +100,7 @@ struct VerificationView: View {
                         showCodeDialog = true
                     }) {
                         Text("Send another code")
-                            .foregroundColor(.blue)
+                            .fs(style: 1)
                     }
                 }
             }
@@ -118,20 +118,6 @@ struct VerificationView: View {
                 HomeView()
             }
             
-//            VStack {
-//                HStack {
-//                    Button(action: {
-//                        skipToHome.toggle()
-//                    }) {
-//                        Text("Skip Onboarding")
-//                            .font(.title3)
-//                            .foregroundColor(.white)
-//                    }
-//                    Spacer()
-//                }
-//                Spacer()
-//            }
-            
             if showCodeDialog {
                 VStack(spacing: 20) {
                     Text("Your code is \(givenCode)!")
@@ -142,12 +128,12 @@ struct VerificationView: View {
                         showCodeDialog = false
                     }
                     .padding()
-                    .background(Color.blue)
-                    .foregroundColor(.white)
+                    .fs(style: 0)
+                    .background(Global.shared.iconColor1)
                     .cornerRadius(8)
                 }
                 .frame(width: 200, height: 150)
-                .background(Color.white)
+                .background(Global.shared.backgroundColor[0])
                 .cornerRadius(10)
                 .shadow(radius: 10)
                 .padding()

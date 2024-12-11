@@ -30,14 +30,17 @@ struct HomeView: View {
                         Button(action: {
                             showingProfile.toggle()
                         }) {
-                            Image(systemName: Global.shared.selectedProfileIcon)
+                            Global.shared.selectedProfileIcon.toImage()
                                 .resizable()
-                                .scaledToFit()
-                                .frame(width: 40, height: 40)
-                                .foregroundColor(.white)
-                                .padding([.leading, .trailing], 10)
+                                .aspectRatio(contentMode: .fill)
+                                .frame(width: 50, height: 50)
+                                .fs(style: 0)
+                                .padding([.leading, .trailing], 15)
+                                .contentShape(Circle())
+                                .clipShape(Circle())
                         }
                         .padding()
+                        .padding([.top, .bottom], -30)
                         
                         Spacer()
                     }
@@ -48,11 +51,12 @@ struct HomeView: View {
                             Image(systemName: "person.2.circle.fill")
                                 .resizable()
                                 .scaledToFit()
-                                .frame(width: 40, height: 40)
-                                .foregroundColor(.white)
-                                .padding([.leading, .trailing], 10)
+                                .frame(width: 50, height: 50)
+                                .fs(style: 0)
+                                .padding([.leading, .trailing], 15)
                         }
                         .padding()
+                        .padding([.top, .bottom], -30)
                         
                         Spacer()
                     }
@@ -66,11 +70,12 @@ struct HomeView: View {
                     }
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                .frame(height: 725)
                 
                 HStack {
                     ForEach(0..<tabs.count, id: \.self) { index in
                         Circle()
-                            .fill(index == selectedTab ? Color.blue : Color.gray)
+                            .fill(index == selectedTab ? Global.shared.iconColor1 : Color.gray)
                             .frame(width: 15, height: 15)
                             .onTapGesture {
                                 selectedTab = index
@@ -97,10 +102,11 @@ struct HomeView: View {
                 VStack {
                     Text(tabs[selectedTab].title)
                         .font(.largeTitle)
-                        .foregroundColor(.white)
+                        .fs(style: 0)
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity, alignment: .top)
                         .padding([.top], 26)
+                        .padding([.top, .bottom], -10)
                     
                     Spacer()
                 }
@@ -113,20 +119,23 @@ struct HomeView: View {
                         HStack(spacing: 4) {
                             Text(global.selectedGroup)
                                 .font(.largeTitle)
-                                .foregroundColor(.white)
+                                .fs(style: 0)
                                 .fontWeight(.bold)
-                                .underline(color: .white)
+                                .underline()
+                                .padding([.leading], 20)
 
                             Image(systemName: "arrowtriangle.down.fill")
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 10, height: 10)
-                                .foregroundColor(.white)
+                                .fs(style: 0)
                         }
                         .frame(maxWidth: .infinity, alignment: .top)
                         .padding([.top], 26)
+                        .padding([.top, .bottom], -10)
                     }
                     .buttonStyle(PlainButtonStyle())
+                    
 
                     if showingGroupSelector {
                         dropdownMenu()
@@ -138,7 +147,6 @@ struct HomeView: View {
                 }
             }
 
-            // Floating plus button to create a bet
             if selectedTab == 1 {
                 VStack {
                     Spacer()
@@ -149,14 +157,14 @@ struct HomeView: View {
                             showingBetCreation.toggle()
                         }) {
                             Circle()
-                                .fill(Color.blue)
+                                .fill(Global.shared.iconColor1)
                                 .frame(width: 60, height: 60)
                                 .overlay(
                                     Image(systemName: "plus")
                                         .resizable()
                                         .scaledToFit()
                                         .frame(width: 30, height: 30)
-                                        .foregroundColor(.white)
+                                        .fs(style: 0)
                                 )
                                 .shadow(radius: 10)
                         }
@@ -180,10 +188,10 @@ struct HomeView: View {
                    showingGroupSelector = false
                }) {
                    Text(group.name)
-                       .foregroundColor(.white)
+                       .fs(style: 0)
                        .frame(maxWidth: .infinity)
                        .padding()
-                       .background(Color.blue.opacity(0.7))
+                       .background(Global.shared.iconColor1)
                        .cornerRadius(8)
                }
            }
@@ -193,15 +201,15 @@ struct HomeView: View {
                showingGroupCreation = true
            }) {
                Text("New")
-                   .foregroundColor(.white)
+                   .fs(style: 0)
                    .frame(maxWidth: .infinity)
                    .padding()
-                   .background(Color.green.opacity(0.7))
+                   .background(Global.shared.iconColor2)
                    .cornerRadius(8)
            }
        }
        .padding()
-       .background(Color.white.opacity(0.9))
+       .background(Global.shared.textColor.opacity(0.9))
        .cornerRadius(12)
        .shadow(radius: 5)
        .padding(.horizontal, 20)

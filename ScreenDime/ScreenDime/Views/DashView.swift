@@ -5,13 +5,14 @@ struct DashView: View {
         VStack(spacing: 20) {
             
             WeeklyReportPreview()
+                .shadow(color: Global.shared.iconColor2, radius: 10, x: 0, y: 0)
             
             // 'Activity' card
             VStack {
                 HStack {
                     Text("Activity")
                         .fontWeight(.bold)
-                        .foregroundColor(.white)
+                        .fs(style: 0)
                     Spacer()
                 }
                 .padding(.horizontal)
@@ -30,9 +31,10 @@ struct DashView: View {
                 .frame(maxHeight: .infinity)
             }
             .frame(height: 400)
-            .background(Color.black.opacity(0.7))
+            .background(Global.shared.iconColor2)
             .cornerRadius(10)
             .padding(.horizontal)
+            .shadow(color: Global.shared.iconColor2, radius: 10, x: 0, y: 0)
             
             Spacer()
         }
@@ -64,17 +66,17 @@ struct ActivityRow: View {
     var body: some View {
         HStack {
             Text("\(activity.name)")
-                .foregroundColor(.white)
+                .fs(style: 0)
                 .font(.body)
                 .fontWeight(.bold)
             Text("owes")
-                .foregroundColor(.white)
+                .fs(style: 0)
                 .font(.body)
             Text(activity.bet)
-                .foregroundColor(.green)
+                .fs(style: 4)
                 .font(.body)
             Text(activity.date)
-                .foregroundColor(.white)
+                .fs(style: 0)
                 .font(.caption)
                 .frame(maxWidth: .infinity, alignment: .trailing)
         }
@@ -82,11 +84,12 @@ struct ActivityRow: View {
     }
 }
 
-// Temp data for screen time ----
 let screenTimeData: [String: Int] = [
     "Sun": 120, "Mon": 150, "Tue": 200, "Wed": 180, "Thu": 140, "Fri": 160, "Sat": 190,
 ]
-// -----
+
+let orderedDays = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+
 
 // preview card for the Weekly Report
 struct WeeklyReportPreview: View {
@@ -98,31 +101,30 @@ struct WeeklyReportPreview: View {
                 Text("Weekly Report")
                     .font(.headline)
                     .fontWeight(.bold)
-                    .foregroundColor(.white)
+                    .fs(style: 0)
                 Spacer()
                 Button(action: {
                     // Toggle the sheet to show the ReportView
                     showingReport.toggle()
                 }) {
                     Image(systemName: "rectangle.expand.vertical")
-                        .foregroundColor(.white)
+                        .fs(style: 0)
                 }
             }
             .padding(.horizontal)
             .padding(.top)
             
-            // Bar chart showing weekly screen time data
             HStack(spacing: 12) {
-                ForEach(Array(screenTimeData.keys), id: \.self) { day in
+                ForEach(orderedDays, id: \.self) { day in
                     VStack {
                         Rectangle()
-                            .fill(Color.blue)
+                            .fill(Global.shared.iconColor1)
                             .frame(width: 30, height: CGFloat(screenTimeData[day]!)/2)
                         
                         Text(day)
-                            .foregroundColor(.white)
+                            .fs(style: 0)
                             .font(.caption)
-                            .frame(width: 30)
+                            .frame(width: 35)
                     }
                 }
             }
@@ -136,7 +138,7 @@ struct WeeklyReportPreview: View {
         }
         .frame(height: 200)
         .frame(maxWidth: .infinity)
-        .background(Color.black.opacity(0.7))
+        .background(Global.shared.iconColor2)
         .cornerRadius(10)
         .padding(.horizontal)
     }

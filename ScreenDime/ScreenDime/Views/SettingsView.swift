@@ -2,7 +2,6 @@ import SwiftUI
 
 struct SettingsView: View {
     @ObservedObject private var global = Global.shared
-    
     @Environment(\.dismiss) var dismiss
     
     @State var showProfilePhotoPicker: Bool = false
@@ -14,58 +13,58 @@ struct SettingsView: View {
     @State private var showSplashScreen: Bool = false // State to control the navigation
     
     var body: some View {
+
         NavigationStack {
             ScrollView {
                 VStack {
                     // Header with back button and title
-                    HStack {
-                        // Back button
-                        Button(action: {
-                            dismiss()
-                        }) {
-                            Image(systemName: "arrow.left")
-                                .resizable()
-                                .scaledToFit()
-                                .frame(width: 25, height: 25)
-                                .foregroundColor(.blue)
-                                .fontWeight(.bold)
-                        }
-                        .padding(.leading, 20)
-                        
-                        Spacer()
-                        
-                        // Title
-                        Text("App Settings")
-                            .font(.title)
-                            .foregroundColor(.white)
-                            .fontWeight(.bold)
-                            .multilineTextAlignment(.center)
-                        
-                        Spacer() // Ensure spacing on both sides of the title
-                        
-                        // Empty space to align the title with the back arrow
-                        Spacer().frame(width: 25)
-                    }
-                    .padding(.top, 30) // Adjusts vertical padding to bring it higher
+                    ZStack {
+                                    HStack {
+                                        Button(action: {
+                                            dismiss()
+                                        }) {
+                                            Image(systemName: "arrow.left")
+                                                .resizable()
+                                                .scaledToFit()
+                                                .frame(width: 25, height: 25)
+                                                .fs(style: 1)
+                                                .fontWeight(.bold)
+                                                .padding(.leading, 20)
+                                                .padding(.trailing, 25)
+                                        }
+                                        
+                                        Spacer()
+                                    }
+                                    .padding()
+                                    
+                                    Text("App Settings")
+                                        .font(.largeTitle)
+                                        .padding()
+                                        .fs(style: 0)
+                                        .fontWeight(.bold)
+                                        .multilineTextAlignment(.center)
+                                }
                     
                     // Profile Section
                     VStack {
-                        // Profile Image
-                        Image(systemName: Global.shared.selectedProfileIcon)
-                            .font(.system(size: 125))
-                        
-                        // Change button below the profile image, with less padding to move it closer
-                        Button(action: {
-                            showProfilePhotoPicker.toggle()
-                        }) {
-                            Text("Change")
-                                .font(.headline)
-                                .foregroundColor(.white)
-                                .cornerRadius(8)
-                                .padding(.top, -20)
-                                .padding(.bottom, 10)
-                        }
-                        
+                        VStack {
+                                            Global.shared.selectedProfileIcon.toImage()
+                                                .resizable()
+                                                .aspectRatio(contentMode: .fill)
+                                                .frame(width: 125, height: 125)
+                                                .clipShape(Circle())
+                                                .contentShape(Circle())
+                                            
+                                            Button(action: {
+                                                showProfilePhotoPicker.toggle()
+                                            }) {
+                                                Text("    Change")
+                                                    .font(.headline)
+                                                    .fs(style: 0)
+                                                    .padding(.trailing, 20)
+                                            }
+                                        }
+                        Spacer()
                         // Username Section with Pencil Icon
                         HStack(spacing: 10) {
                             VStack {
@@ -74,25 +73,22 @@ struct SettingsView: View {
                                     TextField("Username", text: $username)
                                         .fontWeight(.bold)
                                         .font(.title)
-                                        .foregroundColor(.white) // Set the text color to white when editing
                                         .padding(10)
-                                        .background(Color.white.opacity(0.3)) // Semi-transparent white background
+                                        .background(Color.white.opacity(0.3))
                                         .cornerRadius(8)
-                                        .frame(width: 200) // Limit the width
+                                        .frame(width: 200)
                                 } else {
-                                    Text(username) // Display the username normally
+                                    Text(username)
                                         .fontWeight(.bold)
                                         .font(.title)
-                                        .foregroundColor(.white)
                                         .padding(.bottom, 5)
                                 }
                             }
                             
-                            // Show Save button when editing, otherwise show pencil icon
+                            
                             if showUsernameEdit {
                                 Button(action: {
-                                    showUsernameEdit.toggle() // Toggle back to non-editing mode
-                                    // You can add save action here to persist the username
+                                    showUsernameEdit.toggle() //
                                 }) {
                                     Text("Save")
                                         .fontWeight(.bold)
@@ -105,7 +101,6 @@ struct SettingsView: View {
                                     showUsernameEdit.toggle() // Toggle to start editing
                                 }) {
                                     Image(systemName: "pencil")
-                                        .foregroundColor(.white)
                                         .font(.system(size: 20))
                                 }
                             }
@@ -114,10 +109,8 @@ struct SettingsView: View {
                         
                         // Full Name Section
                         Text("lcurrier@gmailcom")
-                            .foregroundColor(.white)
                         // Full Name Section
                         Text("Luke Currier")
-                            .foregroundColor(.white)
                             .padding(.bottom, 10)
                     }
                     .frame(maxWidth: .infinity)
@@ -127,47 +120,65 @@ struct SettingsView: View {
                     VStack(alignment: .leading, spacing: 15) {
                         Text("Resources")
                             .fontWeight(.bold)
-                            .foregroundColor(.white)
                         
-                        // Change 'My stores' to 'Change theme' with a color palette icon and arrow
+                        
                         HStack {
                             Image(systemName: "paintpalette")
-                                .foregroundColor(.gray)
                                 .frame(width: 24, height: 24)
                             
                             Text("Change theme")
                                 .font(.body)
-                                .foregroundColor(.white)
                             
                             Spacer()
                             
-                            Image(systemName: "chevron.right") // Small arrow
-                                .foregroundColor(.gray)
+                            Image(systemName: "chevron.right")
                         }
                         .padding()
                         .background(Color.white.opacity(0.2))
                         .cornerRadius(8)
                         .onTapGesture {
-                            showComingSoonPopup.toggle() // Trigger the "Coming Soon" popup when tapped
+                            showComingSoonPopup.toggle()
                         }
                         
                         // Push Notifications with Toggle
                         ToggleOption(iconName: "bell", title: "Push notifications", isOn: $pushNotificationsEnabled)
                             .onChange(of: pushNotificationsEnabled) { _ in
-                                showComingSoonPopup.toggle() // Show "Coming Soon" when toggled
+                                showComingSoonPopup.toggle()
                             }
                         
                         // Changed Face ID to Privacy with an arrow
-                        ProfileOption(iconName: "shield", title: "Privacy", badgeCount: nil, showArrow: true)
-                            .onTapGesture {
-                                showComingSoonPopup.toggle() // Trigger the "Coming Soon" popup when tapped
-                            }
+                        HStack {
+                            Image(systemName: "shield")
+                                .frame(width: 24, height: 24)
+                            
+                            Text("Privacy")
+                                .font(.body)
+                            
+                            Spacer()
+                            
+                            Image(systemName: "chevron.right")
+                        }
+                        .padding()
+                        .background(Color.white.opacity(0.2))
+                        .cornerRadius(8)
+                        .onTapGesture {
+                            showComingSoonPopup.toggle()
+                        }
                         
-                        // Support Option
-                        ProfileOption(iconName: "questionmark.circle", title: "Support", badgeCount: nil, showArrow: true)
-                            .onTapGesture {
-                                showComingSoonPopup.toggle() // Trigger the "Coming Soon" popup when tapped
-                            }
+                        HStack {
+                            Image(systemName: "questionmark.circle")
+                                .frame(width: 24, height: 24)
+                            Text("Support")
+                                .font(.body)
+                            Spacer()
+                            Image(systemName: "chevron.right")
+                        }
+                        .padding()
+                        .background(Color.white.opacity(0.2))
+                        .cornerRadius(8)
+                        .onTapGesture {
+                            showComingSoonPopup.toggle()
+                        }
                 
                     }
                     .padding()
@@ -192,11 +203,12 @@ struct SettingsView: View {
                 }
                 .padding()
                 .applyBackground()
-                .cornerRadius(10) // Optional: to add rounded corners to the whole screen
             }
+
             .navigationBarHidden(true) // Hide default navigation bar
             .sheet(isPresented: $showProfilePhotoPicker) {
                 SettingsPhotoView()
+
             }
             .alert(isPresented: $showComingSoonPopup) {
                 Alert(title: Text("Coming Soon"), message: Text("This feature is coming soon!"), dismissButton: .default(Text("OK")))
@@ -234,6 +246,7 @@ struct ProfileOption: View {
             if showArrow {
                 Image(systemName: "chevron.right")
                     .foregroundColor(.gray)
+
             }
         }
         .padding()
@@ -245,7 +258,7 @@ struct ProfileOption: View {
 struct ToggleOption: View {
     let iconName: String
     let title: String
-    @Binding var isOn: Bool // Binding to toggle push notifications
+    @Binding var isOn: Bool
     
     var body: some View {
         HStack {
@@ -255,7 +268,6 @@ struct ToggleOption: View {
             
             Text(title)
                 .font(.body)
-                .foregroundColor(.white)
             
             Spacer()
             

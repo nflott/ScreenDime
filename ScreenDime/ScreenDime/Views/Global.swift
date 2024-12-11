@@ -7,15 +7,18 @@
 
 import SwiftUI
 
-class Global: ObservableObject {
+final class Global: ObservableObject {
     static let shared = Global()
     
-    @Published var backgroundColor: [Color] = [.green, .mint, .teal, .green.opacity(0.8)]
+    //@Published var backgroundColor: [Color] = [.green, .mint, .teal, .green.opacity(0.8)]
+    @Published var backgroundColor: [Color] = [Color(hex: "faf3dd")]
     @Published var textColor: Color = Color(hex: "#5e6472")
+    @Published var altTextColor: Color = Color(hex: "43a3b1")
     @Published var iconColor1: Color = Color(hex: "aed9e0")
-    @Published var iconColor2: Color = Color(hex: "ffa69e")
+    @Published var iconColor2: Color = Color(hex: "b8f2e6")
+    @Published var iconColor3: Color = Color(hex: "ffa69e")
     
-    @Published var selectedProfileIcon: String = "person.crop.circle.fill"
+    @Published var selectedProfileIcon: Picture = .systemIcon("person.crop.circle.fill")
     @Published var selectedGroup: String = "The Avengers"
 
     @AppStorage("hasOnboarded") var hasOnboarded: Bool = false
@@ -171,24 +174,112 @@ class Global: ObservableObject {
     }
 }
 
+enum Picture {
+    case systemIcon(String)
+    case userImage(UIImage)
+    
+    func isSystemIcon(_ name: String) -> Bool {
+        if case .systemIcon(let systemName) = self {
+            return systemName == name
+        }
+        return false
+    }
+    
+    func toImage() -> Image {
+        switch self {
+        case .systemIcon(let systemName):
+            return Image(systemName: systemName)
+        case .userImage(let uiImage):
+            return Image(uiImage: uiImage)
+        }
+    }
+}
+
 struct Background: ViewModifier {
+    var color: Color? = nil
+    
     func body(content: Content) -> some View {
         ZStack {
-            LinearGradient(
-                gradient: Gradient(colors: Global.shared.backgroundColor),
-                startPoint: .topLeading,
-                endPoint: .bottomTrailing
-            )
-            .edgesIgnoringSafeArea(.all)
+            if let color = color {
+                color.edgesIgnoringSafeArea(.all)
+            } else {
+                LinearGradient(
+                    gradient: Gradient(colors: Global.shared.backgroundColor),
+                    startPoint: .topLeading,
+                    endPoint: .bottomTrailing
+                )
+                .edgesIgnoringSafeArea(.all)
+            }
             
             content
         }
     }
 }
 
+struct ForegroundStyle: ViewModifier {
+    var style: Int
+
+    func body(content: Content) -> some View {
+        switch style {
+        case 0:
+            content
+                .foregroundColor(Global.shared.textColor)
+                .font(.system(size: 16, weight: .regular))
+        case 1:
+            content
+                .foregroundColor(Global.shared.altTextColor)
+                .font(.system(size: 16, weight: .regular))
+        case 2:
+            content
+                .foregroundColor(Global.shared.iconColor1)
+                .font(.system(size: 16, weight: .regular))
+        case 3:
+            content
+                .foregroundColor(Global.shared.iconColor2)
+                .font(.system(size: 16, weight: .regular))
+        case 4:
+            content
+                .foregroundColor(Global.shared.iconColor3)
+                .font(.system(size: 16, weight: .regular))
+        default:
+            content // Fallback for undefined styles is the basic text color
+                .foregroundColor(Global.shared.textColor)
+                .font(.system(size: 16, weight: .regular))
+        }
+    }
+}
+
+struct BackgroundStyle: ViewModifier {
+    var style: Int
+
+    func body(content: Content) -> some View {
+        switch style {
+        case 1:
+            content
+                .background(Global.shared.iconColor1)
+        case 2:
+            content
+                .background(Global.shared.iconColor2)
+        case 3:
+            content
+                .background(Global.shared.iconColor3)
+        default:
+            content // Fallback for undefined styles is the basic button color
+                .background(Global.shared.iconColor1)
+        }
+    }
+}
+
+
 extension View {
-    func applyBackground() -> some View {
-        self.modifier(Background())
+    func applyBackground(color: Color? = nil) -> some View {
+        self.modifier(Background(color: color))
+    }
+    func fs(style: Int) -> some View {
+        self.modifier(ForegroundStyle(style: style))
+    }
+    func bs(style: Int) -> some View {
+        self.modifier(BackgroundStyle(style: style))
     }
 }
 
@@ -198,25 +289,10 @@ extension Color {
         var int: UInt64 = 0
         Scanner(string: hex).scanHexInt64(&int)
         let a, r, g, b: Double
-        switch hex.count {
-        case 3: // RGB (12-bit)
-            (a, r, g, b) = (1.0,
-                            Double((int >> 8) & 0xF) / 15.0,
-                            Double((int >> 4) & 0xF) / 15.0,
-                            Double(int & 0xF) / 15.0)
-        case 6: // RGB (24-bit)
-            (a, r, g, b) = (1.0,
-                            Double((int >> 16) & 0xFF) / 255.0,
-                            Double((int >> 8) & 0xFF) / 255.0,
-                            Double(int & 0xFF) / 255.0)
-        case 8: // ARGB (32-bit)
-            (a, r, g, b) = (Double((int >> 24) & 0xFF) / 255.0,
-                            Double((int >> 16) & 0xFF) / 255.0,
-                            Double((int >> 8) & 0xFF) / 255.0,
-                            Double(int & 0xFF) / 255.0)
-        default:
-            (a, r, g, b) = (1.0, 0.0, 0.0, 0.0) // Default to black for invalid hex
-        }
+        (a, r, g, b) = (1.0,
+                        Double((int >> 16) & 0xFF) / 255.0,
+                        Double((int >> 8) & 0xFF) / 255.0,
+                        Double(int & 0xFF) / 255.0)
         self.init(.sRGB, red: r, green: g, blue: b, opacity: a)
     }
 }
