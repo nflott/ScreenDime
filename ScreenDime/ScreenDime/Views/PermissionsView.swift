@@ -17,12 +17,12 @@ struct PermissionsView: View {
             Text("Screen Time Access")
                 .font(.title)
                 .padding()
-                .fs(style: 1)
+                .fs(style: 0)
             
             Text("To help you track your screen usage, please allow ScreenDime to access your screen time data.")
                 .multilineTextAlignment(.center)
                 .padding()
-                .fs(style: 1)
+                .fs(style: 0)
             
             Button(action: {
                 requestScreenTimePermission()
@@ -31,8 +31,8 @@ struct PermissionsView: View {
                 Text("Allow Access")
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .fs(style: 1)
-                    .fs(style: 1)
+                    .background(Global.shared.iconColor2)
+                    .fs(style: 0)
                     .cornerRadius(8)
             }
             .padding()
@@ -41,7 +41,7 @@ struct PermissionsView: View {
                 showPermissionDenialScreen = true
             }) {
                 Text("Don't grant access")
-                    .foregroundColor(.gray)
+                    .foregroundColor(Global.shared.iconColor3)
             }
             
         }

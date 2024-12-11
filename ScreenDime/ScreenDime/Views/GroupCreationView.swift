@@ -20,27 +20,27 @@ struct GroupCreationView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 25, height: 25)
-                        .fs(style: 1)
+                        .fs(style: 0)
                         .fontWeight(.bold)
                 }
                 Text("Create New Group")
                     .font(.largeTitle)
                     .padding()
-                    .fs(style: 1)
+                    .fs(style: 0)
                     .fontWeight(.bold)
                 
                 Spacer()
             }
             
             Text("Group Name")
-                .fs(style: 1)
+                .fs(style: 0)
             
             TextField("Name your group", text: $groupName)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
             
             Text("Group Members")
-                .fs(style: 1)
+                .fs(style: 0)
             
             TextField("Search Group Members", text: $searchText)
                 .padding()
@@ -75,7 +75,7 @@ struct GroupCreationView: View {
                 VStack(alignment: .leading, spacing: 10) {
                     Text("Added Members:")
                         .font(.headline)
-                        .fs(style: 1)
+                        .fs(style: 0)
                         .padding(.leading)
                     
                     // Use LazyVGrid for wrapping layout
@@ -91,7 +91,7 @@ struct GroupCreationView: View {
                             if let user = global.appUsers.first(where: { $0.id == userUUID }) {
                                 HStack {
                                     Text(user.name.prefix(1)) // Show the first letter of the user's name
-                                        .fs(style: 1)
+                                        .fs(style: 0)
                                         .font(.title2)
                                         .padding()
                                         .overlay(
@@ -130,7 +130,7 @@ struct GroupCreationView: View {
                     .frame(maxWidth: .infinity, maxHeight: 50)
                     .font(.headline)
                     .background(fieldsCompleted() ? Global.shared.iconColor1 : Color.gray)
-                    .fs(style: 1)
+                    .fs(style: 0)
                     .cornerRadius(8)
                     .padding()
             }

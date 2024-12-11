@@ -16,7 +16,7 @@ struct Icon: View {
             Text("SC")
                 .font(.custom("", size: 128))
                 .fontWeight(.bold)
-                .fs(style: 1)
+                .fs(style: 0)
         }
         .applyBackground()
     }

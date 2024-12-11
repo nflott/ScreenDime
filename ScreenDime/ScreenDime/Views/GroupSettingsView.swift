@@ -28,7 +28,7 @@ struct GroupSettingsView: View {
                 Text("Group Settings")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .fs(style: 1)
+                    .fs(style: 0)
                                 
                 Spacer()
                 
@@ -49,7 +49,7 @@ struct GroupSettingsView: View {
                                     RoundedRectangle(cornerRadius: 8)
                                         .stroke(Global.shared.iconColor1, lineWidth: 1)
                                 )
-                                .fs(style: 1)
+                                .fs(style: 0)
                                 .font(.title2)
                                 .padding(.vertical)
 
@@ -74,7 +74,7 @@ struct GroupSettingsView: View {
                         } else {
                             Text("Current Group: \(selectedGroup.name)")
                                 .font(.title2)
-                                .fs(style: 1)
+                                .fs(style: 0)
                                 .padding(.vertical)
                             
                             Button(action: {
@@ -82,7 +82,7 @@ struct GroupSettingsView: View {
                                 editedGroupName = selectedGroup.name
                             }) {
                                 Image(systemName: "pencil")
-                                    .fs(style: 1)
+                                    .fs(style: 0)
                             }
                         }
                     }
@@ -91,14 +91,14 @@ struct GroupSettingsView: View {
                     VStack(alignment: .leading, spacing: 10) {
                         Text("Current Users:")
                             .font(.headline)
-                            .fs(style: 1)
+                            .fs(style: 0)
                             .padding(.top, 10)
                         
                         ForEach(getUserNamesWithScreenTime(for: selectedGroup.members), id: \.name) { user in
                             HStack {
                                 Text(user.name)
                                     .font(.title3)
-                                    .fs(style: 1)
+                                    .fs(style: 0)
                                     .bold()
                                     .padding(.leading)
                                 
@@ -106,7 +106,7 @@ struct GroupSettingsView: View {
                                 
                                 Text(user.screenTime)
                                     .font(.body)
-                                    .fs(style: 1)
+                                    .fs(style: 0)
                                     .padding(.trailing)
                             }
                             .padding(.vertical, 5)
@@ -165,7 +165,7 @@ struct GroupSettingsView: View {
                 }
             } else {
                 Text("No group selected.")
-                    .fs(style: 1)
+                    .fs(style: 0)
                     .padding()
             }
         }
@@ -217,7 +217,7 @@ struct GroupSettingsView: View {
         VStack(alignment: .leading) {
             if bets.isEmpty {
                 Text(title)
-                    .fs(style: 1)
+                    .fs(style: 0)
                     .font(.callout)
                     .bold()
                     .multilineTextAlignment(.center)
@@ -227,35 +227,35 @@ struct GroupSettingsView: View {
                     VStack(alignment: .leading, spacing: 5) {
                         Text("Bet Name: \(bet.name)")
                             .font(.title3)
-                            .fs(style: 1)
+                            .fs(style: 0)
                             .bold()
                         
                         Text("Tracking App: \(bet.appTracking)")
                             .font(.subheadline)
-                            .fs(style: 1)
+                            .fs(style: 0)
                         
                         Text("Participants:")
                             .font(.subheadline)
-                            .fs(style: 1)
+                            .fs(style: 0)
                             .bold()
                         
                         ForEach(getUserNames(for: bet.participants), id: \.self) { participantName in
                             Text(participantName)
-                                .fs(style: 1)
+                                .fs(style: 0)
                                 .padding(.leading)
                         }
                         
                         Text("Stakes: \(bet.stakes)")
                             .font(.subheadline)
-                            .fs(style: 1)
+                            .fs(style: 0)
                         
                         Text("Start Date: \(formatDate(bet.startDate))")
                             .font(.subheadline)
-                            .fs(style: 1)
+                            .fs(style: 0)
                         
                         Text("End Date: \(formatDate(bet.endDate))")
                             .font(.subheadline)
-                            .fs(style: 1)
+                            .fs(style: 0)
                         
                         Divider()
                             .background(Color.gray)

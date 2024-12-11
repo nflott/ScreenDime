@@ -7,17 +7,18 @@
 
 import SwiftUI
 
-class Global: ObservableObject {
+final class Global: ObservableObject {
     static let shared = Global()
     
     //@Published var backgroundColor: [Color] = [.green, .mint, .teal, .green.opacity(0.8)]
     @Published var backgroundColor: [Color] = [Color(hex: "faf3dd")]
     @Published var textColor: Color = Color(hex: "#5e6472")
+    @Published var altTextColor: Color = Color(hex: "43a3b1")
     @Published var iconColor1: Color = Color(hex: "aed9e0")
     @Published var iconColor2: Color = Color(hex: "b8f2e6")
     @Published var iconColor3: Color = Color(hex: "ffa69e")
     
-    @Published var selectedProfileIcon: String = "person.crop.circle.fill"
+    @Published var selectedProfileIcon: Picture = .systemIcon("person.crop.circle.fill")
     @Published var selectedGroup: String = "The Avengers"
 
     @AppStorage("hasOnboarded") var hasOnboarded: Bool = false
@@ -173,6 +174,27 @@ class Global: ObservableObject {
     }
 }
 
+enum Picture {
+    case systemIcon(String)
+    case userImage(UIImage)
+    
+    func isSystemIcon(_ name: String) -> Bool {
+        if case .systemIcon(let systemName) = self {
+            return systemName == name
+        }
+        return false
+    }
+    
+    func toImage() -> Image {
+        switch self {
+        case .systemIcon(let systemName):
+            return Image(systemName: systemName)
+        case .userImage(let uiImage):
+            return Image(uiImage: uiImage)
+        }
+    }
+}
+
 struct Background: ViewModifier {
     var color: Color? = nil
     
@@ -199,9 +221,13 @@ struct ForegroundStyle: ViewModifier {
 
     func body(content: Content) -> some View {
         switch style {
-        case 1:
+        case 0:
             content
                 .foregroundColor(Global.shared.textColor)
+                .font(.system(size: 16, weight: .regular))
+        case 1:
+            content
+                .foregroundColor(Global.shared.altTextColor)
                 .font(.system(size: 16, weight: .regular))
         case 2:
             content
@@ -230,20 +256,16 @@ struct BackgroundStyle: ViewModifier {
         switch style {
         case 1:
             content
-                .backgroundStyle(Global.shared.iconColor1)
-                .font(.system(size: 16, weight: .regular))
+                .background(Global.shared.iconColor1)
         case 2:
             content
-                .backgroundStyle(Global.shared.iconColor2)
-                .font(.system(size: 16, weight: .regular))
+                .background(Global.shared.iconColor2)
         case 3:
             content
-                .backgroundStyle(Global.shared.iconColor3)
-                .font(.system(size: 16, weight: .regular))
+                .background(Global.shared.iconColor3)
         default:
             content // Fallback for undefined styles is the basic button color
-                .foregroundColor(Global.shared.iconColor1)
-                .font(.system(size: 16, weight: .regular))
+                .background(Global.shared.iconColor1)
         }
     }
 }

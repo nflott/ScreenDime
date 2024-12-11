@@ -12,7 +12,7 @@ struct DashView: View {
                 HStack {
                     Text("Activity")
                         .fontWeight(.bold)
-                        .fs(style: 1)
+                        .fs(style: 0)
                     Spacer()
                 }
                 .padding(.horizontal)
@@ -66,17 +66,17 @@ struct ActivityRow: View {
     var body: some View {
         HStack {
             Text("\(activity.name)")
-                .fs(style: 1)
+                .fs(style: 0)
                 .font(.body)
                 .fontWeight(.bold)
             Text("owes")
-                .fs(style: 1)
+                .fs(style: 0)
                 .font(.body)
             Text(activity.bet)
                 .fs(style: 4)
                 .font(.body)
             Text(activity.date)
-                .fs(style: 1)
+                .fs(style: 0)
                 .font(.caption)
                 .frame(maxWidth: .infinity, alignment: .trailing)
         }
@@ -101,14 +101,14 @@ struct WeeklyReportPreview: View {
                 Text("Weekly Report")
                     .font(.headline)
                     .fontWeight(.bold)
-                    .fs(style: 1)
+                    .fs(style: 0)
                 Spacer()
                 Button(action: {
                     // Toggle the sheet to show the ReportView
                     showingReport.toggle()
                 }) {
                     Image(systemName: "rectangle.expand.vertical")
-                        .fs(style: 1)
+                        .fs(style: 0)
                 }
             }
             .padding(.horizontal)
@@ -122,7 +122,7 @@ struct WeeklyReportPreview: View {
                             .frame(width: 30, height: CGFloat(screenTimeData[day]!)/2)
                         
                         Text(day)
-                            .fs(style: 1)
+                            .fs(style: 0)
                             .font(.caption)
                             .frame(width: 35)
                     }
