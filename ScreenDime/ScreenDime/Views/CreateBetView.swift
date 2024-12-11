@@ -32,7 +32,7 @@ struct CreateBetView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 25, height: 25)
-                        .foregroundColor(.blue)
+                        .fs(style: 2)
                         .fontWeight(.bold)
                         .padding(.leading, 10)
                         .padding(.trailing)
@@ -42,7 +42,7 @@ struct CreateBetView: View {
                 Text("Create Bet")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .foregroundColor(.white)
+                    .fs(style: 1)
                     .padding(.leading, 25)
                 
                 Spacer()
@@ -64,7 +64,7 @@ struct CreateBetView: View {
                     }
                 } label: {
                     Label(metric, systemImage: "arrowtriangle.down.circle")
-                        .foregroundColor(.blue)
+                        .fs(style: 2)
                 }
                 .padding(.leading, 15)
                 .padding(.vertical)
@@ -80,7 +80,7 @@ struct CreateBetView: View {
                 }
                 label: {
                     Label(appTracked, systemImage: "arrowtriangle.down.circle")
-                        .foregroundColor(.blue)
+                        .fs(style: 2)
                 }
                 .padding(.leading, 15)
                 .padding(.bottom)
@@ -91,7 +91,7 @@ struct CreateBetView: View {
             if appTracked == "Other" {
                 HStack {
                     Text("Enter what app to track for this bet:")
-                        .foregroundColor(.blue)
+                        .fs(style: 2)
                         .padding(.horizontal)
                     Spacer()
                 }
@@ -107,7 +107,7 @@ struct CreateBetView: View {
                 in: Date().addingTimeInterval(86400)...,
                 displayedComponents: .date
             )
-            .foregroundColor(.blue)
+            .fs(style: 2)
             .id(startDate)
             .padding()
             .onChange(of: startDate) {
@@ -120,7 +120,7 @@ struct CreateBetView: View {
                 in: startDate.addingTimeInterval(86400)...,
                 displayedComponents: .date
             )
-            .foregroundColor(.blue)
+            .fs(style: 2)
             .id(endDate)
             .padding()
             .onChange(of: endDate) {
@@ -161,8 +161,8 @@ struct CreateBetView: View {
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, maxHeight: 50)
                     .font(.headline)
-                    .background(fieldsCompleted() ? Color.blue : Color.gray)
-                    .foregroundColor(.white)
+                    .background(fieldsCompleted() ? Global.shared.iconColor1 : Color.gray)
+                    .fs(style: 1)
                     .cornerRadius(8)
                     .padding()
             }
