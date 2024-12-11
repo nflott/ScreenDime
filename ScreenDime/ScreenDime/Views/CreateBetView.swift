@@ -32,7 +32,7 @@ struct CreateBetView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 25, height: 25)
-                        .fs(style: 2)
+                        .fs(style: 1)
                         .fontWeight(.bold)
                         .padding(.leading, 10)
                         .padding(.trailing)
@@ -64,7 +64,7 @@ struct CreateBetView: View {
                     }
                 } label: {
                     Label(metric, systemImage: "arrowtriangle.down.circle")
-                        .fs(style: 2)
+                        .fs(style: 1)
                 }
                 .padding(.leading, 15)
                 .padding(.vertical)
@@ -80,7 +80,7 @@ struct CreateBetView: View {
                 }
                 label: {
                     Label(appTracked, systemImage: "arrowtriangle.down.circle")
-                        .fs(style: 2)
+                        .fs(style: 1)
                 }
                 .padding(.leading, 15)
                 .padding(.bottom)
@@ -107,7 +107,7 @@ struct CreateBetView: View {
                 in: Date().addingTimeInterval(86400)...,
                 displayedComponents: .date
             )
-            .fs(style: 2)
+            .fs(style: 1)
             .id(startDate)
             .padding()
             .onChange(of: startDate) {
@@ -120,7 +120,7 @@ struct CreateBetView: View {
                 in: startDate.addingTimeInterval(86400)...,
                 displayedComponents: .date
             )
-            .fs(style: 2)
+            .fs(style: 1)
             .id(endDate)
             .padding()
             .onChange(of: endDate) {

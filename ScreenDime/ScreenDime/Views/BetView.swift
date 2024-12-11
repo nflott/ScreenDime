@@ -22,7 +22,7 @@ struct BetView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 25, height: 25)
-                        .fs(style: 0)
+                        .fs(style: 1)
                         .fontWeight(.bold)
                         .padding(.leading, 20)
                 }
@@ -81,7 +81,7 @@ struct BetView: View {
                                     .resizable()
                                     .scaledToFit()
                                     .frame(width: 25, height: 25)
-                                    .fs(style: 2)
+                                    .foregroundStyle(betStatusColor)
                             )
                         
                         // Member's name with ranking number

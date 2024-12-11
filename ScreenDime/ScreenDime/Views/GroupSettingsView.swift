@@ -18,7 +18,7 @@ struct GroupSettingsView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 25, height: 25)
-                        .fs(style: 2)
+                        .fs(style: 1)
                         .fontWeight(.bold)
                         .padding(.leading, 10)
                         .padding(.trailing)
