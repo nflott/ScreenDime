@@ -241,6 +241,9 @@ struct ForegroundStyle: ViewModifier {
             content
                 .foregroundColor(Global.shared.iconColor3)
                 .font(.system(size: 16, weight: .regular))
+        case 5: content
+                .foregroundColor(Global.shared.backgroundColor[0])
+                .font(.system(size: 16, weight: .regular))
         default:
             content // Fallback for undefined styles is the basic text color
                 .foregroundColor(Global.shared.textColor)
