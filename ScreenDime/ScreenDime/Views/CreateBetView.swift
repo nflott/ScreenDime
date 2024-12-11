@@ -16,7 +16,7 @@ struct CreateBetView: View {
     @State var metric = "Select how to measure your usage"
     @State var appTracked = "Select what apps to track"
     let metrics = ["Daily Average", "Weekly Average", "Overall Usage"]
-    let apps = ["All apps", "Snapchat", "Instagram", "Facebook", "TikTok", "Reddit", "iMessage"]
+    let apps = ["All apps", "Snapchat", "Instagram", "Facebook", "TikTok", "Reddit", "iMessage", "Other"]
     
     @State var startDate = Date()
     @State var endDate = Date()
@@ -32,7 +32,7 @@ struct CreateBetView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 25, height: 25)
-                        .fs(style:3)
+                        .foregroundColor(.blue)
                         .fontWeight(.bold)
                         .padding(.leading, 10)
                         .padding(.trailing)
@@ -42,7 +42,9 @@ struct CreateBetView: View {
                 Text("Create Bet")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .fs(style: 1)
+                    .foregroundColor(.white)
+                    .padding(.leading, 25)
+                
                 Spacer()
                 
             }
@@ -55,45 +57,72 @@ struct CreateBetView: View {
                 .padding()
             
             // Select the time format for measurement
-            Menu {
-                ForEach(metrics, id: \.self) { option in
-                    Button(option, action: { metric = option })
+            HStack {
+                Menu {
+                    ForEach(metrics, id: \.self) { option in
+                        Button(option, action: { metric = option })
+                    }
+                } label: {
+                    Label(metric, systemImage: "arrowtriangle.down.circle")
+                        .foregroundColor(.blue)
                 }
-            } label: {
-                Label(metric, systemImage: "arrowtriangle.down.circle")
-                    .fs(style: 2)
+                .padding(.leading, 15)
+                .padding(.vertical)
+                Spacer()
             }
             
             // Select the app to track
-            Menu {
-                ForEach(apps, id: \.self) {app in
-                    Button(app, action: {appTracked = app})
+            HStack {
+                Menu {
+                    ForEach(apps, id: \.self) {app in
+                        Button(app, action: {appTracked = app})
+                    }
                 }
+                label: {
+                    Label(appTracked, systemImage: "arrowtriangle.down.circle")
+                        .foregroundColor(.blue)
+                }
+                .padding(.leading, 15)
+                .padding(.bottom)
+                Spacer()
             }
-            label: {
-                Label(appTracked, systemImage: "arrowtriangle.down.circle")
-                    .fs(style: 2)
+            
+            //Selecting a different app from the phone
+            if appTracked == "Other" {
+                HStack {
+                    Text("Enter what app to track for this bet:")
+                        .foregroundColor(.blue)
+                        .padding(.horizontal)
+                    Spacer()
+                }
+                TextField("", text: $appTracked)
+                    .textFieldStyle(RoundedBorderTextFieldStyle())
+                    .padding()
             }
-            .padding()
             
             // Select start date
             DatePicker(
                 "Start Date",
                 selection: $startDate,
-                displayedComponents: [.date]
+                in: Date().addingTimeInterval(86400)...,
+                displayedComponents: .date
             )
-            .fs(style: 2)
+            .foregroundColor(.blue)
+            .id(startDate)
+            .padding()
             .onChange(of: startDate) {
                 checkDates()
             }
-            
             // Select end date
             DatePicker(
                 "End Date",
                 selection: $endDate,
-                displayedComponents: [.date]
+                in: startDate.addingTimeInterval(86400)...,
+                displayedComponents: .date
             )
-            .fs(style: 2)
+            .foregroundColor(.blue)
+            .id(endDate)
+            .padding()
             .onChange(of: endDate) {
                 checkDates()
             }
@@ -101,7 +130,7 @@ struct CreateBetView: View {
             // Make sure dates are legitimate
             if !validDates {
                 Text("Invalid dates!")
-                    .fs(style: 4)
+                    .foregroundColor(.red)
             }
             
             // Enter stakes
@@ -132,8 +161,8 @@ struct CreateBetView: View {
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, maxHeight: 50)
                     .font(.headline)
-                    .background(fieldsCompleted() ? Global.shared.iconColor1 : Color.gray)
-                    .fs(style: 1)
+                    .background(fieldsCompleted() ? Color.blue : Color.gray)
+                    .foregroundColor(.white)
                     .cornerRadius(8)
                     .padding()
             }
