@@ -82,7 +82,7 @@ struct GroupSettingsView: View {
                                 editedGroupName = selectedGroup.name
                             }) {
                                 Image(systemName: "pencil")
-                                    .fs(style: 0)
+                                    .fs(style: 1)
                             }
                         }
                     }

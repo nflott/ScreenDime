@@ -42,7 +42,7 @@ struct CreateBetView: View {
                 Text("Create Bet")
                     .font(.largeTitle)
                     .fontWeight(.bold)
-                    .fs(style: 1)
+                    .fs(style: 0)
                     .padding(.leading, 25)
 
                 Spacer()
@@ -107,7 +107,7 @@ struct CreateBetView: View {
                 in: Date().addingTimeInterval(86400)...,
                 displayedComponents: .date
             )
-            .fs(style: 1)
+            .fs(style: 0)
             .id(startDate)
             .padding()
             .onChange(of: startDate) {
@@ -120,7 +120,7 @@ struct CreateBetView: View {
                 in: startDate.addingTimeInterval(86400)...,
                 displayedComponents: .date
             )
-            .fs(style: 1)
+            .fs(style: 0)
             .id(endDate)
             .padding()
             .onChange(of: endDate) {
