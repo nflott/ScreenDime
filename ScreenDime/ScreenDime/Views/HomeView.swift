@@ -38,6 +38,7 @@ struct HomeView: View {
                                 .padding([.leading, .trailing], 10)
                         }
                         .padding()
+                        .padding([.top, .bottom], -30)
                         
                         Spacer()
                     }
@@ -53,6 +54,7 @@ struct HomeView: View {
                                 .padding([.leading, .trailing], 10)
                         }
                         .padding()
+                        .padding([.top, .bottom], -30)
                         
                         Spacer()
                     }
@@ -66,6 +68,7 @@ struct HomeView: View {
                     }
                 }
                 .tabViewStyle(PageTabViewStyle(indexDisplayMode: .never))
+                .frame(height: 725)
                 
                 HStack {
                     ForEach(0..<tabs.count, id: \.self) { index in
@@ -101,6 +104,7 @@ struct HomeView: View {
                         .fontWeight(.bold)
                         .frame(maxWidth: .infinity, alignment: .top)
                         .padding([.top], 26)
+                        .padding([.top, .bottom], -10)
                     
                     Spacer()
                 }
@@ -125,8 +129,10 @@ struct HomeView: View {
                         }
                         .frame(maxWidth: .infinity, alignment: .top)
                         .padding([.top], 26)
+                        .padding([.top, .bottom], -10)
                     }
                     .buttonStyle(PlainButtonStyle())
+                    
 
                     if showingGroupSelector {
                         dropdownMenu()
@@ -138,7 +144,6 @@ struct HomeView: View {
                 }
             }
 
-            // Floating plus button to create a bet
             if selectedTab == 1 {
                 VStack {
                     Spacer()
