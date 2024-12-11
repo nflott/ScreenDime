@@ -2,7 +2,6 @@ import SwiftUI
 
 struct SettingsView: View {
     @ObservedObject private var global = Global.shared
-    
     @Environment(\.dismiss) var dismiss
     
     @State var showProfilePhotoPicker: Bool = false
@@ -14,10 +13,61 @@ struct SettingsView: View {
     @State private var showSplashScreen: Bool = false // State to control the navigation
     
     var body: some View {
+// <<<<<<< maddie_working
         NavigationStack {
             ScrollView {
+// =======
+//         VStack {
+//             ZStack {
+//                 HStack {
+//                     Button(action: {
+//                         dismiss()
+//                     }) {
+//                         Image(systemName: "arrow.left")
+//                             .resizable()
+//                             .scaledToFit()
+//                             .frame(width: 25, height: 25)
+//                             .fs(style: 2)
+//                             .fontWeight(.bold)
+//                             .padding(.leading, 20)
+//                             .padding(.trailing, 25)
+//                     }
+                    
+//                     Spacer()
+//                 }
+//                 .padding()
+                
+//                 Text("App Settings")
+//                     .font(.largeTitle)
+//                     .padding()
+//                     .fs(style: 0)
+//                     .fontWeight(.bold)
+//                     .multilineTextAlignment(.center)
+//             }
+            
+//             HStack {
+//                 VStack {
+//                     Global.shared.selectedProfileIcon.toImage()
+//                         .resizable()
+//                         .aspectRatio(contentMode: .fill)
+//                         .frame(width: 125, height: 125)
+//                         .clipShape(Circle())
+//                         .contentShape(Circle())
+//                         .padding()
+                    
+//                     Button(action: {
+//                         showProfilePhotoPicker.toggle()
+//                     }) {
+//                         Text("    Change")
+//                             .font(.headline)
+//                             .fs(style: 0)
+//                             .cornerRadius(8)
+//                     }
+//                 }
+                
+                
+// >>>>>>> main
                 VStack {
-                    // Header with back button and title
                     HStack {
                         // Back button
                         Button(action: {
@@ -37,16 +87,20 @@ struct SettingsView: View {
                         // Title
                         Text("App Settings")
                             .font(.title)
+// <<<<<<< maddie_working
                             .foregroundColor(.white)
                             .fontWeight(.bold)
                             .multilineTextAlignment(.center)
+// =======
+//                             .fs(style: 0)
+//                             .padding([.trailing], -50)
+//                             .padding([.top, .bottom], 10)
+// >>>>>>> main
                         
-                        Spacer() // Ensure spacing on both sides of the title
-                        
-                        // Empty space to align the title with the back arrow
+                        Spacer() 
                         Spacer().frame(width: 25)
                     }
-                    .padding(.top, 30) // Adjusts vertical padding to bring it higher
+                    .padding(.top, 30) 
                     
                     // Profile Section
                     VStack {
@@ -54,7 +108,6 @@ struct SettingsView: View {
                         Image(systemName: Global.shared.selectedProfileIcon)
                             .font(.system(size: 125))
                         
-                        // Change button below the profile image, with less padding to move it closer
                         Button(action: {
                             showProfilePhotoPicker.toggle()
                         }) {
@@ -69,16 +122,16 @@ struct SettingsView: View {
                         // Username Section with Pencil Icon
                         HStack(spacing: 10) {
                             VStack {
-                                // If editing, show a TextField, otherwise show static text
+                                
                                 if showUsernameEdit {
                                     TextField("Username", text: $username)
                                         .fontWeight(.bold)
                                         .font(.title)
-                                        .foregroundColor(.white) // Set the text color to white when editing
+                                        .foregroundColor(.white) 
                                         .padding(10)
-                                        .background(Color.white.opacity(0.3)) // Semi-transparent white background
+                                        .background(Color.white.opacity(0.3)) 
                                         .cornerRadius(8)
-                                        .frame(width: 200) // Limit the width
+                                        .frame(width: 200) 
                                 } else {
                                     Text(username) // Display the username normally
                                         .fontWeight(.bold)
@@ -91,18 +144,17 @@ struct SettingsView: View {
                             // Show Save button when editing, otherwise show pencil icon
                             if showUsernameEdit {
                                 Button(action: {
-                                    showUsernameEdit.toggle() // Toggle back to non-editing mode
-                                    // You can add save action here to persist the username
+                                    showUsernameEdit.toggle() 
                                 }) {
                                     Text("Save")
                                         .fontWeight(.bold)
-                                        .foregroundColor(.blue) // Blue text color for the Save button
+                                        .foregroundColor(.blue) 
                                         .padding(.horizontal)
                                         .padding(.vertical, 8)
                                 }
                             } else {
                                 Button(action: {
-                                    showUsernameEdit.toggle() // Toggle to start editing
+                                    showUsernameEdit.toggle() 
                                 }) {
                                     Image(systemName: "pencil")
                                         .foregroundColor(.white)
@@ -117,6 +169,7 @@ struct SettingsView: View {
                             .foregroundColor(.white)
                         // Full Name Section
                         Text("Luke Currier")
+// <<<<<<< maddie_working
                             .foregroundColor(.white)
                             .padding(.bottom, 10)
                     }
@@ -128,8 +181,14 @@ struct SettingsView: View {
                         Text("Resources")
                             .fontWeight(.bold)
                             .foregroundColor(.white)
+// =======
+//                             .font(.callout)
+//                             .fs(style: 0)
+//                             .padding([.top], -10)
+//                             .padding([.trailing], -50)
+// >>>>>>> main
                         
-                        // Change 'My stores' to 'Change theme' with a color palette icon and arrow
+                       
                         HStack {
                             Image(systemName: "paintpalette")
                                 .foregroundColor(.gray)
@@ -192,7 +251,6 @@ struct SettingsView: View {
                 }
                 .padding()
                 .applyBackground()
-                .cornerRadius(10) // Optional: to add rounded corners to the whole screen
             }
             .navigationBarHidden(true) // Hide default navigation bar
             .sheet(isPresented: $showProfilePhotoPicker) {
@@ -209,7 +267,7 @@ struct ProfileOption: View {
     let iconName: String
     let title: String
     var badgeCount: Int? = nil
-    var showArrow: Bool = false // New property to decide if an arrow is shown
+    var showArrow: Bool = false 
     
     var body: some View {
         HStack {
@@ -221,6 +279,7 @@ struct ProfileOption: View {
                 .font(.body)
                 .foregroundColor(.white)
             
+// <<<<<<< maddie_working
             Spacer()
             
             if let badgeCount = badgeCount {
@@ -229,6 +288,20 @@ struct ProfileOption: View {
                     .foregroundColor(.white)
                     .padding(6)
                     .background(Circle().fill(Color.green))
+// =======
+//             Rectangle()
+//                 .fill(Global.shared.textColor)
+//                 .frame(height: 3)
+//                 .padding(.vertical, 5)
+            
+//             HStack {
+//                 Text("Choose Theme")
+//                     .fontWeight(.bold)
+//                     .font(.title)
+//                     .fs(style: 0)
+//                     .padding()
+//                 Spacer()
+// >>>>>>> main
             }
             
             if showArrow {
@@ -245,7 +318,7 @@ struct ProfileOption: View {
 struct ToggleOption: View {
     let iconName: String
     let title: String
-    @Binding var isOn: Bool // Binding to toggle push notifications
+    @Binding var isOn: Bool 
     
     var body: some View {
         HStack {
@@ -259,9 +332,34 @@ struct ToggleOption: View {
             
             Spacer()
             
+// <<<<<<< maddie_working
             Toggle("", isOn: $isOn)
                 .labelsHidden()
-                .toggleStyle(SwitchToggleStyle(tint: .blue)) // Customize the toggle appearance
+                .toggleStyle(SwitchToggleStyle(tint: .blue))
+// =======
+//             HStack {
+//                 Button(action: {
+//                     showProfilePhotoPicker.toggle()
+//                 }) {
+//                     Text("Logout")
+//                         .fontWeight(.bold)
+//                         .frame(maxWidth: .infinity, maxHeight: 50)
+//                         .font(.headline)
+//                         .fs(style: 0)
+//                         .fs(style: 0)
+//                         .cornerRadius(8)
+//                         .padding()
+                    
+//                 }
+//             }
+//         }
+        
+       
+//         .navigationBarTitle("Profile", displayMode: .inline)
+//         .applyBackground()
+//         .sheet(isPresented: $showProfilePhotoPicker) {
+//             SettingsPhotoView()
+// >>>>>>> main
         }
         .padding()
         .background(Color.white.opacity(0.2))

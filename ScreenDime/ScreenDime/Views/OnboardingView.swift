@@ -25,13 +25,13 @@ struct OnboardingView: View {
                     Text("Welcome to ScreenDime!")
                         .font(.largeTitle)
                         .fontWeight(.bold)
-                        .foregroundColor(.white)
+                        .fs(style: 0)
                         .multilineTextAlignment(.center)
                         .padding()
                     
                     if isUsernameTaken {
                         Text("Username is already taken")
-                            .foregroundColor(.red)
+                            .fs(style: 4)
                             .font(.title3)
                     }
                     
@@ -53,14 +53,14 @@ struct OnboardingView: View {
                     ZStack {
                         HStack {
                             Text("Enter your birthdate:")
-                                .foregroundColor(.white)
+                                .fs(style: 1)
                                 .fontWeight(.bold)
                             
                             Button(action: {
                                 showWheelPicker = true
                             }) {
                                 Text(formatDate(date: dateOfBirth))
-                                    .foregroundColor(.blue)
+                                    .fs(style: 1)
                             }
                         }
                         
@@ -74,8 +74,8 @@ struct OnboardingView: View {
                                     showWheelPicker = false
                                 }
                                 .padding()
-                                .background(Color.blue)
-                                .foregroundColor(.white)
+                                .fs(style: 0)
+                                .fs(style: 0)
                                 .cornerRadius(8)
                             }
                             .padding()
@@ -93,8 +93,8 @@ struct OnboardingView: View {
                         Text("Next")
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(canProceed() ? Color.blue : Color.gray)
-                            .foregroundColor(.white)
+                            .background(canProceed() ? Global.shared.iconColor1 : Color.gray)
+                            .fs(style: 0)
                             .cornerRadius(8)
                     }
                     .padding()
@@ -124,8 +124,8 @@ struct OnboardingView: View {
                                 showConfirmationDialog = false
                             }
                             .padding()
-                            .background(Color.red)
-                            .foregroundColor(.white)
+                            .bs(style: 3)
+                            .fs(style: 0)
                             .cornerRadius(8)
                             
                             Button("Confirm") {
@@ -133,13 +133,13 @@ struct OnboardingView: View {
                                 submitUsername()
                             }
                             .padding()
-                            .background(Color.green)
-                            .foregroundColor(.white)
+                            .bs(style: 2)
+                            .fs(style: 0)
                             .cornerRadius(8)
                         }
                     }
                     .frame(width: 350, height: 300)
-                    .background(Color.white)
+                    .background(Global.shared.backgroundColor[0])
                     .cornerRadius(10)
                     .shadow(radius: 10)
                     .padding()

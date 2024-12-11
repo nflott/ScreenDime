@@ -37,7 +37,7 @@ struct GroupView: View {
                     // Show message if no bets are available
                     if selectedGroup.bets.isEmpty {
                         Text("No bets yet in \(selectedGroup.name).\nCreate one now!")
-                            .foregroundColor(.white)
+                            .fs(style: 0)
                             .font(.callout)
                             .bold()
                             .multilineTextAlignment(.center)

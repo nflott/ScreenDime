@@ -20,27 +20,27 @@ struct GroupCreationView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 25, height: 25)
-                        .foregroundColor(.blue)
+                        .fs(style: 1)
                         .fontWeight(.bold)
-                        .padding(.leading, 20)
                 }
-                
-                Text("Create Group")
+                Text("Create New Group")
                     .font(.largeTitle)
                     .padding()
-                    .foregroundColor(.white)
+                    .fs(style: 0)
                     .fontWeight(.bold)
+                
+                Spacer()
             }
             
             Text("Group Name")
-                .foregroundColor(.white)
+                .fs(style: 0)
             
             TextField("Name your group", text: $groupName)
                 .textFieldStyle(RoundedBorderTextFieldStyle())
                 .padding()
             
             Text("Group Members")
-                .foregroundColor(.white)
+                .fs(style: 0)
             
             TextField("Search Group Members", text: $searchText)
                 .padding()
@@ -62,7 +62,7 @@ struct GroupCreationView: View {
                             filterMatchedUsers()      // Refresh matched users after adding
                         }) {
                             Image(systemName: "plus.circle.fill")
-                                .foregroundColor(.blue)
+                                .fs(style: 2)
                                 .font(.title2)
                         }
                     }
@@ -75,7 +75,7 @@ struct GroupCreationView: View {
                 VStack(alignment: .leading, spacing: 10) {
                     Text("Added Members:")
                         .font(.headline)
-                        .foregroundColor(.white)
+                        .fs(style: 0)
                         .padding(.leading)
                     
                     // Use LazyVGrid for wrapping layout
@@ -89,25 +89,25 @@ struct GroupCreationView: View {
                     LazyVGrid(columns: columns, spacing: 10) {
                         ForEach(members, id: \.self) { userUUID in
                             if let user = global.appUsers.first(where: { $0.id == userUUID }) {
-                                ZStack {
-                                    Circle()
-                                        .stroke(Color.white, lineWidth: 2)
-                                        .frame(width: 40, height: 40) // Fixed size for consistency
-                                    Text(user.name.prefix(1)) // Display first initial
-                                        .foregroundColor(.white)
-                                        .font(.headline)
-                                }
-                                .overlay(
+                                HStack {
+                                    Text(user.name.prefix(1)) // Show the first letter of the user's name
+                                        .fs(style: 0)
+                                        .font(.title2)
+                                        .padding()
+                                        .overlay(
+                                            Circle()
+                                                .stroke(Global.shared.textColor, lineWidth: 2)
+                                        )
+                                    
                                     Button(action: {
                                         // Remove the user from members list
                                         members.removeAll { $0 == userUUID }
                                         filterMatchedUsers() // Refresh matched users after removal
                                     }) {
                                         Image(systemName: "xmark.circle.fill")
-                                            .foregroundColor(.red)
-                                            .offset(x: 10, y: -10) // Position close to top-right
+                                            .fs(style: 4)
                                     }
-                                )
+                                }
                             }
                         }
                     }
@@ -129,8 +129,8 @@ struct GroupCreationView: View {
                     .fontWeight(.bold)
                     .frame(maxWidth: .infinity, maxHeight: 50)
                     .font(.headline)
-                    .background(fieldsCompleted() ? Color.blue : Color.gray)
-                    .foregroundColor(.white)
+                    .background(fieldsCompleted() ? Global.shared.iconColor1 : Color.gray)
+                    .fs(style: 0)
                     .cornerRadius(8)
                     .padding()
             }

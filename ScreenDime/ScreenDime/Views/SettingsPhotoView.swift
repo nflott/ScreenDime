@@ -6,13 +6,16 @@
 //
 
 import SwiftUI
+import PhotosUI
 
 struct SettingsPhotoView: View {
     @Environment(\.dismiss) var dismiss
+    @State private var showNextScreen = false
     @State private var showIconPicker = false
-    @State private var showImagePicker = false
-    @State private var selectedIcon = ""
+    @State private var selectedIcon: Picture? = .systemIcon("")
     @ObservedObject var global = Global.shared
+    @State private var showConfirmationDialog = false
+    @State private var selectedItem: PhotosPickerItem?
     
     var body: some View {
         ZStack(alignment: .topTrailing) {
@@ -20,61 +23,75 @@ struct SettingsPhotoView: View {
                 Text("Set Profile Photo")
                     .font(.title)
                     .padding()
-                    .foregroundColor(.white)
+                    .fs(style: 0)
                     .fontWeight(.bold)
                 
-                Image(systemName: Global.shared.selectedProfileIcon)
-                    .font(.system(size: 250))
-                    .frame(width:200, height:300)
+                Global.shared.selectedProfileIcon.toImage()
+                    .resizable()
+                    .aspectRatio(contentMode: .fill)
+                    .frame(width: 150, height: 150)
+                    .clipShape(Circle())
+                    .contentShape(Circle())
+                    .padding()
                     .onTapGesture {
                         showIconPicker = true
                     }
-                    .padding()
                 
                 HStack {
                     Button(action: {
                         showIconPicker = true
                     }) {
-                        Text("Choose an icon")
-                            .foregroundColor(.white)
+                        Text("Choose an Icon")
+                            .fs(style: 1)
                             .padding()
                             .cornerRadius(10)
                             .background(Color.clear)
+                            .frame(width:150)
+                            .bold()
                     }
                     
-                    Button(action: {
-                        showImagePicker = true
-                    }) {
-                        Text("Choose a photo")
-                            .foregroundColor(.white)
-                            .padding()
-                            .cornerRadius(10)
-                            .background(Color.clear)
-                    }
+                    PhotosPicker(
+                        selection: $selectedItem,
+                        matching: .images,
+                        photoLibrary: .shared()) {
+                            Text("Choose a Photo")
+                                .fs(style: 1)
+                                .bold()
+                        }
+                        .onChange(of: selectedItem) { newItem in
+                            Task {
+                                if let selectedItem = newItem {
+                                    if let assetData = try? await selectedItem.loadTransferable(type: Data.self),
+                                       let image = UIImage(data: assetData) {
+                                        global.selectedProfileIcon = .userImage(image)
+                                    }
+                                }
+                            }
+                        }
+                        .padding()
                 }
                 .padding()
                 
                 Button(action: {
                     dismiss()
                 }) {
-                    Text("Set Photo")
+                    Text("Done")
                         .font(.title2)
                         .padding()
-                        .foregroundColor(.white)
-                        .background(selectedIcon == Global.shared.selectedProfileIcon ? Color.gray : Color.blue)
+                        .fs(style: 0)
+                        .bs(style: 1)
                         .cornerRadius(10)
                         .frame(width:200)
                 }
                 .padding()
-                .disabled(selectedIcon == Global.shared.selectedProfileIcon)
             }
             .padding()
             .applyBackground()
+            .fullScreenCover(isPresented: $showNextScreen) {
+                HomeView()
+            }
             .sheet(isPresented: $showIconPicker) {
                 IconPickerView()
-            }
-            .sheet(isPresented: $showImagePicker) {
-                ImagePickerView()
             }
             
             HStack {
@@ -85,7 +102,7 @@ struct SettingsPhotoView: View {
                         .resizable()
                         .scaledToFit()
                         .frame(width: 25, height: 25)
-                        .foregroundColor(.blue)
+                        .fs(style: 1)
                         .fontWeight(.bold)
                         .padding(.leading, 10)
                         .padding(.trailing)
@@ -94,7 +111,6 @@ struct SettingsPhotoView: View {
                 
                 Spacer()
             }
-            
         }
     }
 }
