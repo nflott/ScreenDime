@@ -77,7 +77,7 @@ struct SettingsView: View {
                                 .resizable()
                                 .scaledToFit()
                                 .frame(width: 25, height: 25)
-                                .foregroundColor(.blue)
+                                .fs(style: 1)
                                 .fontWeight(.bold)
                         }
                         .padding(.leading, 20)
@@ -88,7 +88,7 @@ struct SettingsView: View {
                         Text("App Settings")
                             .font(.title)
 // <<<<<<< maddie_working
-                            .foregroundColor(.white)
+                            .fs(style: 0)
                             .fontWeight(.bold)
                             .multilineTextAlignment(.center)
 // =======
@@ -105,7 +105,7 @@ struct SettingsView: View {
                     // Profile Section
                     VStack {
                         // Profile Image
-                        Image(systemName: Global.shared.selectedProfileIcon)
+                        Global.shared.selectedProfileIcon.toImage()
                             .font(.system(size: 125))
                         
                         Button(action: {
@@ -113,7 +113,7 @@ struct SettingsView: View {
                         }) {
                             Text("Change")
                                 .font(.headline)
-                                .foregroundColor(.white)
+                                .fs(style: 1)
                                 .cornerRadius(8)
                                 .padding(.top, -20)
                                 .padding(.bottom, 10)
@@ -127,7 +127,7 @@ struct SettingsView: View {
                                     TextField("Username", text: $username)
                                         .fontWeight(.bold)
                                         .font(.title)
-                                        .foregroundColor(.white) 
+                                        .fs(style: 0)
                                         .padding(10)
                                         .background(Color.white.opacity(0.3)) 
                                         .cornerRadius(8)
@@ -136,7 +136,7 @@ struct SettingsView: View {
                                     Text(username) // Display the username normally
                                         .fontWeight(.bold)
                                         .font(.title)
-                                        .foregroundColor(.white)
+                                        .fs(style: 0)
                                         .padding(.bottom, 5)
                                 }
                             }
@@ -148,7 +148,7 @@ struct SettingsView: View {
                                 }) {
                                     Text("Save")
                                         .fontWeight(.bold)
-                                        .foregroundColor(.blue) 
+                                        .fs(style: 1)
                                         .padding(.horizontal)
                                         .padding(.vertical, 8)
                                 }
@@ -157,7 +157,7 @@ struct SettingsView: View {
                                     showUsernameEdit.toggle() 
                                 }) {
                                     Image(systemName: "pencil")
-                                        .foregroundColor(.white)
+                                        .fs(style: 1)
                                         .font(.system(size: 20))
                                 }
                             }
@@ -166,11 +166,11 @@ struct SettingsView: View {
                         
                         // Full Name Section
                         Text("lcurrier@gmailcom")
-                            .foregroundColor(.white)
+                            .fs(style: 0)
                         // Full Name Section
                         Text("Luke Currier")
 // <<<<<<< maddie_working
-                            .foregroundColor(.white)
+                            .fs(style: 0)
                             .padding(.bottom, 10)
                     }
                     .frame(maxWidth: .infinity)
@@ -180,7 +180,7 @@ struct SettingsView: View {
                     VStack(alignment: .leading, spacing: 15) {
                         Text("Resources")
                             .fontWeight(.bold)
-                            .foregroundColor(.white)
+                            .fs(style: 0)
 // =======
 //                             .font(.callout)
 //                             .fs(style: 0)
