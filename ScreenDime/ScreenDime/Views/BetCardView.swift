@@ -64,7 +64,7 @@ struct BetCardView: View {
                                 Text("Join Bet")
                                     .padding()
                                     .fs(style: 1)
-                                    .background(Global.shared.iconColor2)
+                                    .background(Global.shared.iconColor1)
                                     .cornerRadius(8)
                                     .frame(width:100)
                             }
