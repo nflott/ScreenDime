@@ -71,18 +71,20 @@ struct DashView: View {
 struct Activity: Identifiable {
     var id = UUID()  // Unique identifier for each activity (will be Bet Struct)
     var name: String
+    var transition: String
     var bet: String
     var date: String
+    var tag: Int
 }
 
 let sampleActivityData: [Activity] = [
-    Activity(name: "Bob", bet: "doing dishes", date: "Nov 13, 2024"),
-    Activity(name: "Alice", bet: "$20", date: "Nov 12, 2024"),
-    Activity(name: "John", bet: "buying coffee", date: "Nov 11, 2024"),
-    Activity(name: "Sarah", bet: "getting lunch", date: "Nov 10, 2024"),
-    Activity(name: "Alice", bet: "$10", date: "Nov 12, 2024"),
-    Activity(name: "John", bet: "$3", date: "Nov 11, 2024"),
-    Activity(name: "Sarah", bet: "getting lunch", date: "Nov 10, 2024")
+    Activity(name: "Bob", transition: "owes", bet: "doing dishes", date: "Nov 13, 2024", tag: 4),
+    Activity(name: "You", transition: "won", bet: "$20", date: "Nov 12, 2024", tag: 3),
+    Activity(name: "John", transition: "owes", bet: "buying coffee", date: "Nov 11, 2024", tag: 4),
+    Activity(name: "You", transition: "owe", bet: "getting lunch", date: "Nov 10, 2024", tag: 4),
+    Activity(name: "Alice", transition: "won", bet: "$10", date: "Nov 12, 2024", tag: 3),
+    Activity(name: "John", transition: "won", bet: "$3", date: "Nov 11, 2024", tag: 3),
+    Activity(name: "Sarah", transition: "owes", bet: "getting lunch", date: "Nov 10, 2024", tag: 4)
 ]
 
 struct ActivityRow: View {
@@ -94,11 +96,11 @@ struct ActivityRow: View {
                 .fs(style: 5)
                 .font(.body)
                 .fontWeight(.bold)
-            Text("owes")
+            Text(activity.transition)
                 .fs(style: 5)
                 .font(.body)
             Text(activity.bet)
-                .fs(style: 4)
+                .fs(style: activity.tag)
                 .bold()
                 .font(.body)
             Text(activity.date)

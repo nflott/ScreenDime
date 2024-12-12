@@ -77,11 +77,21 @@ struct BetView: View {
                             .fs(style: 0)
                             .frame(width: 50, height: 50)
                             .overlay(
-                                Image(systemName: "person.fill")
-                                    .resizable()
-                                    .scaledToFit()
-                                    .frame(width: 25, height: 25)
-                                    .foregroundStyle(betStatusColor)
+                                user.name == "You"
+                                    ? Global.shared.selectedProfileIcon.toImage()
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .clipShape(Circle())
+                                        .frame(width: 50, height: 50)
+                                        .foregroundStyle(betStatusColor)
+                                        .contentShape(Circle())
+                                    : Image(systemName: "person.fill")
+                                        .resizable()
+                                        .aspectRatio(contentMode: .fill)
+                                        .clipShape(Circle())
+                                        .frame(width: 25, height: 25)
+                                        .foregroundStyle(betStatusColor)
+                                        .contentShape(Circle()) 
                             )
                         
                         // Member's name with ranking number

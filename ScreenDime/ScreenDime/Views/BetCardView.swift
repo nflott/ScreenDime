@@ -95,26 +95,33 @@ struct BetCardView: View {
                     
                     ForEach(Array(sortedMembers.prefix(3).enumerated()), id: \.element.name) { index, member in
                         HStack {
-                            // Placeholder for photo circle
                             Circle()
                                 .fill(Global.shared.textColor.opacity(0.8))
                                 .frame(width: 30, height: 30)
                                 .overlay(
-                                    Image(systemName: "person.fill")
-                                        .resizable()
-                                        .scaledToFit()
-                                        .frame(width: 15, height: 15)
-                                        .foregroundStyle(cardColor())
+                                    member.name == "You"
+                                        ? Global.shared.selectedProfileIcon.toImage()
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 30, height: 30)
+                                            .foregroundStyle(cardColor())
+                                            .clipShape(Circle())
+                                            .contentShape(Circle())
+                                        : Image(systemName: "person.fill")
+                                            .resizable()
+                                            .scaledToFit()
+                                            .frame(width: 15, height: 15)
+                                            .foregroundStyle(cardColor())
+                                            .clipShape(Circle())
+                                            .contentShape(Circle())
                                 )
                             
-                            // Member's name with ranking number
                             Text("\(index + 1). \(member.name)")
                                 .fs(style: 0)
                                 .font(.footnote)
                             
                             Spacer()
                             
-                            // Screen time metric aligned to the right
                             Text(member.screenTime)
                                 .fs(style: 0)
                                 .font(.footnote)
@@ -127,7 +134,6 @@ struct BetCardView: View {
                             .fs(style: 0)
                     }
                     
-                    // Show "+X more" if there are more than 3 members
                     if members.count > 3 {
                         Text("+\(members.count - 3) more")
                             .fs(style: 0)
