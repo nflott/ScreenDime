@@ -110,7 +110,7 @@ struct SettingsView: View {
                         .padding(.bottom, 5)
                         
                         // Full Name Section
-                        Text("lcurrier@gmailcom")
+                        Text("lukecurrier@gmail.com")
                             .fs(style: 0)
                         // Full Name Section
                         Text("Luke Currier")

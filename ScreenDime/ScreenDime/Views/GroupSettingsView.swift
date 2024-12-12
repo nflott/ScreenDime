@@ -121,10 +121,10 @@ struct GroupSettingsView: View {
                         }) {
                             Text("Active Bets")
                                 .font(.headline)
-                                .foregroundColor(showActiveBets ? .white : Global.shared.iconColor1)
+                                .foregroundColor(showActiveBets ? .white : Global.shared.altTextColor)
                                 .padding(.horizontal)
                                 .padding(.vertical, 5)
-                                .background(showActiveBets ? Global.shared.iconColor1.opacity(0.7) : Color.clear)
+                                .background(showActiveBets ? Global.shared.altTextColor.opacity(0.7) : Color.clear)
                                 .cornerRadius(8)
                         }
                         
@@ -133,10 +133,10 @@ struct GroupSettingsView: View {
                         }) {
                             Text("Inactive Bets")
                                 .font(.headline)
-                                .foregroundColor(!showActiveBets ? .white : Global.shared.iconColor1)
+                                .foregroundColor(!showActiveBets ? .white : Global.shared.altTextColor)
                                 .padding(.horizontal)
                                 .padding(.vertical, 5)
-                                .background(!showActiveBets ? Global.shared.iconColor1.opacity(0.7) : Color.clear)
+                                .background(!showActiveBets ? Global.shared.altTextColor.opacity(0.7) : Color.clear)
                                 .cornerRadius(8)
                         }
                     }

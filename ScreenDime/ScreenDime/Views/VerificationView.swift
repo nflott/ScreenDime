@@ -48,7 +48,7 @@ struct VerificationView: View {
                             }
                         }
                         .pickerStyle(MenuPickerStyle())
-                        .accentColor(Global.shared.iconColor1)
+                        .accentColor(Global.shared.altTextColor)
                         
                         TextField("Enter your phone number", text: $phoneNumber)
                             .textFieldStyle(RoundedBorderTextFieldStyle())
@@ -88,7 +88,7 @@ struct VerificationView: View {
                         Text("Verify")
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(String(givenCode) != inputCode ? Color.gray : Global.shared.iconColor2)
+                            .background(String(givenCode) != inputCode ? Color.gray : Global.shared.iconColor1)
                             .fs(style: 0)
                             .cornerRadius(8)
                     }

@@ -47,7 +47,7 @@ struct OnboardingView: View {
                     TextField("Enter your full name", text: $name)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding()
-                        .autocapitalization(.words)
+                        .autocapitalization(.none)
                         .disableAutocorrection(true)
                     
                     ZStack {
@@ -60,7 +60,10 @@ struct OnboardingView: View {
                                 showWheelPicker = true
                             }) {
                                 Text(formatDate(date: dateOfBirth))
-                                    .fs(style: 1)
+                                    .fs(style: 0)
+                                    .cornerRadius(3)
+                                    .frame(width: 110, height: 30)
+                                    .border(Global.shared.textColor)
                             }
                         }
                         
@@ -74,7 +77,7 @@ struct OnboardingView: View {
                                     showWheelPicker = false
                                 }
                                 .padding()
-                                .fs(style: 0)
+                                .bs(style: 1)
                                 .fs(style: 0)
                                 .cornerRadius(8)
                             }
@@ -84,9 +87,7 @@ struct OnboardingView: View {
                             .shadow(radius: 10)
                         }
                     }
-                
                     
-                    // Next Button
                     Button(action: {
                         checkUsername()
                     }) {
@@ -158,8 +159,8 @@ struct OnboardingView: View {
     
     func canProceed() -> Bool {
         let calendar = Calendar.current
-        let dob = calendar.startOfDay(for: dateOfBirth)
-        let today = calendar.startOfDay(for: Date())
+        let _ = calendar.startOfDay(for: dateOfBirth)
+        let _ = calendar.startOfDay(for: Date())
             
         return !name.isEmpty /*&& username.count >= 3*/ && !isUsernameTaken && !name.isEmpty /*&& dob < today*/
     }

@@ -31,7 +31,7 @@ struct PermissionsView: View {
                 Text("Allow Access")
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Global.shared.iconColor2)
+                    .bs(style: 1)
                     .fs(style: 0)
                     .cornerRadius(8)
             }
