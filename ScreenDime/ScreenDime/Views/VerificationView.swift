@@ -17,15 +17,16 @@ struct VerificationView: View {
     @State private var areaCode = "+1"
     @State private var showCodeDialog = false
     @State private var skipToHome: Bool = false
+    @State private var codeIncorrect: Bool = false
     
     let areaCodes = ["+1", "+44", "+61", "+91", "+38"]
-
+    
     private var isPhoneNumberValid: Bool {
         let phoneNumberPattern = "^[0-9]{10}$"
         let predicate = NSPredicate(format: "SELF MATCHES %@", phoneNumberPattern)
         return predicate.evaluate(with: phoneNumber)
     }
-
+    
     var body: some View {
         ZStack {
             VStack {
@@ -81,19 +82,33 @@ struct VerificationView: View {
                     TextField("Enter verification code", text: $inputCode)
                         .textFieldStyle(RoundedBorderTextFieldStyle())
                         .padding()
+                        .onChange(of: inputCode) {
+                            codeIncorrect = false
+                        }
+                    
+                    if codeIncorrect {
+                        Text("Code is incorrect")
+                            .fs(style: 4)
+                            .font(.title3)
+                    }
                     
                     Button(action: {
-                        showNextView = true
+                        if(inputCode == String(givenCode)) {
+                            showNextView = true
+                        }
+                        else {
+                            codeIncorrect = true
+                        }
                     }) {
                         Text("Verify")
                             .frame(maxWidth: .infinity)
                             .padding()
-                            .background(String(givenCode) != inputCode ? Color.gray : Global.shared.iconColor1)
+                            .background("" == inputCode ? Color.gray : Global.shared.iconColor1)
                             .fs(style: 0)
                             .cornerRadius(8)
                     }
                     .padding()
-                    .disabled(String(givenCode) != inputCode)
+                    .disabled("" == inputCode)
                     
                     Button(action: {
                         givenCode = getRandomCode()
@@ -123,7 +138,7 @@ struct VerificationView: View {
                     Text("Your code is \(givenCode)!")
                         .multilineTextAlignment(.center)
                         .padding()
-                        
+                    
                     Button("OK") {
                         showCodeDialog = false
                     }
