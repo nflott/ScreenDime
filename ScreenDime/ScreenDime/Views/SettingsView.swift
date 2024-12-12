@@ -149,8 +149,8 @@ struct SettingsView: View {
                         
                         // Push Notifications with Toggle
                         ToggleOption(iconName: "bell", title: "Push notifications", isOn: $pushNotificationsEnabled)
-                            .onChange(of: pushNotificationsEnabled) { _ in
-                                showComingSoonPopup.toggle()
+                            .onChange(of: pushNotificationsEnabled) {
+                                //showComingSoonPopup.toggle()
                             }
                         
                         HStack {
@@ -209,6 +209,7 @@ struct SettingsView: View {
                                 .background(Global.shared.iconColor3)
                                 .cornerRadius(8)
                                 .padding()
+                                .padding([.top], -15)
                         }
                     }
                 }

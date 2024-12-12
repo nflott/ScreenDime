@@ -62,7 +62,7 @@ struct GroupCreationView: View {
                             filterMatchedUsers()      // Refresh matched users after adding
                         }) {
                             Image(systemName: "plus.circle.fill")
-                                .fs(style: 2)
+                                .fs(style: 1)
                                 .font(.title2)
                         }
                     }
