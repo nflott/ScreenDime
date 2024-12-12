@@ -18,6 +18,9 @@ final class Global: ObservableObject {
     @Published var iconColor2: Color = Color(hex: "b8f2e6")
     @Published var iconColor3: Color = Color(hex: "ffa69e")
     
+    @Published var showGroupLeftPopup = false
+    @Published var showingGroupCreation = false
+    
     @Published var selectedProfileIcon: Picture = .systemIcon("person.crop.circle.fill")
     @Published var selectedGroup: String = "The Avengers"
 

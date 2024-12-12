@@ -127,12 +127,6 @@ struct CreateBetView: View {
                 checkDates()
             }
             
-            // Make sure dates are legitimate
-            if !validDates {
-                Text("Invalid dates!")
-                    .foregroundColor(.red)
-            }
-            
             // Enter stakes
             TextField("Enter the stakes for this bet", text: $stakes)
                 .textFieldStyle(RoundedBorderTextFieldStyle())

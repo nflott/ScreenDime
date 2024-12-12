@@ -7,38 +7,38 @@ struct GroupSettingsView: View {
     @State private var isEditingGroupName = false
     @State private var editedGroupName: String = ""
     @State private var showConfirmationDialog = false
+    @State private var leaveGroupConfirm = false
+    @State private var selectedGroup: Group? = Global.shared.groupPages.first(where: { $0.name == Global.shared.selectedGroup })
+    @State private var showHomeView = false
 
     var body: some View {
-        VStack {
-            HStack {
-                Button(action: {
-                    dismiss()
-                }) {
-                    Image(systemName: "arrow.left")
-                        .resizable()
-                        .scaledToFit()
-                        .frame(width: 25, height: 25)
-                        .fs(style: 1)
+        ZStack {
+            VStack {
+                HStack {
+                    Button(action: {
+                        dismiss()
+                    }) {
+                        Image(systemName: "arrow.left")
+                            .resizable()
+                            .scaledToFit()
+                            .frame(width: 25, height: 25)
+                            .fs(style: 1)
+                            .fontWeight(.bold)
+                            .padding(.leading, 10)
+                            .padding(.trailing)
+                    }
+                    
+                    // Title
+                    Text("Group Settings")
+                        .font(.largeTitle)
                         .fontWeight(.bold)
-                        .padding(.leading, 10)
-                        .padding(.trailing)
+                        .fs(style: 0)
+                    
+                    Spacer()
+                    
                 }
+                .padding()
                 
-                // Title
-                Text("Group Settings")
-                    .font(.largeTitle)
-                    .fontWeight(.bold)
-                    .fs(style: 0)
-                                
-                Spacer()
-                
-            }
-            .padding()
-            
-            
-            
-            // Current group information
-            if let selectedGroup = global.groupPages.first(where: { $0.name == global.selectedGroup }) {
                 VStack {
                     // Group Name Editing Section
                     HStack {
@@ -52,7 +52,7 @@ struct GroupSettingsView: View {
                                 .fs(style: 0)
                                 .font(.title2)
                                 .padding(.vertical)
-
+                            
                             Button(action: {
                                 showConfirmationDialog = true
                             }) {
@@ -61,10 +61,10 @@ struct GroupSettingsView: View {
                                     .foregroundColor(.black)
                             }
                             .padding(.horizontal, 5)
-
+                            
                             Button(action: {
                                 isEditingGroupName = false
-                                editedGroupName = selectedGroup.name
+                                editedGroupName = selectedGroup!.name
                             }) {
                                 Text("Cancel")
                                     .font(.subheadline)
@@ -72,14 +72,14 @@ struct GroupSettingsView: View {
                             }
                             .padding(.horizontal, 5)
                         } else {
-                            Text("Current Group: \(selectedGroup.name)")
+                            Text("\(selectedGroup!.name)")
                                 .font(.title2)
                                 .fs(style: 0)
                                 .padding(.vertical)
                             
                             Button(action: {
                                 isEditingGroupName = true
-                                editedGroupName = selectedGroup.name
+                                editedGroupName = selectedGroup!.name
                             }) {
                                 Image(systemName: "pencil")
                                     .fs(style: 1)
@@ -94,7 +94,7 @@ struct GroupSettingsView: View {
                             .fs(style: 0)
                             .padding(.top, 10)
                         
-                        ForEach(getUserNamesWithScreenTime(for: selectedGroup.members), id: \.name) { user in
+                        ForEach(getUserNamesWithScreenTime(for: selectedGroup!.members), id: \.name) { user in
                             HStack {
                                 Text(user.name)
                                     .font(.title3)
@@ -146,46 +146,127 @@ struct GroupSettingsView: View {
                     ScrollView {
                         if showActiveBets {
                             betListSection(
-                                bets: selectedGroup.bets.compactMap { betId in
+                                bets: selectedGroup!.bets.compactMap { betId in
                                     global.bets.first { $0.id == betId && $0.isActive() }
                                 },
-                                title: "No active bets in \(selectedGroup.name)."
+                                title: "No active bets in \(selectedGroup!.name)."
                             )
                         } else {
                             betListSection(
-                                bets: selectedGroup.bets.compactMap { betId in
+                                bets: selectedGroup!.bets.compactMap { betId in
                                     global.bets.first { $0.id == betId && !$0.isActive() }
                                 },
-                                title: "No inactive bets in \(selectedGroup.name)."
+                                title: "No inactive bets in \(selectedGroup!.name)."
                             )
                         }
                     }
                     
                     Spacer()
                 }
-            } else {
-                Text("No group selected.")
-                    .fs(style: 0)
+                
+                Button(action: {
+                    leaveGroupConfirm = true
+                }) {
+                    Text("Leave Group")
+                        .fontWeight(.bold)
+                        .frame(maxWidth: 150, maxHeight: 40)
+                        .font(.headline)
+                        .bs(style: 3)
+                        .fs(style: 0)
+                        .cornerRadius(8)
+                        .padding()
+                }
+            }
+            .padding()
+            .applyBackground()
+            .alert(isPresented: $showConfirmationDialog) {
+                Alert(
+                    title: Text("Confirm Name Change"),
+                    message: Text("Are you sure you want to change the group name?"),
+                    primaryButton: .default(Text("Yes"), action: {
+                        if let selectedGroupIndex = global.groupPages.firstIndex(where: { $0.name == global.selectedGroup }) {
+                            global.groupPages[selectedGroupIndex].name = editedGroupName
+                            global.selectedGroup = editedGroupName
+                        }
+                        isEditingGroupName = false
+                    }),
+                    secondaryButton: .cancel(Text("No"), action: {
+                        isEditingGroupName = false
+                    })
+                )
+            }
+                
+            if leaveGroupConfirm {
+                if Global.shared.groupPages.count > 1 {
+                    VStack(spacing: 20) {
+                        Text("Leaving Group")
+                            .font(.headline)
+                        
+                        Text("Are you sure you want to leave this group? You can't return unless you're invited again!")
+                            .multilineTextAlignment(.center)
+                            .padding()
+                        
+                        HStack {
+                            Button("Cancel") {
+                                leaveGroupConfirm = false
+                            }
+                            .padding()
+                            .bs(style: 2)
+                            .fs(style: 0)
+                            .cornerRadius(8)
+                            
+                            Button("Leave") {
+                                leaveGroup()
+                            }
+                            .padding()
+                            .bs(style: 3)
+                            .fs(style: 0)
+                            .cornerRadius(8)
+                        }
+                    }
+                    .frame(width: 350, height: 300)
+                    .background(Global.shared.backgroundColor[0])
+                    .cornerRadius(10)
+                    .shadow(radius: 10)
                     .padding()
+                }
+                else {
+                    VStack(spacing: 20) {
+                        Text("Last Group")
+                            .font(.headline)
+                        
+                        Text("You can't leave this group - it's your last one!")
+                            .multilineTextAlignment(.center)
+                            .padding()
+                        
+                        
+                            Button("Ok") {
+                                leaveGroupConfirm = false
+                            }
+                            .padding()
+                            .bs(style: 2)
+                            .fs(style: 0)
+                            .cornerRadius(8)
+                    }
+                    .frame(width: 350, height: 300)
+                    .background(Global.shared.backgroundColor[0])
+                    .cornerRadius(10)
+                    .shadow(radius: 10)
+                    .padding()
+                }
             }
         }
-        .padding()
-        .applyBackground()
-        .alert(isPresented: $showConfirmationDialog) {
-            Alert(
-                title: Text("Confirm Name Change"),
-                message: Text("Are you sure you want to change the group name?"),
-                primaryButton: .default(Text("Yes"), action: {
-                    if let selectedGroupIndex = global.groupPages.firstIndex(where: { $0.name == global.selectedGroup }) {
-                        global.groupPages[selectedGroupIndex].name = editedGroupName
-                        global.selectedGroup = editedGroupName
-                    }
-                    isEditingGroupName = false
-                }),
-                secondaryButton: .cancel(Text("No"), action: {
-                    isEditingGroupName = false
-                })
-            )
+        .fullScreenCover(isPresented: $showHomeView) {
+            HomeView()
+        }
+    }
+    
+    private func leaveGroup() {
+        if let selectedGroup = selectedGroup {
+            global.groupPages.removeAll { $0.id == selectedGroup.id }
+            global.selectedGroup = global.groupPages[0].name
+            global.showGroupLeftPopup = true 
+            showHomeView = true
         }
     }
     

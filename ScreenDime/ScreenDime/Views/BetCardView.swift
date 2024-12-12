@@ -145,7 +145,7 @@ struct BetCardView: View {
         if showingAcceptDialog {
             VStack(spacing: 20) {
                 
-                Text("Join \(title)?")
+                Text("Join \(title)? Once you join, you can't back out!")
                     .multilineTextAlignment(.center)
                     .padding()
                 

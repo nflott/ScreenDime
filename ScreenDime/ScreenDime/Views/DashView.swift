@@ -1,44 +1,69 @@
 import SwiftUI
 
 struct DashView: View {
+    @ObservedObject private var global = Global.shared
+    
     var body: some View {
-        VStack(spacing: 20) {
-            
-            WeeklyReportPreview()
-                .shadow(color: Global.shared.altTextColor, radius: 10, x: 0, y: 0)
-            
-            // 'Activity' card
-            VStack {
-                HStack {
-                    Text("Activity")
-                        .fontWeight(.bold)
-                        .fs(style: 5)
-                    Spacer()
-                }
-                .padding(.horizontal)
-                .padding(.top)
+        ZStack {
+            VStack(spacing: 20) {
                 
-                // Feed of recent bets/activity
-                ScrollView {
-                    VStack(spacing: 12) {
-                        ForEach(sampleActivityData) { activity in
-                            ActivityRow(activity: activity)
-                        }
+                WeeklyReportPreview()
+                    .shadow(color: Global.shared.altTextColor, radius: 10, x: 0, y: 0)
+                
+                // 'Activity' card
+                VStack {
+                    HStack {
+                        Text("Activity")
+                            .fontWeight(.bold)
+                            .fs(style: 5)
+                        Spacer()
                     }
                     .padding(.horizontal)
+                    .padding(.top)
+                    
+                    // Feed of recent bets/activity
+                    ScrollView {
+                        VStack(spacing: 12) {
+                            ForEach(sampleActivityData) { activity in
+                                ActivityRow(activity: activity)
+                            }
+                        }
+                        .padding(.horizontal)
+                    }
+                    .padding(.top, 20)
+                    .frame(maxHeight: .infinity)
                 }
-                .padding(.top, 20)
-                .frame(maxHeight: .infinity)
+                .frame(height: 400)
+                .background(Global.shared.altTextColor)
+                .cornerRadius(10)
+                .padding(.horizontal)
+                .shadow(color: Global.shared.altTextColor, radius: 10, x: 0, y: 0)
+                
+                Spacer()
             }
-            .frame(height: 400)
-            .background(Global.shared.altTextColor)
-            .cornerRadius(10)
-            .padding(.horizontal)
-            .shadow(color: Global.shared.altTextColor, radius: 10, x: 0, y: 0)
+            .padding(.top, 40)
             
-            Spacer()
+            if global.showGroupLeftPopup {
+                VStack(spacing: 20) {
+                    Text("You have successfully left the group.")
+                        .multilineTextAlignment(.center)
+                        .padding()
+                    
+                    Button("OK") {
+                        global.showGroupLeftPopup = false
+                    }
+                    .padding()
+                    .fs(style: 0)
+                    .background(Global.shared.iconColor1)
+                    .cornerRadius(8)
+                }
+                .frame(width: 200, height: 150)
+                .background(Global.shared.backgroundColor[0])
+                .cornerRadius(10)
+                .shadow(radius: 10)
+                .padding()
+            }
         }
-        .padding(.top, 40)
     }
 }
 
